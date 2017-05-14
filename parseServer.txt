@@ -1,0 +1,61 @@
+go to aws.amazon.com
+
+sign in to the console   
+
+All services ->
+EC2 (ElasticCompute - where elastic means that it will be streched automaticaly depends on your need) ->
+Launch Instance ->
+AWS Marketplace ->
+Search Parse, Select Parse Server powered by Bitnami ->  
+Continue ->
+Choose t2.micro ->
+Rewiev and launch ->
+Launch ->  
+select Create new key pair ->
+key pair name instagramandroid ->
+Download key pair -> 
+Launche instance ->         
+instance name ->
+load firefox to connect with ssh through browser lul -> 
+Connect ->
+ssh client ->
+use putty to connect ->
+how to use Putty
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html?icmpid=docs_ec2_console 
+
+on succesful connect - type ->
+cd apps/parse/htdocs ->
+vi server.js ->
+
+download project base from http://androiddevcourse.com/parseproject.zip
+
+in StarterAplication in Parse.initialize() add 
+AppId as applicationId
+masterKey as clientKey
+serverURL as server - put backslash on te end of url after parse - to look like  
+http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com:80/parse/
+
+use serverURL in browser, just switch parse on the end to apps
+http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com:80/apps
+
+Username: user
+
+Password: -> On EC2 / Amazon you must go this way: Instance Settings -> Get System Log -> Look for your password, which was given from system by setup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+i-036bfd73c13149c0a  
+ec2-54-245-63-66.us-west-2.compute.amazonaws.com  
+93.75.231.20                                                                                                                             

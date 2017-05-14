@@ -1,0 +1,94 @@
+I'm trying to write a fast HTML scraper and at this point I'm just focusing on maximizing my throughput without parsing. I have cached the IP addresses of the URLs:
+
+public class Data {
+    private static final ArrayList<String> sites = new ArrayList<String>();
+    public static final ArrayList<URL> URL_LIST = new ArrayList<URL>();
+    public static final ArrayList<InetAddress> ADDRESSES = new ArrayList<InetAddress>();
+
+    static{
+        /*
+        add all the URLs to the sites array list
+        */
+
+        // Resolve the DNS prior to testing the throughput 
+        for(int i = 0; i < sites.size(); i++){
+
+            try {
+                URL tmp = new URL(sites.get(i));
+                InetAddress address = InetAddress.getByName(tmp.getHost());
+                ADDRESSES.add(address);
+                URL_LIST.add(new URL("http", address.getHostAddress(), tmp.getPort(), tmp.getFile()));
+                System.out.println(tmp.getHost() + ": " + address.getHostAddress());
+            } catch (MalformedURLException e) {
+            } catch (UnknownHostException e) {
+            }
+        }
+    }
+}
+My next step was to test the speed with 100 URLs by fetching them from the internet, reading the first 64KB and moving on to the next URL. I create a thread pool of FetchTaskConsumer's and I've tried running multiple threads (16 to 64 on a i7 Quad Core machine), here is how each consumer looks:
+
+public class FetchTask implements Runnable{
+    private final int timeoutMS = 2000;
+    private final CountDownLatch latch;
+    private final int[] urlIndexes;
+    public FetchTask(int[] urlIndexes, CountDownLatch latch){
+        this.urlIndexes = urlIndexes;
+        this.latch = latch;
+    }
+
+    @Override
+    public void run() {
+
+        URLConnection resource;
+        InputStream is = null;
+        for(int i = 0; i < urlIndexes.length; i++)
+        {
+            int numBytes = 0;
+            try {                   
+                resource = Data.URL_LIST.get(urlIndexes[i]).openConnection();
+
+                resource.setConnectTimeout(timeoutMS);
+
+                resource.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+                is = resource.getInputStream();
+
+                while(is.read()!=-1 && numBytes < 65536 )
+                {
+                    numBytes++;
+                }
+
+            } catch (IOException e) {
+                System.out.println("Fetch Exception: " + e.getMessage());
+            } finally {
+
+                System.out.println(numBytes + "," + urlIndexes[i] + "," + remaining.decrementAndGet());
+                if(is!=null){
+                    try {
+                        is.close();
+                    } catch (IOException e1) {/*eat it*/}
+                }
+            }
+        }
+
+        latch.countDown();
+    }
+}
+At best I'm able to go through the 100 URLs in about 30 seconds, but the literature suggests that I should be able to go through 300150 URLs per second. Note that I have access to Gigabit Ethernet, although I'm currently running the test at home on my 20 Mbit connection... in either case, the connection is never really being fully utilized.
+
+I've tried directly using Socket connections, but I must be doing something wrong, because that's even slower! Any suggestions on how I can improve the throughput?
+
+P.S.
+I have a list of about 1 million popular URLs, so I can add more URLs if 100 is not enough to benchmark.
+
+Update:
+The literature I'm referring is the papers relating to the Najork Web Crawler, Najork states:
+
+Processed 891 million URLs in 17 Days
+That is ~ 606 downloads per second [on] 4 Compaq DS20E Alpha Servers [with] 4 GB main memory[,] 650 GB disk space [and] 100 MBit/sec.
+Ethernet ISP rate-limits bandwidth to 160Mbits/sec
+So it's actually 150 pages per second, not 300. My computer is Core i7 with 4 GB RAM and I'm nowhere near close to that. I didn't see anything stating what they used in particular.
+
+Update:
+OK, tally up... the final results are in! It turns out that 100 URLs is a bit too low for a benchmark. I bumped it up to 1024 URLs, 64 threads, I set a timeout of 2 seconds for each fetch and I was able to get up to 21 pages per second (in reality my connection is about 10.5 Mbps, so 21 pages per second * 64KB per page is about 10.5 Mbps).
+

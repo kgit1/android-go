@@ -1,0 +1,145 @@
+Java URL example - Download the contents of a URL
+
+http://alvinalexander.com/java/edu/pj/pj010011
+
+By Alvin Alexander. Last updated: July 17 2016
+Java URL download FAQ: How can I download the contents of a URL using Java?
+
+Note: It's 2013 now and this code is a little old, but hopefully it will still get you pointed in the right direction.
+
+In some Java applications you'll want to download the contents of a URL across a network. For example, I've written two applications that do this regularly.
+
+The first Java URL download application is a customized Java web robot. This robot downloads the contents of certain URL's every day, and creates an HTML page of all the anchor tags it finds on those URL's. I use this Java program to get all of the headlines I want delivered to our doorsteps any time I want - with no ads and no waiting - because the robot has already done the work for us.
+
+The second Java URL download program is a Java application I call ServerStress. This program uses Java's URL class to download the contents of a list of URL's I've created. This program downloads the entire list from a web server as fast as it can.
+
+The purpose of this Java application, as you might guess from it's name, is to stress-test the web server. It's a great way of throwing a mind-numbing number of client requests against a web server in a short time, and measuring the response of the server.
+
+In this article I'll take a look at the procedure necessary to download the contents of a URL in a Java application. In a future article I'll discuss our Java ServerStress program, so you can see how this method is used in a real-world application.
+
+My Java "Get URL" code
+There are about five steps required to download and print the contents of a URL using Java. I say "approximately", because (a) it all depends on what you consider a step, and (b) it depends on how you handle the possible exceptions that can occur.
+
+The code in Listing 1 shows my entire JavaGetUrl.java program. When I look back at this program, I realize that the process of dealing with the possible exceptions that can occur is more time-consuming than creating the networking aspect of the code. One thing I've learned with Java - the networking aspect of the code is pretty easy.
+
+//------------------------------------------------------------//
+//  JavaGetUrl.java:                                          //
+//------------------------------------------------------------//
+//  A Java program that demonstrates a procedure that can be  //
+//  used to download the contents of a specified URL.         //
+//------------------------------------------------------------//
+//  Code created by Developer's Daily                         //
+//  http://www.DevDaily.com                                   //
+//------------------------------------------------------------//
+
+import java.io.*;
+import java.net.*;
+
+public class JavaGetUrl {
+
+   public static void main (String[] args) {
+
+      //-----------------------------------------------------//
+      //  Step 1:  Start creating a few objects we'll need.
+      //-----------------------------------------------------//
+
+      URL u;
+      InputStream is = null;
+      DataInputStream dis;
+      String s;
+
+      try {
+
+         //------------------------------------------------------------//
+         // Step 2:  Create the URL.                                   //
+         //------------------------------------------------------------//
+         // Note: Put your real URL here, or better yet, read it as a  //
+         // command-line arg, or read it from a file.                  //
+         //------------------------------------------------------------//
+
+         u = new URL("http://200.210.220.1:8080/index.html");
+
+         //----------------------------------------------//
+         // Step 3:  Open an input stream from the url.  //
+         //----------------------------------------------//
+
+         is = u.openStream();         // throws an IOException
+
+         //-------------------------------------------------------------//
+         // Step 4:                                                     //
+         //-------------------------------------------------------------//
+         // Convert the InputStream to a buffered DataInputStream.      //
+         // Buffering the stream makes the reading faster; the          //
+         // readLine() method of the DataInputStream makes the reading  //
+         // easier.                                                     //
+         //-------------------------------------------------------------//
+
+         dis = new DataInputStream(new BufferedInputStream(is));
+
+         //------------------------------------------------------------//
+         // Step 5:                                                    //
+         //------------------------------------------------------------//
+         // Now just read each record of the input stream, and print   //
+         // it out.  Note that it's assumed that this problem is run   //
+         // from a command-line, not from an application or applet.    //
+         //------------------------------------------------------------//
+
+         while ((s = dis.readLine()) != null) {
+            System.out.println(s);
+         }
+
+      } catch (MalformedURLException mue) {
+
+         System.out.println("Ouch - a MalformedURLException happened.");
+         mue.printStackTrace();
+         System.exit(1);
+
+      } catch (IOException ioe) {
+
+         System.out.println("Oops- an IOException happened.");
+         ioe.printStackTrace();
+         System.exit(1);
+
+      } finally {
+
+         //---------------------------------//
+         // Step 6:  Close the InputStream  //
+         //---------------------------------//
+
+         try {
+            is.close();
+         } catch (IOException ioe) {
+            // just going to ignore this one
+         }
+
+      } // end of 'finally' clause
+
+   }  // end of main
+
+} // end of class definition
+Listing 1 (above): The JavaGetUrl.java program shows how easy it is to open an input stream to a URL, and then read the contents of the URL.
+
+Java "Get URL" code discussion
+Because this Java "download URL" source code is well documented, I won't add much to the description. First, I'll point out the obvious - you'll want to put your own URL in place of the "http://200.210.220.1:8080/index.html" in this code. This is just a TCP/IP address I use on our internal LAN during testing.
+
+Of course, instead of hard-wiring the URL into the Java code, it would be even better to read the URL as a command-line argument, creating the URL object "u" with a statement like this:
+
+u = new URL(args[0]);
+(You'll want to do a little error-checking in your code to make sure args[0] was supplied by the user.)
+
+Another item to point out is that I typically generated a MalformedURLException whenever I botched the actual URL, doing things like mis-typing "http" as "htp", for instance. On the other hand, I generated an IOException whenever I properly typed the URL syntax, but mis-typed a filename.
+
+Java download URL code - Compiling and running the program
+To compile our Java URL program (after you've downloaded it), just type this command:
+
+javac JavaGetUrl.java
+Assuming you have the JDK installed on your system, this program should compile without warnings or errors. Next, run the program like this:
+
+java JavaGetUrl
+If the program runs properly, the HTML code from the URL you've targeted will be printed to your screen. If you'd like to save the output of the program (i.e., the contents of the URL) to a file, simply redirect the output of the command like this (for DOS and UNIX systems):
+
+java JavaGetUrl > url.out
+Java download URL source code
+I hope you enjoyed this article. Creating network code with Java is one of our favorite topics. If you'd like to download the Java source code shown in Listing 1, just follow these steps:
+
+Click here to download the JavaGetUrl.java source code to your computer. After the source code appears in your browser, simply save the code to your local filesystem by selecting the File | Save As .. option of your browser.

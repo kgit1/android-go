@@ -1,0 +1,2633 @@
+lon77.5602171 lat12.9825313
+download android studio -> instal -> run
+
+start new Android Studio project
+
+app name : Demo App
+company domain: a.example.com
+project location: D:\J\android\android-start\DemoApp
+next
+phone and tablet -> minimum sdk -> Api 15: Android 4.0.3
+next -> next -> empty activity -> next -> 
+activity name MainActivity + layout name activity_main -> finish
+
+minifests folder
+android manifest xml contains basic info about app icon , label, app name, theme, etc
+
+resources folder
+hold icons, images, music etc what we for app need
+
+java folder 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+//appCompatActivity makes sure that app compatable with as many old android versions as needed
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+
+resources -> layout -> activity_mail.xml - double click -> view on app
+green olay button at top center to run app
+create new emulator -> phone -> nexus s -> next -> system image - nougat Android 7.1.1 -> next
+
+drag TextView element from Pallete-> Widgets to devices screen, put where needed, change text and
+id in properties window, open all propertiesm change margin to 20dp(not px, dp prefered because âo 
+not rely on screen resolution)(sp - scale independed pixel, same as dp, but affected by user zoom level)
+use lighting near play to insta run changed build
+
+add button
+find onClick in properties -> type clickFunction
+
+create clickFunction in MainActivity class
+
+public void clickFunction(View view){
+        System.out.println("Clicked");
+        Log.i("Info", "Button pressed");
+    }
+
+run app with lightning, click button
+see System.out and Log info in Android Monitor
+
+add PlainText(text field)
+empty name
+change hint to "Enter your name"
+
+change clickFunction to handle text field
+create object EditText and assign value from field which we acces by method
+findViewById(R.id.myTextField) - R - for resources, id - for elemement id
+
+ public void clickFunction(View view){
+        EditText stringEnterName = (EditText) findViewById(R.id.myTextField);
+        EditText stringEnterPassword = (EditText) findViewById(R.id.myPasswordField);
+        System.out.println("Clicked");
+        Log.i("Info", "Button pressed");
+        Log.i("Name", stringEnterName.getText().toString());
+        Log.i("Password",stringEnterPassword.getText().toString());
+    }
+
+add Toast - quick pop-up window
+	Toast.makeText(MainActivity.this, "Login: "+stringEnterName.getText().toString(),
+        Toast.LENGTH_SHORT).show();
+and in method
+public void clickFunction(View view){
+        EditText stringEnterName = (EditText) findViewById(R.id.myTextField);
+        EditText stringEnterPassword = (EditText) findViewById(R.id.myPasswordField);
+
+        Toast.makeText(MainActivity.this, "Login: "+stringEnterName.getText().toString(),
+                Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(MainActivity.this, "Password: "+stringEnterPassword.getText().toString(),
+                Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(MainActivity.this, "Hi there, Queen of Meereen, Queen of the Andals" +
+                "(, the Rhoynar) and the First Men, Lady Regnant of the Seven Kingdoms, Khaleesi"+
+                "of the Great Grass Sea, Mhysa, Breaker of Chains, the Unburnt, Mother of Dragons",
+                Toast.LENGTH_LONG).show();        
+
+        System.out.println("Clicked");
+        Log.i("Info", "Button pressed");
+        Log.i("Name", stringEnterName.getText().toString());
+        Log.i("Password",stringEnterPassword.getText().toString());
+    }
+==================================================================
+
+============JAVADOC UNDER CURSOR==================================
+
+	Android Studio does not displayed Javadoc by default when an element is being hovered, 	
+which is a burden for productivity. However, this can be easily set up:
+Go to Preferences and then Editor. When the window appears, mark the last option
+==================================================================
+
+
+============DOWNLOAD FROM WEB=====================================
+
+add to AndroidManifest.xml
+<uses-permission android:name="android.permission.INTERNET"/>
+
+to be like
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.a.appdownloadfromweb">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+
+than to handle downloading on side thread, not on main which handles our app ui
+create class DownloadTask which extends AsyncTask class with generic params <String,Void,String>
+where first - String - data which class constructor will take
+      second - Void - name of the method which can show progress of this task
+      third - String - variable which will return results of work of DownloadTask class
+
+when we extends AsyncTask class it implements overrided method doInBackground
+which takes String and returns String as we desided here -> AsynkTask<String,Void,String>
+so it look like
+protected String doInBackground(String... params) {}
+
+when we create object of class DownloadTask
+and call execute method -> doInBackground() method will be called
+and call of get() method after execute method - will make this construction to return result value
+so
+DownloadTask task = new DownloadTask();
+String result = task.execute("some string").get();
+so on execute().get() - method doInBackground will be called and return result of his work
+
+next example of apps MainActivite class where DownloadTask class processes string with url adress
+and returns data(html code of page found on urls location)
+
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+
+//add in AndroidManifest.xml to provide internet use permission
+// <uses-permission android:name="android.permission.INTERNET"/>
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
+public class MainActivity extends AppCompatActivity {
+
+    //AsyncTask allows to run another task behind(in new background thread) MainActivity thread
+    // which displays app to user
+    // in AsyncTask<?,?,?>
+    //first (String) - variable which we send to DownloadTask class to instruct it what to do
+    //second - name of method which shows the progress of this task
+    //third - variable which can be returned by DownloadTask class
+    public class DownloadTask extends AsyncTask <String, Void, String>{
+
+        //call execute method from DownloadTask class - will execute this method
+        @Override
+        protected String doInBackground(String... params) {
+
+            String result ="";
+            URL url;
+            HttpURLConnection httpConnection = null;
+
+            for(String param : params){
+                Log.i("Test",param);
+            }
+
+            try{
+
+                //create URL from string
+                url=new URL(params[0]);
+
+                //open HttpURLConnection with URL and openConnection() method
+                httpConnection = (HttpURLConnection)url.openConnection();
+
+                //open inputStream from HttpURLConnection with getInputStream() method
+                 InputStream in = httpConnection.getInputStream();
+                //read stream with InputStreamReader
+                InputStreamReader reader = new InputStreamReader(in);
+
+                int data = reader.read();
+
+                //at the end of content data from stream - will be -1
+                while(data!=-1){
+                    char current = (char)data;
+                    result+=current;
+
+                    data= reader.read();
+                }
+
+                return result;
+            }catch(Exception e){
+                e.printStackTrace();
+
+                return "Failed";
+            }
+            //call get() after execute() method - wil provide returned data
+            //return result;
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        DownloadTask dTask = new DownloadTask();
+        String result="";
+        try {
+            //result = dTask.execute("https://www.ecowebhosting.co.uk/").get();
+            result = new DownloadTask().execute("https://www.ecowebhosting.co.uk/").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.i("Result",result);
+    }
+}
+==================================================================
+
+
+============DOWNLOAD IMAGE FROM WEB===============================
+
+add to AndroidManifest.xml
+<uses-permission android:name="android.permission.INTERNET"/>
+
+create nested class DownloadTask extends AsyncTask <String, Void, Bitmap>
+to process url and return image found on the url's location
+
+next example of apps MainActivite class
+
+package com.example.a.appdownloadimagefromweb;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
+public class MainActivity extends AppCompatActivity {
+
+    ImageView downloadedImage;
+
+    public void functionButtonDownloadImage(View view){
+
+        //http://orig12.deviantart.net/6492/f/2016/059/3/4/seasonal_feathers_by_nanfe-d9tggn2.jpg
+        Log.i("Test","Button 1 - clicked");
+
+        ImageDownloader task = new ImageDownloader();
+        Bitmap myImage;
+        try {
+            myImage = task.execute("http://orig12.deviantart.net/6492/f/2016/059/3/4/seasonal_feathers_by_nanfe-d9tggn2.jpg").get();
+
+            downloadedImage.setImageBitmap(myImage);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        downloadedImage = (ImageView)findViewById(R.id.image1);
+    }
+
+    public class ImageDownloader extends AsyncTask<String,Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... params) {
+
+            try {
+                URL url = new URL(params[0]);
+
+                HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+
+                //get image in one go and convert to bitmap
+                urlConnection.connect();
+
+                InputStream in = urlConnection.getInputStream();
+
+                Bitmap myBitmap = BitmapFactory.decodeStream(in);
+
+                return myBitmap;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+}
+
+===============TOAST FROM NON-UI THREAD=========
+
+//to call Toast from non-UI thread
+    public void errorToast(final String errorString) {
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+            }
+        }, 1000);
+    }
+
+
+==============WEATHER APP==================
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+
+public class MainActivity extends AppCompatActivity {
+    //unsplash.com - free images for background
+    EditText editCity;
+    TextView textWeather;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editCity = (EditText) findViewById(R.id.editTextCity);
+        textWeather = (TextView) findViewById(R.id.textViewWeather);
+    }
+
+    private class DownloadWeatherTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            StringBuilder result = new StringBuilder();
+
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = httpURLConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                int data = reader.read();
+
+                while (data > -1) {
+                    char current = (char) data;
+                    result.append(current);
+                    data = reader.read();
+                }
+                return result.toString();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Log.i("Connect", "MalformedURLException");
+                //special method to draw toast because of exception if toast runs not on UI thread
+                errorToast("Cant get weather: wrong city name");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.i("Connect", "IOException");
+                errorToast("Cant get weather: wrong city name");
+            }
+            return null;
+        }
+
+        //executed on doInBackground() finish
+        //string result = returned from doInBackground string result
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if (result != null) {
+                Log.i("resultString", result);
+                String weatherForTextField = "";
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String resultWeather = jsonObject.getString("weather");
+
+                    JSONArray jsonArray = new JSONArray(resultWeather);
+                    JSONObject tempJSON;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        tempJSON = jsonArray.getJSONObject(i);
+                        weatherForTextField += "Main: " + tempJSON.getString("main")
+                                + "\nDescription: " + tempJSON.getString("description");
+                    }
+
+                    tempJSON = jsonObject.getJSONObject("main");
+                    weatherForTextField += "\nTemp: " + kelvinToCelsius(tempJSON.getString("temp"))
+                            + "\nPressure: " + tempJSON.getString("pressure")
+                            + "\nHumidity: " + tempJSON.getString("humidity")
+                            + "\nTemp_min: " + kelvinToCelsius(tempJSON.getString("temp_min"))
+                            + "\nTemp_max: " + kelvinToCelsius(tempJSON.getString("temp_max"));
+
+                    tempJSON= jsonObject.getJSONObject("coord");
+                    weatherForTextField+="\nLon: " + tempJSON.getString("lon")
+                            +"\nLat: "+tempJSON.getString("lat");
+
+
+                    weatherForTextField+="\n"+jsonObject.getString("name");
+
+                    textWeather.setText(weatherForTextField);
+                } catch (JSONException e) {
+                    textWeather.setText(noneInfo());
+                    e.printStackTrace();
+                }
+            }else{
+                textWeather.setText(noneInfo());
+            }
+        }
+    }
+
+    //to call Toast from non-UI thread
+    public void errorToast(final String errorString) {
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+            }
+        }, 1000);
+    }
+
+    public void functionGetWeather(View view) {
+        String city = editCity.getText().toString();
+        Log.i("city: ", city);
+        //to encode string city name to proper url(to handle spaces in name etc)
+        try {
+            city= URLEncoder.encode(city,"UTF-8");
+            Log.i("city encoded: ", city);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //to get rid out from screen keyboard (which can block way if proposes variants)
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editCity.getWindowToken(), 0);
+
+        new DownloadWeatherTask().execute("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=aabddda8fca6982bdf6299a97f0f0100");
+    }
+
+    public String kelvinToCelsius(String temperature) {
+        float temp = Float.parseFloat(temperature);
+        temp = temp - 273.15F;
+        return new String("" + Math.round(temp));
+    }
+
+    public String noneInfo(){
+        return "Main: " + "none"
+                + "\nDescription: " + "none"
+                + "\nTemp: " + "none"
+                + "\nPressure: " + "none"
+                + "\nHumidity: " + "none"
+                + "\nTemp_min: " + "none"
+                + "\nTemp_max: " + "none";
+    }
+}
+
+
+===============MAPS, SELF LOCATION=============
+
+permission in AndroidManifest.xml for location
+
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+(FINE_LOCATION - mean coords from GPS, we can define another LOCATION, not FINE, for  source like Wi-Fi if needed)
+
+code for location get - first LocationManager - 
+which take location from  getSystemServiceContext.LOCATION_SERVICE)
+locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+than - LocationListener which will check users location and give signal on change
+locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("addressData: ", location.toString());
+                textView.setText(locationData(location));
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+than - check do we have explicit permission for location from user and ask it if haven't
+
+ //if SDK < 23(Marshmallow) - we don't need permission and can ask location immediately
+if (Build.VERSION.SDK_INT < 23) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 	locationListener);
+        }//if SDK > 23
+        else {
+            //check do we have permission
+            //if haven't - ask
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) 		!= PackageManager.PERMISSION_GRANTED) {
+                //ask permission
+                ActivityCompat.requestPermissions(this, new String[]		{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }//if have - run code to ask location
+            else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+                Location lastKnownLocation = locationManager.getLastKnownLocation		(LocationManager.GPS_PROVIDER);
+                if(lastKnownLocation!=null) {
+                    textView.setText(locationData(lastKnownLocation));
+                }
+            }
+        }
+
+than create method which will react on users responce on permission ask
+@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        //if we have responce and responce tell that we have permission
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            //here we need one more check if we do have permission
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== 		PackageManager.PERMISSION_GRANTED){
+            //if we do have permission - call requestLocationUpdates() method for locationManager
+                //which will add listener to it, and give details for listener
+                // LocationManager.GPS_PROVIDER - as location data provider(GPS because we choose 		ACCESS_FINE_LOCATION
+                // 0 - for min time between ask on location changes - we can put some value to save 		battery, like to ask only every 10 seconds or more
+                // 0 - for min distance of location change to give signal to method
+                // locationListener
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+            }
+        }
+    }
+
+
+full code of MainActivity
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+
+public class MainActivity extends AppCompatActivity {
+
+    LocationManager locationManager;
+    LocationListener locationListener;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull 	int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        Log.i("request", "1");
+        //if we have response and response tell that we have permission
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.i("request", "2");
+            //here we need one more check if we do have permission
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Log.i("request", "3");
+                //if we do have permission - call requestLocationUpdates() method for 		locationManager
+                //which will add listener to it, and give details for listener
+                // LocationManager.GPS_PROVIDER - as location data provider(GPS because we choose 		ACCESS_FINE_LOCATION
+                // 0 - for min time between ask on location changes - we can put some value to save 		battery, like to ask only every 10 seconds or more
+                // 0 - for min distance of location change to give signal to method
+                // locationListener
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //get users location
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Log.i("Location", locationManager.toString());
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                Log.i("Location1", location.toString());
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        //if device running SDK <23(Marshmallow)
+        if (Build.VERSION.SDK_INT < 23) {
+            Log.i("request", "6");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+        } else {
+            //we need to ask user permission for location explicitly
+            //first check if we already have permission, call object ContextCompat -
+            // Helper for accessing features in {@link android.content.Context}
+            // introduced after API level 4 in a backwards compatible fashion.
+            //invoke method checkSelfPermissions() which needs Context and permission name
+            // Context - this, permission name - Manifest.permission.ACCESS_FINE_LOCATION
+            //if no permission
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) 		!= PackageManager.PERMISSION_GRANTED) {
+                Log.i("request", "4");
+                //ask for it
+                ActivityCompat.requestPermissions(this, new String[]		{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                Log.i("request", "5");
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+            }
+        }
+    }
+}
+
+
+====MAPS USER LOCATION MARKER CODE + PLUS decode geodata to actual address
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private GoogleMap mMap;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    double lat;
+    double lon;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull 		int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) 		== PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+
+        lat = 0;
+        lon = 0;
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("Location: ", location.toString());
+                //to draw marker on map on user move
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+                LatLng userLoc = new LatLng(lat, lon);
+                mMap.addMarker(new MarkerOptions().position(userLoc).title("User-" + lat + 		":lon"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLoc));
+
+                //to transform latitude and longitude to actual address
+                //A class for handling geocoding and reverse geocoding. Geocoding is the process of
+                // transforming a street address or other description of a location into
+                // a (latitude, longitude) coordinate. Reverse geocoding is the process of
+                // transforming a (latitude, longitude) coordinate into a (partial) address.
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), 		location.getLongitude(), 1);
+                    if (addresses != null && addresses.size() > 0) {
+                        Log.i("Address", addresses.get(0).toString());
+                        List<String> address = new ArrayList<>();
+                        Pattern p1 = Pattern.compile("0:\"" + "(.*?)" + "\"");
+                        Pattern p2 = Pattern.compile("countryCode=" + "(.*?)" + ",");
+                        Pattern p3 = Pattern.compile("countryName=" + "(.*?)" + ",");
+                        Pattern p4 = Pattern.compile("postalCode=" + "(.*?)" + ",");
+                        Pattern p5 = Pattern.compile("latitude=" + "(.*?)" + ",");
+                        Pattern p6 = Pattern.compile("longitude=" + "(.*?)" + ",");
+
+                        Matcher match = p1.matcher(addresses.get(0).toString());
+                        while (match.find()) {
+                            address.add("Address: " + match.group(1));
+                        }
+                        match = p2.matcher(addresses.get(0).toString());
+                        while (match.find()) {
+                            address.add("countryCode: " + match.group(1));
+                        }
+                        match = p3.matcher(addresses.get(0).toString());
+                        while (match.find()) {
+                            address.add("countryName: " + match.group(1));
+                        }
+                        match = p4.matcher(addresses.get(0).toString());
+                        while (match.find()) {
+                            address.add("postalCod: " + match.group(1));
+                        }
+                        match = p5.matcher(addresses.get(0).toString());
+                        while (match.find()) {
+                            address.add("latitude=: " + match.group(1));
+                        }
+                        match = p6.matcher(addresses.get(0).toString());
+                        while (match.find()) {
+                            address.add("longitude=: " + match.group(1));
+                        }
+
+                        String forToast = "";
+                        for (int i = 0; i < address.size(); i++) {
+                            forToast += "\n" + address.get(i);
+                        }
+                        Log.i("forToast", forToast);
+
+                        Toast.makeText(getApplicationContext(), forToast, Toast.LENGTH_LONG).show		();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        //if SDK < 23(Marshmallow) - we dont need permission and can ask location immediately
+        if (Build.VERSION.SDK_INT < 23) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+            //if SDK > 23
+        } else {
+            //check do we have permission
+            //if haven't - ask
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) 		!= PackageManager.PERMISSION_GRANTED) {
+                //ask permission
+                ActivityCompat.requestPermissions(this, new String[]		{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }//if have - run code to ask location
+            else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, 		locationListener);
+
+                //to draw marker on map on start, not only when user moves
+                Location lastKnownLocation = locationManager.getLastKnownLocation		(LocationManager.GPS_PROVIDER);
+
+                Log.i("lastLoc", lastKnownLocation.toString());
+                lat = lastKnownLocation.getLatitude();
+                lon = lastKnownLocation.getLongitude();
+                LatLng userLoc = new LatLng(lat, lon);
+                mMap.addMarker(new MarkerOptions().position(userLoc).title("User-lat:" + lat + 		":lon" + lon));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLoc));
+            }
+        }
+    }
+}
+
+
+=========App Hikers Watch==================================
+
+locationManager+locationListener+lastKnownLocation+geocoder->location by lat and lon to address
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity {
+
+    LocationManager locationManager;
+    LocationListener locationListener;
+    TextView textView;
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Log.i("permission: ", "6");
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //location manager initialize
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        textView = (TextView) findViewById(R.id.textView);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("addressData: ", location.toString());
+                textView.setText(locationData(location));
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        //if SDK < 23(Marshmallow) - we don't need permission and can ask location immediately
+        if (Build.VERSION.SDK_INT < 23) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }//if SDK > 23
+        else {
+            //check do we have permission
+            //if haven't - ask
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //ask permission
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }//if have - run code to ask location
+            else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (lastKnownLocation != null) {
+                    textView.setText(locationData(lastKnownLocation));
+                }
+            }
+        }
+    }
+
+
+    public String locationData(Location location) {
+        String addressData = "Could not find address";
+
+        if (location != null) {
+            addressData += "Latitude: " + location.getLatitude()
+                    + "\nLongitude: " + location.getLongitude()
+                    + "\nAccuracy: " + location.getAccuracy()
+                    + "\nAttitude: " + location.getAltitude();
+
+
+            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                if (addresses != null && addresses.get(0) != null) {
+                    Address address = addresses.get(0);
+                    if (address.getSubThoroughfare() != null) {
+                        addressData += "\nAddress: " + address.getSubThoroughfare();
+                    }
+                    if (address.getThoroughfare() != null) {
+                        addressData += ",\n" + address.getThoroughfare();
+                    }
+                    if (address.getLocality() != null) {
+                        addressData += "\n" + address.getLocality();
+                    }
+                    if (address.getSubLocality() != null) {
+                        addressData += "\n" + address.getSubLocality();
+                    }
+                    if (address.getCountryName() != null) {
+                        addressData += "\n" + address.getCountryName();
+                    }
+                    if (address.getCountryCode() != null) {
+                        addressData += " " + address.getCountryCode();
+                    }
+                    if (address.getPostalCode() != null) {
+                        addressData += "\n" + address.getPostalCode();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.i("addressData: ", addressData);
+        return addressData;
+    }
+}
+
+
+/////////APP MEMORABLE PLACES//////////////////////////////////////////////////
+/////////Maps, lastKnownLocation, multi activities, intents////////////////////
+
+MAIN ACTIVITY
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    static ArrayList<String> placesNames = new ArrayList<>();
+    static ArrayList<LatLng> placesLocations = new ArrayList<>();
+    static ArrayAdapter arrayAdapter;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        LatLng latLng = (LatLng) intent.getParcelableExtra("location");
+        if (latLng != null) {
+            Toast.makeText(getApplicationContext(), "LocOnMain" + latLng.toString(), Toast.LENGTH_SHORT);
+        }
+
+        ListView listView = (ListView) findViewById(R.id.listOfPlaces);
+
+        Log.i("names",placesNames.toString());
+
+        placesNames.add("Add new memorable place");
+        placesLocations.add(new LatLng(0, 0));
+
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, placesNames);
+
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("placeNumber",position);
+                startActivity(intent);
+            }
+        });
+    }
+}
+
+MAPS ACTIVITY
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private GoogleMap mMap;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    String title;
+    Intent intent;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                Log.i("onRequest", "results");
+                Location lasKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                mapMoveCamera(lasKnownLocation, "Your location");
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        intent = getIntent();
+        int placeNumber = intent.getIntExtra("placeNumber", 0);
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                title = "";
+                try {
+                    List<Address> listAddresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    if (listAddresses != null && listAddresses.size() > 0) {
+                        if (listAddresses.get(0).getThoroughfare() != null) {
+                            title += listAddresses.get(0).getThoroughfare();
+                            if (listAddresses.get(0).getSubThoroughfare() != null) {
+                                title += listAddresses.get(0).getSubThoroughfare();
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (title.equals("")) {
+                    title += "Memorable place";
+                }
+                SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+                title += " " + dateTime.format(new Date());
+
+                //update values in another activity(we made them static to reach from here)
+                MainActivity.placesNames.add(title);
+                MainActivity.placesLocations.add(latLng);
+                //invoke dataChange on adapter in another activity
+                MainActivity.arrayAdapter.notifyDataSetChanged();
+
+                Log.i("AddressGeo", title);
+                mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+
+                Toast.makeText(getApplicationContext(), "Location Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        if (placeNumber == 0) {
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    mapMoveCamera(location, title);
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            if (Build.VERSION.SDK_INT < 23) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            } else {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                } else {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    mapMoveCamera(lastKnownLocation, "Your location");
+                }
+            }
+        } else {
+            Location location = new Location(LocationManager.GPS_PROVIDER);
+            location.setLatitude(MainActivity.placesLocations.get(placeNumber).latitude);
+            location.setLongitude(MainActivity.placesLocations.get(placeNumber).longitude);
+
+            mapMoveCamera(location, MainActivity.placesNames.get(placeNumber));
+        }
+
+        // Add a marker in Sydney and move the camera
+        /*LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,10));*/
+    }
+
+    public void mapMoveCamera(Location location, String title) {
+        Log.i("locationDraw", location.toString());
+        LatLng userLoc = new LatLng(location.getLatitude(), location.getLongitude());
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(userLoc));
+        if (!title.equals("You location")) ;
+        {
+            mMap.addMarker(new MarkerOptions().position(userLoc).title(title));
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 12));
+    }
+}
+
+
+////////////SAVE DATA///////////////////////////////////////
+///////////SharedPreferences////////////////////////////////
+
+to save data in app - use SharedPreferences class
+create object of ShraedPreferences class -> call getSharedPreferencess(String name, int privacyMode)on it from activity like 
+//mode_private - make usable only for this app
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.a.appsharedpreferences", Context.MODE_PRIVATE);
+
+than add value to storage of sharedPreferences
+sharedPreferences.edit().putString("userName","rob").apply();
+
+to retrive value back from sharedPreferences
+//in getString() first string - key for value, second - default value if key returns nothing or wrong
+        String userName = sharedPreferences.getString("userName","1");
+
+
+to save big chunk of data like array - use serializer class which have methods to convert array to string and back
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class ObjectSerializer {
+
+    public static String serialize(Serializable obj) throws IOException {
+        if (obj == null) return "";
+        try {
+            ByteArrayOutputStream serialObj = new ByteArrayOutputStream();
+            ObjectOutputStream objStream = new ObjectOutputStream(serialObj);
+            objStream.writeObject(obj);
+            objStream.close();
+            return encodeBytes(serialObj.toByteArray());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object deserialize(String str) throws IOException {
+        if (str == null || str.length() == 0) return null;
+        try {
+            ByteArrayInputStream serialObj = new ByteArrayInputStream(decodeBytes(str));
+            ObjectInputStream objStream = new ObjectInputStream(serialObj);
+            return objStream.readObject();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String encodeBytes(byte[] bytes) {
+        StringBuffer strBuf = new StringBuffer();
+
+        for (int i = 0; i < bytes.length; i++) {
+            strBuf.append((char) (((bytes[i] >> 4) & 0xF) + ((int) 'a')));
+            strBuf.append((char) (((bytes[i]) & 0xF) + ((int) 'a')));
+        }
+
+        return strBuf.toString();
+    }
+
+    public static byte[] decodeBytes(String str) {
+        byte[] bytes = new byte[str.length() / 2];
+        for (int i = 0; i < str.length(); i+=2) {
+            char c = str.charAt(i);
+            bytes[i/2] = (byte) ((c - 'a') << 4);
+            c = str.charAt(i+1);
+            bytes[i/2] += (c - 'a');
+        }
+        return bytes;
+    }
+}
+
+
+and main will be 
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+//add ObjectSerializer class to convert arrayList to string
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //mode_private - make usable only for this app
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.a.appsharedpreferences", Context.MODE_PRIVATE);
+       // sharedPreferences.edit().putString("userName","rob").apply();
+
+        //in getString() first string - key for value, second - default value if key returns nothing or wrong
+        String userName = sharedPreferences.getString("userName","1");
+
+        Log.i("shared string", userName);
+
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("Marry");
+        strings.add("has");
+        strings.add("a little");
+        strings.add("lamb");
+
+        try {
+            sharedPreferences.edit().putString("strings", ObjectSerializer.serialize(strings)).apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<String> restoredStrings = new ArrayList<>();
+        try {
+            restoredStrings= (ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("strings",ObjectSerializer.serialize(new ArrayList<String>())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.i("restoredString",restoredStrings.toString());
+    }
+}
+
+//////////////APP MEMORABLE PLACES WITH DATA SAVE/////////////
+//////////////Shared preferences//////////////////////////////
+
+===========MainActivity
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    static ArrayList<String> placesNames = new ArrayList<>();
+    static ArrayList<LatLng> placesLocations = new ArrayList<>();
+    static ArrayAdapter arrayAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        LatLng latLng = (LatLng) intent.getParcelableExtra("location");
+        if (latLng != null) {
+            Toast.makeText(getApplicationContext(), "LocOnMain" + latLng.toString(), Toast.LENGTH_SHORT);
+        }
+
+        ListView listView = (ListView) findViewById(R.id.listOfPlaces);
+
+        Log.i("names", placesNames.toString());
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.google.android.gms.maps.model.LatLng", Context.MODE_PRIVATE);
+        ArrayList<String> latitudes = new ArrayList<>();
+        ArrayList<String> longitudes = new ArrayList<>();
+
+        placesNames.clear();
+        placesLocations.clear();
+        latitudes.clear();
+        longitudes.clear();
+
+        try {
+            placesNames.addAll((ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("placesNames", ObjectSerializer.serialize(new ArrayList<String>()))));
+            latitudes.addAll((ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("latitudes", ObjectSerializer.serialize(new ArrayList<String>()))));
+            Log.i("Lat: ", latitudes.toString());
+            longitudes.addAll((ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("longitudes", ObjectSerializer.serialize(new ArrayList<String>()))));
+            Log.i("Lon: ", longitudes.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (placesNames.size() > 0 && latitudes.size() > 0 && longitudes.size() > 0) {
+            if (placesNames.size() == latitudes.size() && latitudes.size() == longitudes.size()) {
+                for (int i = 0; i < latitudes.size(); i++) {
+                    placesLocations.add(new LatLng(Double.parseDouble(latitudes.get(i)), Double.parseDouble(longitudes.get(i))));
+                }
+            }
+        } else {
+            placesNames.add("Add new memorable place");
+            placesLocations.add(new LatLng(0, 0));
+        }
+
+
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, placesNames);
+
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("placeNumber", position);
+                startActivity(intent);
+            }
+        });
+    }
+}
+
+
+=========MapsActivity
+
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private GoogleMap mMap;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    String title;
+    Intent intent;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                Log.i("onRequest", "results");
+                Location lasKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                mapMoveCamera(lasKnownLocation, "Your location");
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        intent = getIntent();
+        int placeNumber = intent.getIntExtra("placeNumber", 0);
+        title = "Your location";
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                title = "";
+                try {
+                    List<Address> listAddresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    if (listAddresses != null && listAddresses.size() > 0) {
+                        if (listAddresses.get(0).getThoroughfare() != null) {
+                            title += listAddresses.get(0).getThoroughfare();
+                            if (listAddresses.get(0).getSubThoroughfare() != null) {
+                                title += listAddresses.get(0).getSubThoroughfare();
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (title.equals("")) {
+                    title += "Memorable place";
+                }
+                SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+                title += " " + dateTime.format(new Date());
+
+                //update values in another activity(we made them static to reach from here)
+                MainActivity.placesNames.add(title);
+                MainActivity.placesLocations.add(latLng);
+                //invoke dataChange on adapter in another activity
+                MainActivity.arrayAdapter.notifyDataSetChanged();
+
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.google.android.gms.maps.model.LatLng", Context.MODE_PRIVATE);
+                try {
+                    ArrayList<String> latitudes = new ArrayList<String>();
+                    ArrayList<String> longitudes = new ArrayList<String>();
+                    for(LatLng coordinates : MainActivity.placesLocations){
+                        latitudes.add(""+coordinates.latitude);
+                        longitudes.add(""+coordinates.longitude);
+                    }
+
+                    sharedPreferences.edit().putString("placesNames", ObjectSerializer.serialize(MainActivity.placesNames)).apply();
+                    sharedPreferences.edit().putString("latitudes", ObjectSerializer.serialize(latitudes)).apply();
+                    sharedPreferences.edit().putString("longitudes", ObjectSerializer.serialize(longitudes)).apply();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.i("AddressGeo", title);
+                mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+
+                Toast.makeText(getApplicationContext(), "Location Saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mapMoveCamera(location, title);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (Build.VERSION.SDK_INT < 23) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+
+
+            if (placeNumber == 0) {
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (lastKnownLocation == null) {
+                    lastKnownLocation = new Location(LocationManager.GPS_PROVIDER);
+                    lastKnownLocation.setLatitude(0);
+                    lastKnownLocation.setLongitude(0);
+                    Log.i("lastLocNull", lastKnownLocation.toString());
+                    mapMoveCamera(lastKnownLocation, "Your location");
+                } else {
+                    mapMoveCamera(lastKnownLocation, "Your location");
+                }
+            } else {
+                Location location = new Location(LocationManager.GPS_PROVIDER);
+                location.setLatitude(MainActivity.placesLocations.get(placeNumber).latitude);
+                location.setLongitude(MainActivity.placesLocations.get(placeNumber).longitude);
+
+                mapMoveCamera(location, MainActivity.placesNames.get(placeNumber));
+            }
+        }
+    }
+
+    public void mapMoveCamera(Location location, String title) {
+        Log.i("locationDraw", location.toString());
+        Log.i("locationTitle", title);
+        LatLng userLoc = new LatLng(location.getLatitude(), location.getLongitude());
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(userLoc));
+        if (!title.equals("Your location")) {
+            mMap.addMarker(new MarkerOptions().position(userLoc).title(title));
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 12));
+    }
+}
+
+============ObjectSerializer
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class ObjectSerializer {
+
+    public static String serialize(Serializable obj) throws IOException {
+        if (obj == null) return "";
+        try {
+            ByteArrayOutputStream serialObj = new ByteArrayOutputStream();
+            ObjectOutputStream objStream = new ObjectOutputStream(serialObj);
+            objStream.writeObject(obj);
+            objStream.close();
+            return encodeBytes(serialObj.toByteArray());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object deserialize(String str) throws IOException {
+        if (str == null || str.length() == 0) return null;
+        try {
+            ByteArrayInputStream serialObj = new ByteArrayInputStream(decodeBytes(str));
+            ObjectInputStream objStream = new ObjectInputStream(serialObj);
+            return objStream.readObject();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String encodeBytes(byte[] bytes) {
+        StringBuffer strBuf = new StringBuffer();
+
+        for (int i = 0; i < bytes.length; i++) {
+            strBuf.append((char) (((bytes[i] >> 4) & 0xF) + ((int) 'a')));
+            strBuf.append((char) (((bytes[i]) & 0xF) + ((int) 'a')));
+        }
+
+        return strBuf.toString();
+    }
+
+    public static byte[] decodeBytes(String str) {
+        byte[] bytes = new byte[str.length() / 2];
+        for (int i = 0; i < str.length(); i+=2) {
+            char c = str.charAt(i);
+            bytes[i/2] = (byte) ((c - 'a') << 4);
+            c = str.charAt(i+1);
+            bytes[i/2] += (c - 'a');
+        }
+        return bytes;
+    }
+}
+
+
+///////////MENU///////////////
+
+to add menu - add new menu directory ro resources directory
+add new menu resource file main_manu.xml
+
+add to file main_menu.xml 
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/settings"
+        android:id="@+id/settings"></item>
+
+    <item android:title="@string/help"
+        android:id="@+id/help"></item>
+
+</menu>
+
+add to MainActivity
+
+@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+and add
+
+@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.settings:
+                Log.i("Menu", "settings selected");
+                return true;
+            case R.id.help:
+                Log.i("Menu", " help selected");
+                return true;
+            default:
+                return false;
+        }
+    }
+
+
+/////////////////////ALERTS/////////////
+
+to add alert - add new AlertDialog.Builder(context) and set all needed properties to it
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Are you sure?")
+                .setMessage("Do you definitely want to do this?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Toast.makeText(MainActivity.this, "It's done!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+}
+
+////////APP ALERTS DEMO/////////////////
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    String language;
+    TextView textLanguage;
+    SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        sharedPreferences = this.getSharedPreferences("com.example.a.appalertdemo", Context.MODE_PRIVATE);
+        textLanguage = (TextView) findViewById(R.id.textView);
+        textLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLanguage();
+            }
+        });
+
+        language = sharedPreferences.getString("language", "");
+
+        if (language.equals("")) {
+            setLanguage();
+        } else {
+            textLanguage.setText(language);
+        }
+
+
+        /*new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Are you sure?")
+                .setMessage("Do you definitely want to do this?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Toast.makeText(MainActivity.this, "It's done!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();*/
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.languagemenu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.english) {
+            useLanguage("English");
+        } else if (item.getTitle().equals("Spanish")) {
+            useLanguage("Spanish");
+        }
+        return true;
+    }
+
+    public void setLanguage() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_btn_speak_now)
+                .setTitle("Which language do you need?")
+                .setMessage("Choose")
+                .setPositiveButton("English", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        useLanguage("English");
+                    }
+                })
+                .setNegativeButton("Spanish", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                useLanguage("Spanish");
+                            }
+                        }
+                ).show();
+    }
+
+    public void useLanguage(String language) {
+        textLanguage.setText(language);
+        sharedPreferences.edit().putString("language", language).apply();
+    }
+}
+
+
+
+///////////////APP NOTES SAVER//////////////
+/////////Intents, Alerts, Menu//////////////
+
+===MainActivity
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class MainActivity extends AppCompatActivity {
+
+    static ArrayList<String> notes = new ArrayList<>();
+    static ArrayAdapter<String> arrayAdapter;
+    static ArrayList<String> viewNotes;
+    private SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        sharedPreferences = this.getSharedPreferences("com.example.a.appnotessaver", Context.MODE_PRIVATE);
+        //sharedPreferences.edit().clear().apply();
+
+        ListView listView = (ListView) findViewById(R.id.list);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), EditTextActivity.class);
+                intent.putExtra("note", (notes.size() - 1 - position));
+                Log.i("intent", "" + (notes.size() - 1 - position));
+                startActivity(intent);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setIcon(android.R.drawable.ic_input_delete)
+                        .setTitle("Choose action")
+                        .setMessage("Do you want to delete this note?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.i("which", "" + position);
+                                notes.remove(notes.size() - 1 - position);
+                                try {
+                                    sharedPreferences.edit().putString("notes", ObjectSerializer.serialize(notes)).apply();
+
+                                    viewNotes.clear();
+                                    viewNotes.addAll(notes);
+                                    Collections.reverse(viewNotes);
+                                    arrayAdapter.notifyDataSetChanged();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.i("which", "" + position);
+                            }
+                        })
+                        .show();
+                //put true here to work properly with usual click listener
+                return true;
+            }
+        });
+
+        try {
+            notes.addAll((ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("notes", ObjectSerializer.serialize(new ArrayList<String>()))));
+            Log.i("shared decode", notes.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        viewNotes = new ArrayList<>();
+        viewNotes.addAll(notes);
+        Collections.reverse(viewNotes);
+
+        /*if (viewNotes.size() == 0) {
+            viewNotes.add("new");
+        }*/
+
+        Log.i("adapter", "invoke");
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, viewNotes);
+        listView.setAdapter(arrayAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = new MenuInflater(this);
+        menuInflater.inflate(R.menu.new_note_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(this, EditTextActivity.class);
+        intent.putExtra("rewrite", false);
+        startActivity(intent);
+        return true;
+    }
+}
+
+====EditTextActivity
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.EditText;
+
+import java.io.IOException;
+import java.util.Collections;
+
+public class EditTextActivity extends AppCompatActivity {
+
+    private EditText editNote;
+    private int noteNumber;
+    private boolean rewrite;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_text);
+
+        editNote = (EditText) findViewById(R.id.editNote);
+
+        Intent intent = getIntent();
+        noteNumber = intent.getIntExtra("note", -1);
+        if (noteNumber > -1) {
+            editNote.setText(MainActivity.notes.get(noteNumber));
+        }
+        Log.i("noteNumber", "" + noteNumber);
+
+        rewrite = intent.getBooleanExtra("rewrite", true);
+        Log.i("rewrite", "" + rewrite);
+
+        /*TextView editEntryView = new TextView(...);
+        InputFilter[] filterArray = new InputFilter[1];
+        filterArray[0] = new InputFilter.LengthFilter(8);
+        editEntryView.setFilters(filterArray);*/
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!editNote.getText().toString().equals("") && !editNote.getText().toString().equals(" ")) {
+            if (!rewrite) {
+                MainActivity.notes.add(editNote.getText().toString());
+                notesWriter();
+            } else {
+                MainActivity.notes.set(noteNumber, editNote.getText().toString());
+                notesWriter();
+            }
+        }
+        super.onBackPressed();
+    }
+
+    private void notesWriter() {
+        MainActivity.viewNotes.clear();
+        MainActivity.viewNotes.addAll(MainActivity.notes);
+        Collections.reverse(MainActivity.viewNotes);
+        MainActivity.arrayAdapter.notifyDataSetChanged();
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.a.appnotessaver", Context.MODE_PRIVATE);
+
+        Log.i("back", "button");
+        try {
+            Log.i("notes", MainActivity.notes.toString());
+            Log.i("viewNotes", MainActivity.viewNotes.toString());
+            sharedPreferences.edit().putString("notes", ObjectSerializer.serialize(MainActivity.notes)).apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+==activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/padd"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context="com.example.a.appnotessaver.MainActivity">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="390dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/background_light"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp" />
+
+</android.support.constraint.ConstraintLayout>
+
+===activity_edit_text.xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context="com.example.a.appnotessaver.EditTextActivity">
+
+    <EditText
+        android:id="@+id/editNote"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Note"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
+
+===new_menu_note.xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Add new note" android:id="@+id/new_mote"/>
+
+</menu>
+
+
+////////////DATABASE///////////////
+///////////SQLite//////////////////
+///////AppSQLiteDemo///////////////
+
+SQLiteDatabase has methods to create, delete, execute SQL commands, and perform other common database management tasks.
+Database names must be unique within an application, not across all applications.
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+
+import java.util.Arrays;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        try {
+            SQLiteDatabase myDatabase = this.openOrCreateDatabase("Users", MODE_PRIVATE, null);
+
+            //delete table
+            myDatabase.execSQL("DROP TABLE IF EXISTS users");
+            //create table
+            //SQLite already has hidden index autoincrement field - rowid
+            //access to records via rowid is highly optimized and very fast.
+            //also you  can refer to the rowid column using its two alias such as _rowid_ or oid
+            //myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (name VARCHAR, age INT(3))");
+
+            //myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (name VARCHAR, age INT(3))");
+            //(to autoincrement id - just make field - primary key)
+            //If a table has the primary key that consists of one column, and that column defined
+            //as INTEGER, exactly INTEGER in any cases, such as,INTEGER,integer, etc., then this
+            //primary key column becomes an alias for the rowid column.
+            myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (userID INTEGER PRIMARY KEY,name VARCHAR, age INT(3))");
+            //Because the rowid table stores data as a B-Tree, querying and sorting data using
+            //rowid are very fast. It is faster than using a primary key that is not an alias
+            //of the rowid.
+            //Another important note is that if you declare a column with the INTEGER type and
+            //PRIMARY KEY DESC clause, it does not become an alias for the rowid column.
+
+            //SQLite AUTOINCREMENT attribute
+            //SQLite recommends that you should not use AUTOINCREMENT attribute because:
+            //it does not reuse the number that has not been used.
+            //the main purpose of using AUTOINCREMENT attribute is…
+            //to prevent SQLite to reuse value that has not been used or from the previously deleted row.
+            //the AUTOINCREMENT keyword imposes extra CPU, memory, disk space, and disk I/O overhead
+            //and should be avoided if not strictly needed. It is usually not needed.
+            //In addition, the way SQLite assigns a value for the AUTOINCREMENT column is slightly
+            //different from the way it used for rowid column.
+            //myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (userID INTEGER PRIMARY KEY AUTOINCREMENT,name VARCHAR, age INT(3))");
+
+	    //The WITHOUT ROWID optimization is likely to be helpful for tables that have 
+            //non-integer or composite (multi-column) PRIMARY KEYs and that do not store large 
+            //strings or BLOBs.
+            //myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (userID INT PRIMARY, name VARCHAR, age INT(3)) WITHOUT ROWID");
+            //A WITHOUT ROWID table is a table that uses a Clustered Index as the primary key.
+            //To create a WITHOUT ROWID table, simply add the keywords "WITHOUT ROWID" to
+            //the end of the CREATE TABLE statement.
+            //Every WITHOUT ROWID table must have a PRIMARY KEY. An attempt to create
+            //a WITHOUT ROWID table without a PRIMARY KEY results in an error.
+            //The special behaviors associated "INTEGER PRIMARY KEY" do not apply on
+            //WITHOUT ROWID tables. In an ordinary table, "INTEGER PRIMARY KEY" means that
+            //the column is an alias for the rowid. But since there is no rowid in a
+            //WITHOUT ROWID table, that special meaning no longer applies.
+            //An "INTEGER PRIMARY KEY" column in a WITHOUT ROWID table works like
+            //an "INT PRIMARY KEY" column in an ordinary table: It is a PRIMARY KEY
+            //that has integer affinity.
+            //myDatabase.execSQL("CREATE TABLE IF NOT EXISTS users (userID INTEGER PRIMARY KEY,name VARCHAR, age INT(3)) WITHOUT ROWID");
+
+            //to truncate table - delete all from table and than vacuum it to rid out of empty space
+            myDatabase.execSQL("DELETE FROM USERS");
+            myDatabase.execSQL("VACUUM");
+
+            //insert data to database
+            myDatabase.execSQL("INSERT INTO users VALUES(null,'Rob',34)");
+            myDatabase.execSQL("INSERT INTO users(name,age) VALUES ('Tommy',4)");
+            myDatabase.execSQL("INSERT INTO users(name,age) VALUES ('Amilu',21),('Bomarshe',52),('Clementine',17)");
+            myDatabase.execSQL("INSERT INTO users(name,age) VALUES ('Robin',11),('Robin',33),('Robin',33),('Robin',35),('Roben',32),('Robert',37), ('Ramon', 28),('Ramona',25)");
+            ContentValues cv = new ContentValues();
+            cv.put("name", "Ithan");
+            cv.put("age", 35);
+            myDatabase.insert("users", null, new ContentValues(cv));
+
+            //delete data from database
+            //myDatabase.execSQL("DELETE FROM users WHERE name = 'Robin' AND age = 33");
+            myDatabase.execSQL("DELETE FROM users WHERE userId IN (SELECT userId FROM users WHERE name = 'Robin' AND age=33 LIMIT 1)");
+            //delete using build-in rowid
+            //myDatabase.execSQL("DELETE FROM users WHERE rowid IN (SELECT rowid FROM users WHERE name = 'Robin' AND age=33 LIMIT 1)");
+
+            //update data
+            myDatabase.execSQL("UPDATE users SET age = 99 WHERE name LIKE 'Bo%'");
+
+            //cursor object allows us to loop through all results of some query
+            Cursor c = myDatabase.rawQuery("SELECT * FROM users", null);
+
+            Log.i("SQL columns", String.valueOf(c.getColumnCount()));
+            Log.i("SQL column names", Arrays.toString(c.getColumnNames()));
+            Log.i("SQL age index", String.valueOf(c.getColumnIndexOrThrow("age")));
+            Log.i("SQL name index", String.valueOf(c.getColumnIndexOrThrow("name")));
+
+            //c = myDatabase.rawQuery("SELECT * FROM users WHERE age>4",null);
+            //c = myDatabase.rawQuery("SELECT name FROM users WHERE age>4",null);
+            //c = myDatabase.rawQuery("SELECT name FROM users WHERE age>4 AND name LIKE 'R%'",null);
+            //c = myDatabase.rawQuery("SELECT name FROM users WHERE age>4 AND name LIKE 'Ro%'",null);
+            //c = myDatabase.rawQuery("SELECT name FROM users WHERE age>4 AND name LIKE '%o%'",null);
+            //c = myDatabase.rawQuery("SELECT * FROM users WHERE age>4 AND name LIKE '%o%' ORDER BY name ASC",null);
+            //c = myDatabase.rawQuery("SELECT * FROM users WHERE age>4 AND name LIKE '%o%' ORDER BY age DESC", null);
+            //c = myDatabase.rawQuery("SELECT * FROM users WHERE age>4 AND name LIKE '%o%' ORDER BY age DESC LIMIT 2", null);
+            c = myDatabase.rawQuery("SELECT * FROM users ORDER BY name ASC, age DESC", null);
+            //to display build-in index field - you need to call it explicitly
+            //c = myDatabase.rawQuery("SELECT rowid,name,age FROM users ORDER BY name ASC, age DESC", null);
+            //c = myDatabase.rawQuery("SELECT rowid,* FROM users ORDER BY name ASC, age DESC", null);
+            //Log.i("SQL",c.toString());
+            Log.i("SQL results", String.valueOf(c.getCount()));
+            Log.i("SQL", "ORDER - name = ASC age = DESC");
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                //Log.i("SQL name", c.getString(c.getColumnIndexOrThrow("name")));
+                //Log.i("SQL age", c.getString(c.getColumnIndexOrThrow("age")));
+                Log.i("SQL", "userID: " + c.getInt(c.getColumnIndexOrThrow("userID")) + " name: " + c.getString(c.getColumnIndexOrThrow("age")) + " age: " + c.getString(c.getColumnIndexOrThrow("name")));
+                //Log.i("SQL", "rowID: " + c.getInt(c.getColumnIndexOrThrow("rowid")) + "userID: " + c.getInt(c.getColumnIndexOrThrow("userID")) + " name: " + c.getString(c.getColumnIndexOrThrow("age")) + " age: " + c.getString(c.getColumnIndexOrThrow("name")));
+                //Log.i("SQL", "userID: " + c.getInt(c.getColumnIndexOrThrow("rowid")) + " name: " + c.getString(c.getColumnIndexOrThrow("age")) + " age: " + c.getString(c.getColumnIndexOrThrow("name")));
+                c.moveToNext();
+            }
+
+            //retrieve data from db as ContentValues
+            /*ArrayList<ContentValues> retVal = new ArrayList<ContentValues>();
+            ContentValues map;
+            if(c.moveToFirst()) {
+                do {
+                    map = new ContentValues();
+                    DatabaseUtils.cursorRowToContentValues(c, map);
+                    retVal.add(map);
+                } while(c.moveToNext());
+            }*/
+
+            /*SQLiteDatabase eventsDatabase = this.openOrCreateDatabase("Events", MODE_PRIVATE,null);
+            eventsDatabase.execSQL("CREATE TABLE IF NOT EXISTS events (event VARCHAR, year INT(5))");
+
+            eventsDatabase.execSQL("INSERT INTO events(year, event) VALUES (1952, 'RIDGSTONE')");
+            eventsDatabase.execSQL("INSERT INTO events(year, event) VALUES (1700, 'BlancoNegro')");
+            eventsDatabase.execSQL("INSERT INTO events(year, event) VALUES (1810, 'Apperet')");
+            eventsDatabase.execSQL("INSERT INTO events(year, event) VALUES (1989, 'Martin')");
+
+            c = eventsDatabase.rawQuery("SELECT * FROM events", null);
+            int eventsColumn = c.getColumnIndexOrThrow("event");
+            int yearsColumn = c.getColumnIndexOrThrow("year");
+
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                Log.i("year", c.getString(yearsColumn));
+                Log.i("event", c.getString(eventsColumn));
+                c.moveToNext();
+            }*/
+
+
+            /*// to check which tables in database
+            // Cursor info = myDatabase.rawQuery("SELECT name FROM sqlite_master WHERE type='table'",null);
+            Cursor info = myDatabase.rawQuery("SELECT name FROM sqlite_master\n" +
+                    "            WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'\n" +
+                    "            UNION ALL\n" +
+                    "            SELECT name FROM sqlite_temp_master\n" +
+                    "            WHERE type IN ('table','view')\n" +
+                    "            ORDER BY 1",null);
+
+            Log.i("INFO", String.valueOf(info.getCount()));
+
+            info.moveToFirst();
+            while(!info.isAfterLast()){
+                Log.i("INFO table name",info.getString(0));
+                info.moveToNext();
+            }*/
+
+            c.close();
+            myDatabase.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+//////////////////////APP NEWS READER//////////////////
+//////////////////SQLite, WebView, pumpm data from api, JSON
+
+===========MainActivity
+
+package com.example.a.appnewsreader;
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    ArrayList<String> titles = new ArrayList<>();
+    ArrayList<String> contents = new ArrayList<>();
+    ArrayAdapter arrayAdapter;
+
+    static SQLiteDatabase articlesDB;
+
+    private class AllWorkTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+
+            //get news indexes
+            String result = dataFromUrl(params[0]);
+
+            //get news by index
+            JSONArray jsonArray;
+            try {
+                jsonArray = new JSONArray(result);
+
+                int numberOfResults = 20;
+                if (jsonArray.length() < 20) {
+                    numberOfResults = jsonArray.length();
+                }
+
+                //clear DB
+                articlesDB.execSQL("DELETE FROM articles");
+
+                //get data from news - title, by and url -> get content by url -> put all to DB
+                for (int i = 0; i < numberOfResults; i++) {
+                    String articleId = jsonArray.getString(i);
+                    String data = dataFromUrl("https://hacker-news.firebaseio.com/v0/item/" + articleId + ".json?print=pretty");
+                    JSONObject jsonObject = new JSONObject(data);
+
+                    String by = "";
+                    String articleTitle = "";
+                    String articleUrl = "";
+
+                    if (!jsonObject.isNull("title") && !jsonObject.isNull("url")) {
+                        articleTitle = jsonObject.getString("title");
+                        articleUrl = jsonObject.getString("url");
+                        if (!jsonObject.isNull("by")) {
+                            by = jsonObject.getString("by");
+                        }
+                        String articleContent = dataFromUrl(articleUrl);
+
+                        String sql = "INSERT INTO articles (articleId, title, content) VALUES(?,?,?)";
+
+                        SQLiteStatement statement = articlesDB.compileStatement(sql);
+
+                        statement.bindString(1, articleId);
+                        statement.bindString(2, articleTitle);
+                        statement.bindString(3, articleContent);
+
+                        statement.execute();
+                    }
+
+                    Log.i("Story", "Title: " + articleTitle + " - by " + by);
+                    Log.i("URL", articleUrl);
+                    Log.i("DONE", "task: " + i);
+                }
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            updateListView();
+        }
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ListView listView = (ListView) findViewById(R.id.listWiew);
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, titles);
+        listView.setAdapter(arrayAdapter);
+
+        articlesDB = this.openOrCreateDatabase("articles", MODE_PRIVATE, null);
+
+        articlesDB.execSQL("CREATE TABLE IF NOT EXISTS articles (id INTEGER PRIMARY KEY, articleID INT, title VARCHAR, content VARCHAR)");
+
+        updateListView();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                intent.putExtra("content", contents.get(position));
+
+                startActivity(intent);
+            }
+        });
+
+        //AllWorkTask work = new AllWorkTask();
+        //work.execute("https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty");
+
+
+    }
+
+    private void updateListView() {
+        Cursor c = articlesDB.rawQuery("SELECT * FROM articles", null);
+
+        int contentIndex = c.getColumnIndex("content");
+        int titleIndex = c.getColumnIndex("title");
+
+        c.moveToFirst();
+        if (!c.isAfterLast()) {
+            titles.clear();
+            contents.clear();
+
+            do {
+                titles.add(c.getString(titleIndex));
+                contents.add(c.getString(contentIndex));
+            } while (c.moveToNext());
+
+            arrayAdapter.notifyDataSetChanged();
+        }
+        c.close();
+    }
+
+    private String dataFromUrl(String urlPath) {
+        String result = "";
+        URL url;
+        HttpURLConnection httpURLConnection;
+
+        try {
+            url = new URL(urlPath);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            InputStreamReader reader = new InputStreamReader(inputStream);
+            int data = reader.read();
+
+            while (data != -1) {
+                char current = (char) data;
+                result += current;
+                data = reader.read();
+            }
+            Log.i("URLcontent", result);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+}
+
+========WebActivity
+
+package com.example.a.appnewsreader;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import static com.example.a.appnewsreader.MainActivity.articlesDB;
+
+public class WebActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_web);
+
+        WebView webView = (WebView) findViewById(R.id.webView);
+
+        webView.getSettings().setJavaScriptEnabled(true);
+
+        webView.setWebViewClient(new WebViewClient());
+
+        //webView.loadUrl("https://devblogs.nvidia.com/parallelforall/inside-volta/");
+
+        Intent intent = getIntent();
+        String content = intent.getStringExtra("content");
+        webView.loadData(content, "text/html", "UTF-8");
+    }
+}
+
+
+////////////////PARSE SERVER ON AWS -AMAZON WEB SERVICE///
+//////////////////////////////////////////////////////////
+
+go to aws.amazon.com
+
+sign in to the console   
+
+All services ->
+EC2 (ElasticCompute - where elastic means that it will be streched automaticaly depends on your need) ->
+Launch Instance ->
+AWS Marketplace ->
+Search Parse, Select Parse Server powered by Bitnami ->  
+Continue ->
+Choose t2.micro ->
+Rewiev and launch ->
+Launch ->  
+select Create new key pair ->
+key pair name instagramandroid ->
+Download key pair -> 
+Launche instance ->  
+
+

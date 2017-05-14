@@ -1,0 +1,315 @@
+http://zetcode.com/articles/javareadwebpage/
+Reading a web page in Java
+
+In this article we show how to read a web page in Java. The article contains six examples of downloading an HTTP source from a tiny web page.
+
+    
+In the examples, we use URL, JSoup, HtmlCleaner, Apache HttpClient, Jetty HttpClient, and HtmlUnit.
+
+In the following examples, we download HTML source from the something.com tiny web page.
+
+Reading a web page with URL
+
+URL represents a Uniform Resource Locator, a pointer to a resource on the World Wide Web.
+
+ReadWebPageEx.java
+package com.zetcode;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class ReadWebPageEx {
+
+    public static void main(String[] args) throws MalformedURLException, IOException {
+
+        BufferedReader br = null;
+
+        try {
+
+            URL url = new URL("http://www.something.com");
+            br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+            String line;
+
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+
+                sb.append(line);
+                sb.append(System.lineSeparator());
+            }
+
+            System.out.println(sb);
+        } finally {
+
+            if (br != null) {
+                br.close();
+            }
+        }
+    }
+}
+The code example reads the contents of a web page.
+
+br = new BufferedReader(new InputStreamReader(url.openStream()));
+The openStream() method opens a connection to the specified url and returns an InputStream for reading from that connection. The InputStreamReader is a bridge from byte streams to character streams. It reads bytes and decodes them into characters using a specified charset. In addition, BufferedReader is used for better performance.
+
+StringBuilder sb = new StringBuilder();
+
+while ((line = br.readLine()) != null) {
+
+    sb.append(line);
+    sb.append(System.lineSeparator());
+}
+The HTML data is read line by line with the readLine() method. The source is appended to the StringBuilder.
+
+System.out.println(sb);
+In the end, the contents of the StringBuilder are printed to the terminal.
+
+Reading a web page with JSoup
+
+JSoup is a popular Java HTML parser.
+
+<dependency>
+    <groupId>org.jsoup</groupId>
+    <artifactId>jsoup</artifactId>
+    <version>1.9.2</version>
+</dependency>
+We have used this Maven dependency.
+
+ReadWebPageEx2.java
+package com.zetcode;
+
+import java.io.IOException;
+import org.jsoup.Jsoup;
+
+public class ReadWebPageEx2 {
+
+    public static void main(String[] args) throws IOException {
+
+        String webPage = "http://www.something.com";
+        
+        String html = Jsoup.connect(webPage).get().html();
+        
+        System.out.println(html);
+    }
+}
+The code example uses JSoup to download and print a tiny web page.
+
+String html = Jsoup.connect(webPage).get().html();
+The connect() method connects to the specified web page. The get() method issues a GET request. Finally, the html() method retrieves the HTML source.
+
+Reading a web page with HtmlCleaner
+
+HtmlCleaner is an open source HTML parser written in Java.
+
+<dependency>
+    <groupId>net.sourceforge.htmlcleaner</groupId>
+    <artifactId>htmlcleaner</artifactId>
+    <version>2.16</version>
+</dependency>
+For this example, we use the htmlcleaner Maven dependency.
+
+ReadWebPageEx3.java
+package com.zetcode;
+
+import java.io.IOException;
+import java.net.URL;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.SimpleHtmlSerializer;
+import org.htmlcleaner.TagNode;
+
+public class ReadWebPageEx3 {
+
+    public static void main(String[] args) throws IOException {
+
+        URL url = new URL("http://www.something.com");
+
+        CleanerProperties props = new CleanerProperties();
+        props.setOmitXmlDeclaration(true);
+        
+        HtmlCleaner cleaner = new HtmlCleaner(props);
+        TagNode node = cleaner.clean(url);
+
+        SimpleHtmlSerializer htmlSerializer = new SimpleHtmlSerializer(props);
+        htmlSerializer.writeToStream(node, System.out);        
+    }
+}
+The example uses HtmlCleaner to download a web page.
+
+CleanerProperties props = new CleanerProperties();
+props.setOmitXmlDeclaration(true);
+In the properties, we set to omit the XML declaration.
+
+SimpleHtmlSerializer htmlSerializer = new SimpleHtmlSerializer(props);
+htmlSerializer.writeToStream(node, System.out);    
+A SimpleHtmlSerializer creates the resulting HTML without any indenting and/or compacting.
+
+Reading a web page with Apache HttpClient
+
+Apache HttpClient is a HTTP/1.1 compliant HTTP agent implementation. It can scrape a web page using the request and response process. An HTTP client implements the client side of the HTTP and HTTPS protocols.
+
+<dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId>
+    <version>4.5.2</version>
+</dependency>
+We use this Maven dependency for the Apache HTTP client.
+
+ReadWebPageEx4.java
+package com.zetcode;
+
+import java.io.IOException;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+
+public class ReadWebPageEx4 {
+
+    public static void main(String[] args) throws IOException {
+
+        HttpGet request = null;
+
+        try {
+
+            String url = "http://www.something.com";
+            HttpClient client = HttpClientBuilder.create().build();
+            request = new HttpGet(url);
+
+            request.addHeader("User-Agent", "Apache HTTPClient");
+            HttpResponse response = client.execute(request);
+
+            HttpEntity entity = response.getEntity();
+            String content = EntityUtils.toString(entity);
+            System.out.println(content);
+
+        } finally {
+
+            if (request != null) {
+
+                request.releaseConnection();
+            }
+        }
+    }
+}
+In the code example, we send a GET HTTP request to the specified web page and receive an HTTP response. From the response, we read the HTML source.
+
+HttpClient client = HttpClientBuilder.create().build();
+An HttpClient is built.
+
+request = new HttpGet(url);
+HttpGet is a class for the HTTP GET method.
+
+request.addHeader("User-Agent", "Apache HTTPClient");
+HttpResponse response = client.execute(request);
+A GET method is executed and an HttpResponse is received.
+
+HttpEntity entity = response.getEntity();
+String content = EntityUtils.toString(entity);
+System.out.println(content);
+From the response, we get the content of the web page.
+
+Reading a web page with Jetty HttpClient
+
+Jetty project has an HTTP client as well.
+
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-client</artifactId>
+    <version>9.4.0.M1</version>
+</dependency>
+This is a Maven dependency for the Jetty HTTP client.
+
+ReadWebPageEx5.java
+package com.zetcode;
+
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.ContentResponse;
+
+public class ReadWebPageEx5 {
+
+    public static void main(String[] args) throws Exception {
+
+        HttpClient client = null;
+
+        try {
+
+            client = new HttpClient();
+            client.start();
+            
+            String url = "http://www.something.com";
+
+            ContentResponse res = client.GET(url);
+
+            System.out.println(res.getContentAsString());
+
+        } finally {
+
+            if (client != null) {
+
+                client.stop();
+            }
+        }
+    }
+}
+In the example, we get the HTML source of a web page with the Jetty HTTP client.
+
+client = new HttpClient();
+client.start();
+An HttpClient is created and started.
+
+ContentResponse res = client.GET(url);
+A GET request is issued to the specified URL.
+
+System.out.println(res.getContentAsString());
+The content is retrieved from the response with the getContentAsString() method.
+
+Reading a web page with HtmlUnit
+
+HtmlUnit is a Java unit testing framework for testing Web based applications.
+
+<dependency>
+    <groupId>net.sourceforge.htmlunit</groupId>
+    <artifactId>htmlunit</artifactId>
+    <version>2.23</version>
+</dependency>
+We use this Maven dependency.
+
+ReadWebPageEx6.java
+package com.zetcode;
+
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebResponse;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import java.io.IOException;
+
+public class ReadWebPageEx6 {
+
+    public static void main(String[] args) throws IOException {
+        
+        try (WebClient webClient = new WebClient()) {
+            
+            String url = "http://www.something.com";
+            
+            HtmlPage page = webClient.getPage(url);
+            WebResponse response = page.getWebResponse();
+            String content = response.getContentAsString();
+            
+            System.out.println(content);
+        }
+    }
+}
+The example downloads a web page and prints it using the HtmlUnit library.
+
+In this article, we have scraped a web page in Java using various tools, including URL, JSoup, HtmlCleaner, Apache HttpClient, Jetty HttpClient, and HtmlUnit.
+
+You might also be interested in the following related tutorials: Java tutorial, Reading text files in Java, Joining strings with Java 8's StringJoiner, Jetty tutorial, or Introduction to Google Guava.
+
+Home Top of Page
+ZetCode last modified August 18, 2016 © 2007 - 2017 Jan Bodnar Follow on Facebook
