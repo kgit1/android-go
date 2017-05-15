@@ -21,20 +21,20 @@ import com.parse.SaveCallback;
 
 public class StarterApplication extends Application {
 
-  @Override
-  public void onCreate() {
-    super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-    // Enable Local Datastore.
-    Parse.enableLocalDatastore(this);
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
 
-    // Add your initialization code here
-    Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-            .applicationId("bc3714433327b5c543445a16306839973a960de1")
-            .clientKey("c2201ad73627e846a81a1fe580469b9bb47698c4")
-            .server("http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com:80/parse/")
-            .build()
-    );
+        // Add your initialization code here
+        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                .applicationId("bc3714433327b5c543445a16306839973a960de1")
+                .clientKey("c2201ad73627e846a81a1fe580469b9bb47698c4")
+                .server("http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com:80/parse/")
+                .build()
+        );
 
     /*ParseObject object = new ParseObject("ExampleObject");
     object.put("myNumber", "123");
@@ -52,12 +52,12 @@ public class StarterApplication extends Application {
     });*/
 
 
-    ParseUser.enableAutomaticUser();
+       ParseUser.enableAutomaticUser();
 
-    ParseACL defaultACL = new ParseACL();
-    defaultACL.setPublicReadAccess(true);
-    defaultACL.setPublicWriteAccess(true);
-    ParseACL.setDefaultACL(defaultACL, true);
+        ParseACL defaultACL = new ParseACL();
+        defaultACL.setPublicReadAccess(true);
+        defaultACL.setPublicWriteAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
 
-  }
+    }
 }

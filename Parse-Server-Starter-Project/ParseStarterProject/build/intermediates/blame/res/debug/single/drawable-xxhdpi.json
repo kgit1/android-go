@@ -1,5 +1,9 @@
 [
     {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_pause.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_pause.png"
+    },
+    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_mono_dark.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_on_mono_dark.png"
     },
@@ -12,6 +16,10 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png"
     },
     {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_1_mono_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_1_mono_dark.png"
+    },
+    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_pause_light.png"
     },
@@ -22,14 +30,6 @@
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_disabled_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_disabled_light.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_pause_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_off_light.png",
@@ -48,20 +48,12 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_light.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_play_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_play_light.png"
-    },
-    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_dark.png",
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_pause_dark.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_0_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_0_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png",
@@ -74,6 +66,14 @@
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_setting_dark.png",
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_setting_dark.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_play.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_play.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_play_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_play_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_light.png",
@@ -92,10 +92,6 @@
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_on_0_mono_dark.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_1_mono_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_1_mono_dark.png"
-    },
-    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_setting_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_setting_light.png"
     },
@@ -112,12 +108,8 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_play_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_play_dark.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_mono_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_mono_dark.png"
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_1_mono_dark.png",
@@ -128,12 +120,16 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_play.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_disabled_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_disabled_light.png"
-    },
-    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_2_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_2_light.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_2_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_2_light.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png",
@@ -152,6 +148,10 @@
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_2_light.png"
     },
     {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_setting_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_setting_light.png"
+    },
+    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_1_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_1_light.png"
     },
@@ -164,20 +164,12 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_on_2_mono_dark.png"
     },
     {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_1_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_1_light.png"
+    },
+    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_pause_light.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_pause_dark.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_2_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_2_light.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_play_light.png",
@@ -190,6 +182,10 @@
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_dark.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_pause_dark.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_pause.png",
@@ -208,12 +204,20 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_0_light.png"
     },
     {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_0_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_0_light.png"
+    },
+    {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_play_dark.png",
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_play_dark.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_1_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_1_light.png"
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_pause_light.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_disabled_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_disabled_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_1_mono_dark.png",
@@ -224,12 +228,8 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_on_2_mono_dark.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_0_mono_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_0_mono_dark.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_play.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_play.png"
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_dark.png",
@@ -244,32 +244,36 @@
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_on_mono_dark.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_off_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_off_light.png"
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_2_mono_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_2_mono_dark.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_play_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_play_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_route_disabled_mono_dark.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_setting_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_setting_dark.png"
-    },
-    {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_1_light.png",
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_1_light.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_mono_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_mono_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_off_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_off_light.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_on_light.png"
-    },
-    {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_dark.png",
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_dark.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_setting_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_setting_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_light.png",
@@ -280,20 +284,12 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_2_light.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_2_mono_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_2_mono_dark.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_pause.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_pause.png"
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_off_light.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_off_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_pause.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_pause.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_off_mono_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_pause.png",
@@ -316,16 +312,12 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_off_light.png"
     },
     {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_light.png"
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_cast_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_play.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_media_play.png"
-    },
-    {
-        "merged": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_setting_light.png",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_setting_light.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_play_dark.png",
@@ -334,6 +326,10 @@
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_1_light.png",
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_1_light.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_0_mono_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_media_route_on_0_mono_dark.png"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_media_route_on_1_mono_dark.png",
@@ -350,5 +346,9 @@
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_cast_on_light.png",
         "source": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\drawable-xxhdpi\\ic_cast_on_light.png"
+    },
+    {
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_pause_dark.png",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\1278e8d163606916147c2218201b047b39c5bd33\\output\\res\\drawable-xxhdpi\\ic_pause_dark.png"
     }
 ]

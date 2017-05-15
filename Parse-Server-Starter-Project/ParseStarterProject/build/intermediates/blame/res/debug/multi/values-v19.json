@@ -48,7 +48,7 @@
         ]
     },
     {
-        "outputFile": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v19\\values-v19.xml",
+        "outputFile": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v19\\values-v19.xml",
         "map": [
             {
                 "to": {
@@ -59,7 +59,7 @@
                     "endOffset": 127
                 },
                 "from": {
-                    "file": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-cast-framework\\9.4.0\\res\\values-v19\\values.xml",
+                    "file": "D:\\Users\\erik\\.android\\build-cache\\258a2afa4201b2d2370ac540c13616f8ee244d2c\\output\\res\\values-v19\\values.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -72,7 +72,7 @@
         ]
     },
     {
-        "outputFile": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v19\\values-v19.xml",
+        "outputFile": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v19\\values-v19.xml",
         "map": [
             {
                 "to": {
@@ -83,7 +83,7 @@
                     "endOffset": 127
                 },
                 "from": {
-                    "file": "D:\\Users\\erik\\.android\\build-cache\\258a2afa4201b2d2370ac540c13616f8ee244d2c\\output\\res\\values-v19\\values.xml",
+                    "file": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-cast-framework\\9.4.0\\res\\values-v19\\values.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,

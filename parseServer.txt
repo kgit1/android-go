@@ -43,7 +43,134 @@ Username: user
 Password: -> On EC2 / Amazon you must go this way: Instance Settings -> Get System Log -> Look for your password, which was given from system by setup
 
 
+===AndroidManifest.xml
 
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2015-present, Parse, LLC.
+  ~ All rights reserved.
+  ~
+  ~ This source code is licensed under the BSD-style license found in the
+  ~ LICENSE file in the root directory of this source tree. An additional grant
+  ~ of patent rights can be found in the PATENTS file in the same directory.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.parse.starter">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:name=".StarterApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+    </application>
+
+</manifest>
+
+
+===StarterActivity
+
+import android.app.Application;
+import android.util.Log;
+
+import com.parse.Parse;
+import com.parse.ParseACL;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+
+public class StarterApplication extends Application {
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+
+    // Enable Local Datastore.
+    Parse.enableLocalDatastore(this);
+
+    // Add your initialization code here
+    Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+            .applicationId("bc3714433327b5c543445a16306839973a960de1")
+            .clientKey("c2201ad73627e846a81a1fe580469b9bb47698c4")
+            .server("http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com:80/parse/")
+            .build()
+    );
+
+    /*ParseObject object = new ParseObject("ExampleObject");
+    object.put("myNumber", "123");
+    object.put("myString", "rob");
+
+    object.saveInBackground(new SaveCallback () {
+      @Override
+      public void done(ParseException ex) {
+        if (ex == null) {
+          Log.i("Parse Result", "Successful!");
+        } else {
+          Log.i("Parse Result", "Failed" + ex.toString());
+        }
+      }
+    });*/
+
+
+    ParseUser.enableAutomaticUser();
+
+    ParseACL defaultACL = new ParseACL();
+    defaultACL.setPublicReadAccess(true);
+    defaultACL.setPublicWriteAccess(true);
+    ParseACL.setDefaultACL(defaultACL, true);
+
+  }
+}
+
+
+
+//////////PARSE CRUD//////////////
+
+to work with parse
+
+ÑREATE
+
+//create parse object - classname will be Score taken by constructor
+        ParseObject score = new ParseObject("Score");
+        //put data to score
+        //value 1 -> key + data
+        score.put("username", "rob");
+        //value 2 -> key + data
+        score.put("score", 86);
+        //to save save in background just to save or save eventually to save when be opportunity(like connection lol)
+        //both with callback gives us opportunity to see was save successful or not
+        score.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+
+                if (e == null) {
+                    Log.i("SaveInBackground", "Successful");
+                } else {
+                    Log.i("SaveInBackground", "Unsuccessful: "+e.toString());
+                }
+            }
+        });
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
 
 

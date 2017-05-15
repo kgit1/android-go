@@ -72,7 +72,7 @@
         ]
     },
     {
-        "outputFile": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-w820dp-v13\\values-w820dp-v13.xml",
+        "outputFile": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-w820dp-v13\\values-w820dp-v13.xml",
         "map": [
             {
                 "to": {
@@ -83,7 +83,7 @@
                     "endOffset": 108
                 },
                 "from": {
-                    "file": "D:\\J\\android\\android-start\\Parse-Server-Starter-Project\\ParseStarterProject\\src\\main\\res\\values-w820dp\\dimens.xml",
+                    "file": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\src\\main\\res\\values-w820dp\\dimens.xml",
                     "position": {
                         "startLine": 12,
                         "startColumn": 4,
