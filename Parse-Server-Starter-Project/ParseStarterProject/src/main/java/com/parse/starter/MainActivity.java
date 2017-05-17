@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Switch;
 
 import com.google.android.gms.awareness.fence.LocationFence;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -25,6 +26,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 //http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com/apps
 public class MainActivity extends AppCompatActivity {
@@ -128,7 +131,31 @@ public class MainActivity extends AppCompatActivity {
           }
       });*/
 
+     //retrieve set of objects from parse server
+    //retrieve objects of Score class
+     ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
+      query.findInBackground(new FindCallback<ParseObject>() {
+          @Override
+          public void done(List<ParseObject> objects, ParseException e) {
 
+              if(e==null){
+                  Log.i("findInBackground", "Retrieveeeeeed "+ objects.size() + "objects");
+                  if(objects.size()>0){
+                      Log.i("findInBackground",objects.toString());
+                  }
+              }
+          }
+      });
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
      //training
      //Create Tweet class, contains - username tweet
      /*ParseObject tweet = new ParseObject("Tweet");
@@ -148,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
       });*/
 
 //query tweet and update
-      ParseQuery<ParseObject> tweetQuery =ParseQuery.getQuery("Tweet");
+      /*ParseQuery<ParseObject> tweetQuery =ParseQuery.getQuery("Tweet");
       tweetQuery.getInBackground("xYuhPA9o06",new GetCallback<ParseObject>() {
           @Override
           public void done(ParseObject object, ParseException e) {
@@ -175,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                   Log.i("Query tweet","Unsuccessful");
               }
           }
-      });
+      });*/
 
 
       ParseAnalytics.trackAppOpenedInBackground(getIntent());
