@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 package com.parse.starter;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,10 +34,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
 //////CRUD PARSE OBJECTS//////////////////////////
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
       });*/
 
 
-      ////UPDATE//
+        ////UPDATE//
      /* //object from ParseServer
       ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
 
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
           }
       });*/
 
-      ////DELETE//
+        ////DELETE//
      /* //object from ParseServer
       ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
 
@@ -131,33 +132,51 @@ public class MainActivity extends AppCompatActivity {
           }
       });*/
 
-     //retrieve set of objects from parse server
-    //retrieve objects of Score class
-     ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
-      query.findInBackground(new FindCallback<ParseObject>() {
-          @Override
-          public void done(List<ParseObject> objects, ParseException e) {
+        //retrieve set of objects from parse server
+        //retrieve all objects of Score class
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
 
-              if(e==null){
-                  Log.i("findInBackground", "Retrieveeeeeed "+ objects.size() + "objects");
-                  if(objects.size()>0){
-                      Log.i("findInBackground",objects.toString());
-                  }
-              }
-          }
-      });
+                if (e == null) {
+                    Log.i("findInBackground", "Retrieved " + objects.size() + " objects");
+                    if (objects.size() > 0) {
+                        for (ParseObject object : objects) {
+                            //Log.i("findInBackground", object.toString());
+                            Log.i("objectId", object.getObjectId() + ": username " + object.getString("username") + " - score " + Integer.toString(object.getInt("score")));
+                        }
+                    }
+                }
+            }
+        });
 
+        //retrieve all objects of Score class
+        ParseQuery<ParseObject> queryTommy = ParseQuery.getQuery("Score");
+        //cut query by username tommy
+        queryTommy.whereEqualTo("username", "tommy");
+        //limit query by limit 1
+        queryTommy.setLimit(1);
+        queryTommy.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
 
-
-
-
-
-
+                if (e == null) {
+                    Log.i("1findInBackground", "Retrieved " + objects.size() + " objects");
+                    if (objects.size() > 0) {
+                        for (ParseObject object : objects) {
+                            //Log.i("1findInBackground", object.toString());
+                            Log.i("1objectId", object.getObjectId() + ": username " + object.getString("username") + " - score " + Integer.toString(object.getInt("score")));
+                        }
+                    }
+                }
+            }
+        });
 
 
 /////////////////////////////////////////////////////////////////////////////
-     //training
-     //Create Tweet class, contains - username tweet
+        //training
+        //Create Tweet class, contains - username tweet
      /*ParseObject tweet = new ParseObject("Tweet");
 
       tweet.put("username","robert1");
@@ -205,7 +224,35 @@ public class MainActivity extends AppCompatActivity {
       });*/
 
 
-      ParseAnalytics.trackAppOpenedInBackground(getIntent());
-  }
+        //retrieve set of Score class objects
+        ParseQuery<ParseObject> queryTrain = ParseQuery.getQuery("Score");
+        //cut query to greater than 30 by score field
+        queryTrain.whereGreaterThan("score", 30);
+
+        //
+        queryTrain.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                if (e == null && objects != null) {
+                    //go through list of objects with foreach
+                    for (ParseObject object : objects) {
+
+                        //print object's data
+                        Log.i("2objectId", object.getObjectId() + " username: " + object.getString("username") + " - " + Integer.toString(object.getInt("score")));
+                        //put object's score value into the temp int
+                        int tempScore = object.getInt("score");
+                        //use temp int to put to object field score with +50 value
+                        object.put("score", tempScore + 50);
+                        //save object
+                        object.saveInBackground();
+                    }
+                }
+            }
+        });
+
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+    }
 
 }
