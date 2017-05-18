@@ -8,24 +8,20 @@
  */
 package com.parse.starter;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Switch;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.awareness.fence.LocationFence;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
@@ -33,226 +29,166 @@ import java.util.List;
 //http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com/apps
 public class MainActivity extends AppCompatActivity {
 
+    EditText editUser;
+    EditText editPassword;
+    Button buttonLogIn;
+    Button buttonSignUp;
+    TextView orLogin;
+    TextView orSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//////CRUD PARSE OBJECTS//////////////////////////
+        editUser = (EditText) findViewById(R.id.editTextUser);
+        editPassword = (EditText) findViewById(R.id.editTextPassword);
 
-//CREATE////////
-/* //parse object - classname will be Score taken by constructor
-      ParseObject score = new ParseObject("Score");
-      //put data to score
-      //value 1 -> key + data
-      score.put("username", "rob");
-      //value 2 -> key + data
-      score.put("score", 86);
-      //to save save in background just to save or save eventually to save when be opportunity(like connection lol)
-      //both with callback gives us opportunity to see was save successful or not
-      score.saveInBackground(new SaveCallback() {
-          @Override
-          public void done(ParseException e) {
+        orLogin = (TextView) findViewById(R.id.textOrLogin);
+        orSignUp = (TextView) findViewById(R.id.textOrSignUp);
+        orLogin.setVisibility(View.INVISIBLE);
 
-              if (e == null) {
-                  Log.i("SaveInBackground", "Successful");
-              } else {
-                  Log.i("SaveInBackground", "Unsuccessful: "+e.toString());
-              }
-          }
-      });*/
-
-        ////READ//
-      /*//object from ParseServer
-      ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
-
-      //object id for query - from parseServer page (http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com/apps/My%20Bitnami%20Parse%20API/browser/_Session)
-      query.getInBackground("gZ9L2cQfQu", new GetCallback<ParseObject>() {
-          @Override
-          public void done(ParseObject object, ParseException e) {
-
-              if(e==null && object!=null){
-                  Log.i("Query", "Successful");
-                  Log.i("ObjectValue username",object.getString("username"));
-                  Log.i("ObjectValue score",Integer.toString(object.getInt("score")));
-              }else{
-                  Log.i("Query",object.getString("username"));
-
-              }
-          }
-      });*/
+        buttonLogIn = (Button) findViewById(R.id.buttonLogin);
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        buttonSignUp.setVisibility(View.INVISIBLE);
 
 
-        ////UPDATE//
-     /* //object from ParseServer
-      ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
-
-      //object id for query - from parseServer page (http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com/apps/My%20Bitnami%20Parse%20API/browser/_Session)
-      query.getInBackground("gZ9L2cQfQu", new GetCallback<ParseObject>() {
-          @Override
-          public void done(ParseObject object, ParseException e) {
-
-              if(e==null && object!=null){
-                  Log.i("Query", "Successful");
-
-                  object.put("score",200);
-                  object.saveInBackground();
-                  Log.i("ObjectValue username",object.getString("username"));
-                  Log.i("ObjectValue score",Integer.toString(object.getInt("score")));
-              }else{
-                  Log.i("Query",object.getString("username"));
-
-              }
-          }
-      });*/
-
-        ////DELETE//
-     /* //object from ParseServer
-      ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
-
-      //object id for query - from parseServer page (http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com/apps/My%20Bitnami%20Parse%20API/browser/_Session)
-      query.getInBackground("gZ9L2cQfQu", new GetCallback<ParseObject>() {
-          @Override
-          public void done(ParseObject object, ParseException e) {
-
-              if(e==null && object!=null){
-                  Log.i("Query", "Successful");
-
-                   try {
-                      object.delete();
-                  } catch (ParseException e1) {
-                      e1.printStackTrace();
-                  }
-                  object.saveInBackground();
-              }else{
-                  Log.i("Query",object.getString("username"));
-
-              }
-          }
-      });*/
-
-        //retrieve set of objects from parse server
-        //retrieve all objects of Score class
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Score");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-
-                if (e == null) {
-                    Log.i("findInBackground", "Retrieved " + objects.size() + " objects");
-                    if (objects.size() > 0) {
-                        for (ParseObject object : objects) {
-                            //Log.i("findInBackground", object.toString());
-                            Log.i("objectId", object.getObjectId() + ": username " + object.getString("username") + " - score " + Integer.toString(object.getInt("score")));
-                        }
-                    }
-                }
-            }
-        });
-
-        //retrieve all objects of Score class
-        ParseQuery<ParseObject> queryTommy = ParseQuery.getQuery("Score");
-        //cut query by username tommy
-        queryTommy.whereEqualTo("username", "tommy");
-        //limit query by limit 1
-        queryTommy.setLimit(1);
-        queryTommy.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-
-                if (e == null) {
-                    Log.i("1findInBackground", "Retrieved " + objects.size() + " objects");
-                    if (objects.size() > 0) {
-                        for (ParseObject object : objects) {
-                            //Log.i("1findInBackground", object.toString());
-                            Log.i("1objectId", object.getObjectId() + ": username " + object.getString("username") + " - score " + Integer.toString(object.getInt("score")));
-                        }
-                    }
-                }
-            }
-        });
-
-
-/////////////////////////////////////////////////////////////////////////////
-        //training
-        //Create Tweet class, contains - username tweet
-     /*ParseObject tweet = new ParseObject("Tweet");
-
-      tweet.put("username","robert1");
-      tweet.put("tweet","PARSE CRUD1");
-
-      tweet.saveInBackground(new SaveCallback() {
-          @Override
-          public void done(ParseException e) {
-              if(e==null){
-                  Log.i("Tweet save","Successful");
-              }else{
-                  Log.i("Tweet save","Unsuccessful");
-              }
-          }
-      });*/
-
-//query tweet and update
-      /*ParseQuery<ParseObject> tweetQuery =ParseQuery.getQuery("Tweet");
-      tweetQuery.getInBackground("xYuhPA9o06",new GetCallback<ParseObject>() {
-          @Override
-          public void done(ParseObject object, ParseException e) {
-              if(e== null && object!=null){
-
-
-                  Log.i("QueryTweet","Successful");
-                  Log.i("QueryTweet user",object.getString("username"));
-                  //Log.i("QueryTweet tweet",object.getString("tweet"));
-                  //object.put("tweet", "UPDATED TWEET");
-                  //object.remove("tweet");
-                  try {
-                      object.delete();
-                  } catch (ParseException e1) {
-                      e1.printStackTrace();
-                  }
-                  Log.i("QueryUpdatedTweet user",object.getString("username"));
-                  //Log.i("QueryUpdatedTweet tweet",object.getString("tweet"));
-                  object.saveInBackground();
-                  Log.i("QueryUpdatedTweet user",object.getString("username"));
-                  //Log.i("QueryUpdatedTweet tweet",object.getString("tweet"));
-
-              }else{
-                  Log.i("Query tweet","Unsuccessful");
-              }
-          }
-      });*/
-
-
-        //retrieve set of Score class objects
-        ParseQuery<ParseObject> queryTrain = ParseQuery.getQuery("Score");
-        //cut query to greater than 30 by score field
-        queryTrain.whereGreaterThan("score", 30);
-
-        //
-        queryTrain.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-
-                if (e == null && objects != null) {
-                    //go through list of objects with foreach
-                    for (ParseObject object : objects) {
-
-                        //print object's data
-                        Log.i("2objectId", object.getObjectId() + " username: " + object.getString("username") + " - " + Integer.toString(object.getInt("score")));
-                        //put object's score value into the temp int
-                        int tempScore = object.getInt("score");
-                        //use temp int to put to object field score with +50 value
-                        object.put("score", tempScore + 50);
-                        //save object
-                        object.saveInBackground();
-                    }
-                }
-            }
-        });
-
+        buttonLogIn.setOnClickListener(new LoginListener());
+        buttonSignUp.setOnClickListener(new SignUpListener());
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
+    }
+
+
+    private class LoginListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Log.i("login 0", "0");
+            if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
+                String username = String.valueOf(editUser.getText());
+                String password = String.valueOf(editPassword.getText());
+                functionButtonLogin(username, password);
+            } else {
+                toast("Enter both username and password");
+            }
+        }
+    }
+
+    private class SignUpListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Log.i("signup 0", "0");
+            if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
+                String username = String.valueOf(editUser.getText());
+                String password = String.valueOf(editPassword.getText());
+                functionButtonSignUp(username, password);
+            } else {
+                toast("Enter both username and password");
+            }
+        }
+    }
+
+    public void functionSwitchToLogin(View view) {
+        orLogin.setVisibility(View.INVISIBLE);
+        orSignUp.setVisibility(View.VISIBLE);
+
+        buttonSignUp.setVisibility(View.INVISIBLE);
+        buttonLogIn.setVisibility(View.VISIBLE);
+    }
+
+    public void functionSwitchToSignUp(View view) {
+        orLogin.setVisibility(View.VISIBLE);
+        orSignUp.setVisibility(View.INVISIBLE);
+
+        buttonSignUp.setVisibility(View.VISIBLE);
+        buttonLogIn.setVisibility(View.INVISIBLE);
+    }
+
+    private void toast(String toast) {
+        Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void functionButtonLogin(final String username, final String password) {
+        Log.i("login 1", "1");
+
+        ParseQuery<ParseObject> queryUsers = ParseQuery.getQuery("Users");
+        //queryUsers.whereContains("username", username);
+        //queryUsers.whereContains("password", password);
+        queryUsers.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                boolean login = false;
+                Log.i("login 2", "2");
+                Log.i("login username", username);
+                Log.i("login password", password);
+                if (e == null && objects != null) {
+                    for (ParseObject object : objects) {
+                        if (object.getString("username").equals(username)) {
+                            if (object.getString("password").equals(password)) {
+                                Log.i("Success LogIn", objects.toString());
+                                toast("Success: You logged in");
+                                login = true;
+                            }
+                        }
+                    }
+
+                } else {
+                    Log.i("Failed LogIn", e.toString());
+                }
+                if (!login) {
+                    Log.i("Failed LogIn", "wrong user or password");
+                    toast("Fail: Wrong user or password");
+                }
+            }
+        });
+    }
+
+    private void functionButtonSignUp(final String username, final String password) {
+        Log.i("signup 1", "1");
+
+        ParseQuery<ParseObject> queryUsers = ParseQuery.getQuery("Users");
+        //queryUsers.whereContains("username", username);
+        //queryUsers.whereContains("password", password);
+        queryUsers.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                boolean login = false;
+                Log.i("signup 2", "2");
+                Log.i("signup username", username);
+                Log.i("signup password", password);
+                if (e == null && objects != null) {
+                    for (ParseObject object : objects) {
+                        if (object.getString("username").equals(username)) {
+                            Log.i("Username already exists", objects.toString());
+                            toast("Fail: Username already exists");
+                            login = true;
+                        }
+                    }
+
+                } else {
+                    Log.i("Failed signup", e.toString());
+                }
+                if (!login) {
+                    Log.i("Signup process", "Username free");
+                    ParseObject user = new ParseObject("Users");
+                    user.put("username", username);
+                    user.put("password", password);
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.i("Successful", "new user created");
+                                toast("Success: New user created");
+                            } else {
+                                Log.i("Failed", "new user not created");
+                                toast("Fail: New user not created");
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
 }
