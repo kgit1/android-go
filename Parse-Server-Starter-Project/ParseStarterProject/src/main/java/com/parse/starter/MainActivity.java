@@ -12,7 +12,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,10 +49,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RelativeLayout relativeLayout =(RelativeLayout)findViewById(R.id.relativelayout);
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
 
         editUser = (EditText) findViewById(R.id.editTextUser);
         editPassword = (EditText) findViewById(R.id.editTextPassword);
+
+       // editPassword.setOnEditorActionListener(new KeyboardDoneListener());
 
         orLogin = (TextView) findViewById(R.id.textOrLogin);
         orSignUp = (TextView) findViewById(R.id.textOrSignUp);
@@ -74,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i("login listener", "0");
             String username = String.valueOf(editUser.getText());
             String password = String.valueOf(editPassword.getText());
-            if (!username.equals("")  && !password.equals("")) {
-            //if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
+            if (!username.equals("") && !password.equals("")) {
+                //if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
                 //if()
 
                 functionButtonLogin(username, password);
@@ -89,17 +93,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Log.i("signup listener", "0");
-           // if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
+            // if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
             String username = String.valueOf(editUser.getText());
             String password = String.valueOf(editPassword.getText());
-            if (!username.equals("")  && !password.equals("")) {
-                if(username.length()>4 && username.length()<15){
-                    if(password.length()>5 && password.length()<20){
+            if (!username.equals("") && !password.equals("")) {
+                if (username.length() > 4 && username.length() < 15) {
+                    if (password.length() > 5 && password.length() < 20) {
                         functionButtonSignUp(username, password);
-                    } else{
+                    } else {
                         toast("Password must be longer than 5 and shorter than 20 symbols");
                     }
-                }else{
+                } else {
                     toast("Username must be longer than 4 ans shorter than 15 symbols");
                 }
             } else {
@@ -108,13 +112,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*private class KeyboardDoneListener implements TextView.OnEditorActionListener {
+
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if ((event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || actionId == EditorInfo.IME_ACTION_DONE) {
+                Log.i("editor listener", "done pressed");
+
+            }
+
+            return false;
+        }
+    }*/
+
+
+
     public void functionSwitchToLogin(View view) {
         orLogin.setVisibility(View.INVISIBLE);
         orSignUp.setVisibility(View.VISIBLE);
 
         buttonSignUp.setVisibility(View.INVISIBLE);
         buttonLogIn.setVisibility(View.VISIBLE);
-       // hideSoftKeyboard(this);
+        // hideSoftKeyboard(this);
     }
 
     public void functionSwitchToSignUp(View view) {
@@ -123,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonSignUp.setVisibility(View.VISIBLE);
         buttonLogIn.setVisibility(View.INVISIBLE);
-       // hideSoftKeyboard(this);
+        // hideSoftKeyboard(this);
     }
 
     private void toast(String toast) {
@@ -138,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                if(user!=null){
+                if (user != null) {
                     Log.i("Login", "Successful");
                     toast("Login successful");
-                }else {
+                } else {
                     toast(e.getMessage().toString());
                 }
             }
@@ -194,10 +213,10 @@ public class MainActivity extends AppCompatActivity {
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
-                if(e==null){
+                if (e == null) {
                     Log.i("SignUp", "Successful");
                     toast("SignUp successful");
-                }else{
+                } else {
                     toast(e.getMessage().toString());
                 }
             }
@@ -249,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //hide keyboard
-    public  void hideSoftKeyboard(Activity activity) {
+    public void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
@@ -257,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 activity.getCurrentFocus().getWindowToken(), 0);
     }
 
-    public void functionHideSoftKeyboard(View view){
+    public void functionHideSoftKeyboard(View view) {
         hideSoftKeyboard(this);
     }
 

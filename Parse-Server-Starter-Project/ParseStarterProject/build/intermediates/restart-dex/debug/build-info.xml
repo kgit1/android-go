@@ -2,30 +2,26 @@
 <instant-run
     abi="x86"
     api-level="25"
-    build-mode="HOT_WARM"
+    build-mode="COLD"
     density="560dpi"
     format="10"
     plugin-version="2.3.2"
-    timestamp="1495573475247"
+    timestamp="1495575442916"
     token="-4778471420828685029"
-    verifier="COMPATIBLE" >
+    verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="221" />
+        duration="0" />
     <task
         name="instant-run-dex"
-        duration="392" />
+        duration="0" />
     <task
         name="instant-run-transform"
-        duration="53" />
+        duration="0" />
     <task
         name="verifier"
-        duration="8" />
-
-    <artifact
-        location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\reload-dex\debug\classes.dex"
-        type="RELOAD_DEX" />
+        duration="0" />
 
     <build
         build-mode="FULL"
@@ -69,12 +65,16 @@
             type="SPLIT_MAIN" />
     </build>
     <build
-        build-mode="HOT_WARM"
-        timestamp="1495573475247"
-        verifier="COMPATIBLE" >
+        build-mode="COLD"
+        timestamp="1495575388528"
+        verifier="COLD_SWAP_REQUESTED" >
         <artifact
-            location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\reload-dex\debug\classes.dex"
-            type="RELOAD_DEX" />
+            location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
     </build>
+    <build
+        build-mode="COLD"
+        timestamp="1495575442916"
+        verifier="COLD_SWAP_REQUESTED" />
 
 </instant-run>
