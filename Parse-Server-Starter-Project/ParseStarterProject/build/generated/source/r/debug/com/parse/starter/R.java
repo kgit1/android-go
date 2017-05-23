@@ -2977,7 +2977,7 @@ containing a value of this type.
         public static final int book_now=0x7f0d005e;
         public static final int bottom=0x7f0d0053;
         public static final int button=0x7f0d00b9;
-        public static final int buttonLogin=0x7f0d00a7;
+        public static final int buttonLogin=0x7f0d00a2;
         public static final int buttonPanel=0x7f0d0079;
         public static final int buttonSignUp=0x7f0d00a1;
         public static final int button_0=0x7f0d00b1;
@@ -3027,8 +3027,8 @@ containing a value of this type.
         public static final int disconnect=0x7f0d00d3;
         public static final int donate_with=0x7f0d0062;
         public static final int donate_with_google=0x7f0d0063;
-        public static final int editTextPassword=0x7f0d00a5;
-        public static final int editTextUser=0x7f0d00a4;
+        public static final int editTextPassword=0x7f0d00a6;
+        public static final int editTextUser=0x7f0d00a5;
         public static final int edit_query=0x7f0d0094;
         public static final int email=0x7f0d0036;
         public static final int end=0x7f0d0039;
@@ -3053,7 +3053,7 @@ containing a value of this type.
         public static final int icon_view=0x7f0d00bd;
         public static final int ifRoom=0x7f0d0042;
         public static final int image=0x7f0d0074;
-        public static final int imageView=0x7f0d00a3;
+        public static final int imageView=0x7f0d00a4;
         public static final int index_entity_types=0x7f0d004b;
         public static final int info=0x7f0d00e2;
         public static final int instant_message=0x7f0d0037;
@@ -3157,8 +3157,8 @@ containing a value of this type.
         public static final int text=0x7f0d00c6;
         public static final int text1=0x7f0d0032;
         public static final int text2=0x7f0d0033;
-        public static final int textOrLogin=0x7f0d00a2;
-        public static final int textOrSignUp=0x7f0d00a6;
+        public static final int textOrLogin=0x7f0d00a3;
+        public static final int textOrSignUp=0x7f0d00a7;
         public static final int textSpacerNoButtons=0x7f0d0080;
         public static final int textSpacerNoTitle=0x7f0d007f;
         public static final int textTitle=0x7f0d00b8;

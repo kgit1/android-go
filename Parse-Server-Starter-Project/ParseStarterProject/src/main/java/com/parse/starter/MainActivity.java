@@ -8,10 +8,12 @@
  */
 package com.parse.starter;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,7 +24,9 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.SignUpCallback;
 
 import java.util.List;
 
@@ -64,12 +68,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Log.i("login 0", "0");
-            if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
-                String username = String.valueOf(editUser.getText());
-                String password = String.valueOf(editPassword.getText());
+            String username = String.valueOf(editUser.getText());
+            String password = String.valueOf(editPassword.getText());
+            if (!username.equals("")  && !password.equals("")) {
+            //if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
+                //if()
+
                 functionButtonLogin(username, password);
             } else {
-                toast("Enter both username and password");
+                toast("A username and password required");
             }
         }
     }
@@ -77,13 +84,22 @@ public class MainActivity extends AppCompatActivity {
     private class SignUpListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Log.i("signup 0", "0");
-            if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
-                String username = String.valueOf(editUser.getText());
-                String password = String.valueOf(editPassword.getText());
-                functionButtonSignUp(username, password);
+            Log.i("signup listener", "0");
+           // if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
+            String username = String.valueOf(editUser.getText());
+            String password = String.valueOf(editPassword.getText());
+            if (!username.equals("")  && !password.equals("")) {
+                if(username.length()>4 && username.length()<15){
+                    if(password.length()>5 && password.length()<20){
+                        functionButtonSignUp(username, password);
+                    } else{
+                        toast("Password must be longer than 5 and shorter than 20 symbols");
+                    }
+                }else{
+                    toast("Username must be longer than 4 ans shorter than 15 symbols");
+                }
             } else {
-                toast("Enter both username and password");
+                toast("A username and password required");
             }
         }
     }
@@ -94,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonSignUp.setVisibility(View.INVISIBLE);
         buttonLogIn.setVisibility(View.VISIBLE);
+        hideSoftKeyboard(this);
     }
 
     public void functionSwitchToSignUp(View view) {
@@ -102,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonSignUp.setVisibility(View.VISIBLE);
         buttonLogIn.setVisibility(View.INVISIBLE);
+        hideSoftKeyboard(this);
     }
 
     private void toast(String toast) {
@@ -112,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
     private void functionButtonLogin(final String username, final String password) {
         Log.i("login 1", "1");
 
+        //use of buildin class ParseUser
+        ParseUser user = new ParseUser();
+
+        /*//simple way with own class
         ParseQuery<ParseObject> queryUsers = ParseQuery.getQuery("Users");
         //queryUsers.whereContains("username", username);
         //queryUsers.whereContains("password", password);
@@ -141,12 +163,31 @@ public class MainActivity extends AppCompatActivity {
                     toast("Fail: Wrong user or password");
                 }
             }
-        });
+        });*/
     }
 
     private void functionButtonSignUp(final String username, final String password) {
-        Log.i("signup 1", "1");
+        Log.i("signup function", "1");
 
+        //use of buildin class ParseUser
+        ParseUser user = new ParseUser();
+
+        user.setUsername(username);
+        user.setPassword(password);
+
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e==null){
+                    Log.i("SignUp", "Successful");
+                    toast("SignUp successful");
+                }else{
+                    toast(e.getMessage().toString());
+                }
+            }
+        });
+
+        /*//simple way with own class
         ParseQuery<ParseObject> queryUsers = ParseQuery.getQuery("Users");
         //queryUsers.whereContains("username", username);
         //queryUsers.whereContains("password", password);
@@ -188,7 +229,16 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
             }
-        });
+        });*/
+    }
+
+    //hide keyboard
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 
 }

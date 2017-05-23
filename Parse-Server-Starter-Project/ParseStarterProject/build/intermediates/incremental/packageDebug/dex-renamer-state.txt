@@ -1,4 +1,4 @@
-#Thu May 18 23:56:03 EEST 2017
+#Tue May 23 20:57:20 EEST 2017
 base.0=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_d05ea263a8a5a598cd7ddc99557b2154b6ee0258
 renamed.1=classes2.dex
 renamed.0=classes.dex

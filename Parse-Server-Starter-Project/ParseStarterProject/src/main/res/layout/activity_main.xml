@@ -21,21 +21,24 @@
         android:id="@+id/buttonSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="sign up"/>
+        android:text="sign up"
+        android:layout_alignBaseline="@+id/buttonLogin"
+        android:layout_alignBottom="@+id/buttonLogin"
+        android:layout_alignLeft="@+id/buttonLogin"
+        android:layout_alignStart="@+id/buttonLogin"/>
 
     <TextView
         android:id="@+id/textOrLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
+        android:layout_alignBottom="@+id/buttonSignUp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
         android:layout_toEndOf="@+id/buttonSignUp"
         android:layout_toRightOf="@+id/buttonSignUp"
         android:onClick="functionSwitchToLogin"
         android:text="or Login"
+        android:textColor="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
         android:textSize="18sp"/>
 
     <ImageView
@@ -50,7 +53,7 @@
         android:id="@+id/editTextUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="Enter your username..."
         android:inputType="textPersonName"
@@ -73,18 +76,19 @@
         android:id="@+id/textOrSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textOrLogin"
-        android:layout_alignRight="@+id/textOrLogin"
-        android:layout_below="@+id/buttonSignUp"
+        android:layout_alignBottom="@+id/textOrLogin"
+        android:layout_alignLeft="@+id/textOrLogin"
+        android:layout_alignStart="@+id/textOrLogin"
         android:onClick="functionSwitchToSignUp"
-        android:text="or SignUp"/>
+        android:text="or SignUp"
+        android:textColor="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"/>
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonSignUp"
-        android:layout_alignStart="@+id/buttonSignUp"
-        android:layout_below="@+id/buttonSignUp"
-        android:text="Login"/>
+        android:text="Login"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/editTextPassword"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
