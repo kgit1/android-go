@@ -114,11 +114,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //this listener called twice on button pres and than or button release
     private class KeyboardDoneKeyListener implements View.OnKeyListener {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                Log.i("editor listener1", "done pressed");
+                //this listener called twice on button pres and than or button release
+                //to avoid this we check if action was ACTION_DOWN
+                if(event.getAction()==KeyEvent.ACTION_DOWN){
+                    Log.i("editor listener1", "done pressed");
+                }
+
             }
 
             return false;
