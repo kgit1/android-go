@@ -6,30 +6,30 @@
     density="560dpi"
     format="10"
     plugin-version="2.3.2"
-    timestamp="1495562312327"
+    timestamp="1495573475247"
     token="-4778471420828685029"
     verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="221" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="392" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="53" />
     <task
         name="verifier"
-        duration="0" />
+        duration="8" />
 
     <artifact
-        location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\instant-run-resources\resources-debug.ir.ap_"
-        type="RESOURCES" />
+        location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\reload-dex\debug\classes.dex"
+        type="RELOAD_DEX" />
 
     <build
         build-mode="FULL"
-        timestamp="1495560982563"
+        timestamp="1495573375315"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\split-apk\debug\slices\slice_2.apk"
@@ -69,23 +69,12 @@
             type="SPLIT_MAIN" />
     </build>
     <build
-        build-mode="COLD"
-        timestamp="1495562234912"
-        verifier="R_CLASS_CHANGE" >
-        <artifact
-            location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\split-apk\debug\slices\slice_9.apk"
-            type="SPLIT" />
-        <artifact
-            location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\outputs\apk\ParseStarterProject-debug.apk"
-            type="SPLIT_MAIN" />
-    </build>
-    <build
         build-mode="HOT_WARM"
-        timestamp="1495562312327"
+        timestamp="1495573475247"
         verifier="COMPATIBLE" >
         <artifact
-            location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\instant-run-resources\resources-debug.ir.ap_"
-            type="RESOURCES" />
+            location="D:\J\android\android-go\Parse-Server-Starter-Project\ParseStarterProject\build\intermediates\reload-dex\debug\classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

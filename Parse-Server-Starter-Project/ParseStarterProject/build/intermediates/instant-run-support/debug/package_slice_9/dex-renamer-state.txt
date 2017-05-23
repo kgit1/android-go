@@ -1,4 +1,4 @@
-#Tue May 23 20:57:20 EEST 2017
+#Tue May 23 23:55:07 EEST 2017
 base.0=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_9
 renamed.0=classes.dex
 file.0=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_9\\classes.dex

@@ -152,12 +152,12 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-cast-framework\\9.4.0\\res\\layout\\cast_mini_controller.xml"
     },
     {
-        "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\cast_tracks_chooser_dialog_row_layout.xml",
-        "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-cast-framework\\9.4.0\\res\\layout\\cast_tracks_chooser_dialog_row_layout.xml"
-    },
-    {
         "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_up_container.xml",
         "source": "D:\\Users\\erik\\.android\\build-cache\\646a86858e4cc8e9317d0abce3da9d17410e6ee2\\output\\res\\layout\\abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\cast_tracks_chooser_dialog_row_layout.xml",
+        "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-cast-framework\\9.4.0\\res\\layout\\cast_tracks_chooser_dialog_row_layout.xml"
     },
     {
         "merged": "D:\\Users\\robpercival\\AndroidStudioProjects\\Uber\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_menu_item_layout.xml",
@@ -296,12 +296,12 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_action_mode_bar.xml"
     },
     {
-        "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple.xml",
-        "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_screen_simple.xml"
-    },
-    {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\mr_media_route_chooser_dialog.xml",
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\mediarouter-v7\\23.0.0\\res\\layout\\mr_media_route_chooser_dialog.xml"
+    },
+    {
+        "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple.xml",
+        "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_screen_simple.xml"
     },
     {
         "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_content_include.xml",
@@ -324,16 +324,16 @@
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\notification_template_lines.xml"
     },
     {
-        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view_list_item.xml",
-        "source": "D:\\Users\\erik\\.android\\build-cache\\646a86858e4cc8e9317d0abce3da9d17410e6ee2\\output\\res\\layout\\abc_activity_chooser_view_list_item.xml"
+        "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\support_simple_spinner_dropdown_item.xml",
+        "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\support_simple_spinner_dropdown_item.xml"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\place_autocomplete_fragment.xml",
         "source": "D:\\Users\\robpercival\\Desktop\\Whatsapp\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-places\\9.4.0\\res\\layout\\place_autocomplete_fragment.xml"
     },
     {
-        "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\support_simple_spinner_dropdown_item.xml",
-        "source": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\support_simple_spinner_dropdown_item.xml"
+        "merged": "D:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view_list_item.xml",
+        "source": "D:\\Users\\erik\\.android\\build-cache\\646a86858e4cc8e9317d0abce3da9d17410e6ee2\\output\\res\\layout\\abc_activity_chooser_view_list_item.xml"
     },
     {
         "merged": "D:\\Users\\robpercival\\Desktop\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view.xml",

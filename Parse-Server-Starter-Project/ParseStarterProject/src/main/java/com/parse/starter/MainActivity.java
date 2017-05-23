@@ -16,10 +16,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        RelativeLayout relativeLayout =(RelativeLayout)findViewById(R.id.relativelayout);
+
         editUser = (EditText) findViewById(R.id.editTextUser);
         editPassword = (EditText) findViewById(R.id.editTextPassword);
 
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private class LoginListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Log.i("login 0", "0");
+            Log.i("login listener", "0");
             String username = String.valueOf(editUser.getText());
             String password = String.valueOf(editPassword.getText());
             if (!username.equals("")  && !password.equals("")) {
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonSignUp.setVisibility(View.INVISIBLE);
         buttonLogIn.setVisibility(View.VISIBLE);
-        hideSoftKeyboard(this);
+       // hideSoftKeyboard(this);
     }
 
     public void functionSwitchToSignUp(View view) {
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonSignUp.setVisibility(View.VISIBLE);
         buttonLogIn.setVisibility(View.INVISIBLE);
-        hideSoftKeyboard(this);
+       // hideSoftKeyboard(this);
     }
 
     private void toast(String toast) {
@@ -131,7 +135,19 @@ public class MainActivity extends AppCompatActivity {
         Log.i("login 1", "1");
 
         //use of buildin class ParseUser
-        ParseUser user = new ParseUser();
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if(user!=null){
+                    Log.i("Login", "Successful");
+                    toast("Login successful");
+                }else {
+                    toast(e.getMessage().toString());
+                }
+            }
+        });
+
+
 
         /*//simple way with own class
         ParseQuery<ParseObject> queryUsers = ParseQuery.getQuery("Users");
@@ -233,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //hide keyboard
-    public static void hideSoftKeyboard(Activity activity) {
+    public  void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
@@ -241,4 +257,51 @@ public class MainActivity extends AppCompatActivity {
                 activity.getCurrentFocus().getWindowToken(), 0);
     }
 
+    public void functionHideSoftKeyboard(View view){
+        hideSoftKeyboard(this);
+    }
+
 }
+
+/*
+* Make the parent view(content view of your activity) clickable and focusable by adding the following attributes
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+Implement a hideKeyboard() method
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+Lastly, set the onFocusChangeListener of your edittext.
+    edittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                hideKeyboard(v);
+            }
+        }
+    });
+As pointed out in one of the comments below, this might not work if the parent view is a ScrollView. For such case, the clickable and focusableInTouchMode may be added on the view directly under the ScrollView.
+
+*/
+
+/*public void setupUI(View view) {
+
+    // Set up touch listener for non-text box views to hide keyboard.
+    if (!(view instanceof EditText)) {
+        view.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                hideSoftKeyboard(MyActivity.this);
+                return false;
+            }
+        });
+    }
+
+    //If a layout container, iterate over children and seed recursion.
+    if (view instanceof ViewGroup) {
+        for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+            View innerView = ((ViewGroup) view).getChildAt(i);
+            setupUI(innerView);
+        }
+    }
+}*/
