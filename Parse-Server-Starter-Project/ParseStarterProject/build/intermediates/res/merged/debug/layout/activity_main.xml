@@ -47,9 +47,9 @@
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        app:srcCompat="@color/cast_intro_overlay_button_background_color"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@color/cast_intro_overlay_button_background_color"/>
+        android:layout_centerHorizontal="true"/>
 
     <EditText
         android:id="@+id/editTextUser"

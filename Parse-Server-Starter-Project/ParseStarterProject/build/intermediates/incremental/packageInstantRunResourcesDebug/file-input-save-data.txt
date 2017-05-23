@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu May 18 23:09:08 EEST 2017
+#Wed May 24 01:04:03 EEST 2017
 20.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 143.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 340.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-v21\\abc_edit_text_material.xml
@@ -101,6 +101,7 @@
 27.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 176.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\color\\abc_tint_btn_checkable.xml
 347.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout-v17\\abc_action_mode_close_item_material.xml
+432.set=ANDROID_RESOURCE
 387.set=ANDROID_RESOURCE
 310.set=ANDROID_RESOURCE
 211.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
@@ -161,7 +162,7 @@
 195.set=ANDROID_RESOURCE
 391.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-v21\\abc_ratingbar_indicator_material.xml
 254.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_action_bar_title_item.xml
-425.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\anim\\abc_slide_in_top.xml
+425.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\mr_ic_pause_dark.xml
 47.set=ANDROID_RESOURCE
 287.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_alert_dialog_title_material.xml
 172.set=ANDROID_RESOURCE
@@ -273,7 +274,7 @@
 75.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_screen_simple_overlay_action_mode.xml
 245.set=ANDROID_RESOURCE
 123.set=ANDROID_RESOURCE
-430.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\abc_tab_indicator_material.xml
+430.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\cast_ic_expanded_controller_closed_caption.xml
 413.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 421.set=ANDROID_RESOURCE
 292.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\ic_pause_dark.png
@@ -292,7 +293,7 @@
 98.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxxhdpi-v4\\quantum_ic_pause_circle_filled_white_36.png
 223.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 353.set=ANDROID_RESOURCE
-420.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml
+420.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_list_menu_item_icon.xml
 282.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\common_plus_signin_btn_text_light_focused.9.png
 276.set=ANDROID_RESOURCE
 154.set=ANDROID_RESOURCE
@@ -371,7 +372,7 @@
 73.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 393.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_screen_toolbar.xml
 256.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\abc_edit_text_material.xml
-427.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\ic_media_route_on_1_mono_dark.png
+427.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\anim\\abc_fade_out.xml
 67.set=ANDROID_RESOURCE
 318.set=ANDROID_RESOURCE
 289.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_action_mode_close_item_material.xml
@@ -487,6 +488,7 @@
 0.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 188.set=ANDROID_RESOURCE
 261.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-v11\\notification_bg.xml
+432.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png
 415.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 294.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\common_google_signin_btn_text_dark_normal.9.png
 277.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
@@ -501,7 +503,7 @@
 225.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 373.set=ANDROID_RESOURCE
 251.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-v21\\abc_ratingbar_material.xml
-422.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\abc_list_longpressed_holo.9.png
+422.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout-v11\\notification_template_big_media_narrow.xml
 17.set=ANDROID_RESOURCE
 284.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\notification_tile_bg.xml
 296.set=ANDROID_RESOURCE
@@ -573,7 +575,7 @@
 75.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 395.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\common_google_signin_btn_icon_light.xml
 258.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout-v17\\notification_action_tombstone.xml
-429.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\cast_ic_expanded_controller_closed_caption.xml
+429.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\color\\abc_tint_default.xml
 87.set=ANDROID_RESOURCE
 338.set=ANDROID_RESOURCE
 10.set=ANDROID_RESOURCE
@@ -591,7 +593,7 @@
 315.set=ANDROID_RESOURCE
 4.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_search_view.xml
 98.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
-419.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_list_menu_item_icon.xml
+419.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\abc_list_pressed_holo_dark.9.png
 238.set=ANDROID_RESOURCE
 420.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 116.set=ANDROID_RESOURCE
@@ -711,7 +713,7 @@
 227.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 393.set=ANDROID_RESOURCE
 253.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\cast_intro_overlay.xml
-424.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\mr_ic_pause_dark.xml
+424.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\cast_ic_mini_controller_pause.xml
 37.set=ANDROID_RESOURCE
 286.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\place_autocomplete_item_prediction.xml
 149.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxxhdpi-v4\\quantum_ic_pause_grey600_48.png
@@ -790,6 +792,7 @@
 358.set=ANDROID_RESOURCE
 30.set=ANDROID_RESOURCE
 261.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
+432.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 294.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 204.set=ANDROID_RESOURCE
 141.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxxhdpi-v4\\abc_ic_star_half_black_48dp.png
@@ -907,7 +910,7 @@
 72.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 392.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\common_plus_signin_btn_text_dark_disabled.9.png
 255.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\cast_ic_expanded_controller_mute.xml
-426.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\anim\\abc_fade_out.xml
+426.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\anim\\abc_slide_in_top.xml
 57.set=ANDROID_RESOURCE
 308.set=ANDROID_RESOURCE
 288.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\cast_ic_mini_controller_rewind30.xml
@@ -1033,7 +1036,7 @@
 133.set=ANDROID_RESOURCE
 178.set=ANDROID_RESOURCE
 260.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\notification_template_media.xml
-431.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png
+431.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\abc_tab_indicator_material.xml
 414.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 431.set=ANDROID_RESOURCE
 293.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\abc_list_selector_disabled_holo_dark.9.png
@@ -1051,7 +1054,7 @@
 224.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 363.set=ANDROID_RESOURCE
 250.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\cast_ic_notification_forward30.xml
-421.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout-v11\\notification_template_big_media_narrow.xml
+421.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml
 283.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxxhdpi-v4\\quantum_ic_stop_white_24.png
 286.set=ANDROID_RESOURCE
 164.set=ANDROID_RESOURCE
@@ -1120,9 +1123,9 @@
 361.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_select_dialog_material.xml
 74.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 394.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_dialog_title_material.xml
-count=432
+count=433
 257.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxxhdpi-v4\\places_ic_search.png
-428.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\color\\abc_tint_default.xml
+428.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\ic_media_route_on_1_mono_dark.png
 77.set=ANDROID_RESOURCE
 328.set=ANDROID_RESOURCE
 291.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
@@ -1139,7 +1142,7 @@ count=432
 305.set=ANDROID_RESOURCE
 3.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\common_google_signin_btn_text_dark_focused.9.png
 97.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
-418.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\abc_list_pressed_holo_dark.9.png
+418.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\in.png
 228.set=ANDROID_RESOURCE
 106.set=ANDROID_RESOURCE
 281.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
@@ -1246,7 +1249,7 @@ count=432
 226.base=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_
 383.set=ANDROID_RESOURCE
 252.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\cast_ic_notification_1.png
-423.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\cast_ic_mini_controller_pause.xml
+423.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\abc_list_longpressed_holo.9.png
 27.set=ANDROID_RESOURCE
 285.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_search_dropdown_item_icons_2line.xml
 16.file=D\:\\J\\android\\android-go\\Parse-Server-Starter-Project\\ParseStarterProject\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\abc_action_mode_bar.xml

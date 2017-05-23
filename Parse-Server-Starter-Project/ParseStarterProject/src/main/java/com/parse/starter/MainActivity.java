@@ -285,17 +285,24 @@ public class MainActivity extends AppCompatActivity {
         });*/
     }
 
-    //hide keyboard
-    public void hideSoftKeyboard(Activity activity) {
+    //hide keyboard 2 realisations
+    /*public void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(
                 activity.getCurrentFocus().getWindowToken(), 0);
+    }*/
+
+    public void hideSoftKeyboard2(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
     }
 
     public void functionHideSoftKeyboard(View view) {
-        hideSoftKeyboard(this);
+        Log.i("function","hide keyboard");
+        //hideSoftKeyboard(this);
+        hideSoftKeyboard2();
     }
 
 }
