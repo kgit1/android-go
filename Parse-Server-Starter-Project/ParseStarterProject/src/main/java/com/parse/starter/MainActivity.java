@@ -54,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         editUser = (EditText) findViewById(R.id.editTextUser);
         editPassword = (EditText) findViewById(R.id.editTextPassword);
 
-       // editPassword.setOnEditorActionListener(new KeyboardDoneListener());
+        //two realisations of keyboard Done(Enter) key listeners
+        //editPassword.setOnEditorActionListener(new KeyboardDoneListener());
+        editPassword.setOnKeyListener(new KeyboardDoneKeyListener());
 
         orLogin = (TextView) findViewById(R.id.textOrLogin);
         orSignUp = (TextView) findViewById(R.id.textOrSignUp);
@@ -112,19 +114,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class KeyboardDoneKeyListener implements View.OnKeyListener {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                Log.i("editor listener1", "done pressed");
+            }
+
+            return false;
+        }
+    }
+
     /*private class KeyboardDoneListener implements TextView.OnEditorActionListener {
 
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if ((event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) || actionId == EditorInfo.IME_ACTION_DONE) {
-                Log.i("editor listener", "done pressed");
+                Log.i("editor listener2", "done pressed");
 
             }
 
             return false;
         }
     }*/
-
 
 
     public void functionSwitchToLogin(View view) {
