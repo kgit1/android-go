@@ -46,7 +46,7 @@
             <state relative-caret-position="102">
               <caret line="21" column="40" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="52" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#0#1832#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -58,6 +58,8 @@
             <state relative-caret-position="170">
               <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
               <folding>
+                <element signature="e#0#13199#0" expanded="false" />
+                <element signature="imports" expanded="false" />
                 <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
                 <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
               </folding>
@@ -65,12 +67,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivityTemp.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivityTemp.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/MainActivityTemp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1870">
-              <caret line="127" column="31" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
-              <folding />
+            <state relative-caret-position="133">
+              <caret line="97" column="11" selection-start-line="0" selection-start-column="0" selection-end-line="245" selection-end-column="1" />
+              <folding>
+                <element signature="e#4614#5316#0" expanded="true" />
+                <element signature="e#5315#5316#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -98,7 +103,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/AndroidManifest.xml">
           <provider editor-type-id="android-manifest">
             <state />
@@ -2460,7 +2465,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="134" />
+    <option name="x" value="385" />
+    <option name="y" value="161" />
     <option name="width" value="1516" />
     <option name="height" value="1068" />
   </component>
@@ -2489,8 +2495,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2547,7 +2554,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -2937,7 +2943,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="134" y="0" width="1516" height="1068" extended-state="0" />
+    <frame x="385" y="161" width="1516" height="1068" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32967034" sideWeight="0.49676898" order="6" side_tool="false" content_ui="tabs" />
@@ -2945,8 +2951,8 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1978022" sideWeight="0.22184066" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1978022" sideWeight="0.7781593" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1967033" sideWeight="0.22596154" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1967033" sideWeight="0.77403843" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32967034" sideWeight="0.49676898" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2995,7 +3001,7 @@
         <state relative-caret-position="663">
           <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3005,6 +3011,8 @@
         <state relative-caret-position="4522">
           <caret line="297" column="42" selection-start-line="297" selection-start-column="42" selection-end-line="297" selection-end-column="42" />
           <folding>
+            <element signature="e#0#13199#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
             <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
           </folding>
@@ -3015,7 +3023,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1870">
           <caret line="127" column="31" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#4614#5316#0" expanded="true" />
+            <element signature="e#5315#5316#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3059,7 +3070,7 @@
         <state relative-caret-position="918">
           <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3069,6 +3080,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="e#0#13199#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
             <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
           </folding>
@@ -3079,7 +3092,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1870">
           <caret line="127" column="31" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#4614#5316#0" expanded="true" />
+            <element signature="e#5315#5316#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3123,7 +3139,7 @@
         <state relative-caret-position="918">
           <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3133,6 +3149,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="e#0#13199#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
             <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
           </folding>
@@ -3143,7 +3161,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1870">
           <caret line="127" column="31" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#4614#5316#0" expanded="true" />
+            <element signature="e#5315#5316#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3187,7 +3208,7 @@
         <state relative-caret-position="663">
           <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3197,6 +3218,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="e#0#13199#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
             <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
           </folding>
@@ -3207,7 +3230,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1870">
           <caret line="127" column="31" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#4614#5316#0" expanded="true" />
+            <element signature="e#5315#5316#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3251,7 +3277,7 @@
         <state relative-caret-position="918">
           <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3261,6 +3287,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="e#0#13199#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
             <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
           </folding>
@@ -3296,7 +3324,7 @@
         <state relative-caret-position="663">
           <caret line="54" column="7" selection-start-line="54" selection-start-column="7" selection-end-line="54" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3306,6 +3334,8 @@
         <state relative-caret-position="238">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding>
+            <element signature="e#0#13199#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
             <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
           </folding>
@@ -3341,7 +3371,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3355,19 +3385,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/MainActivityTemp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1870">
-          <caret line="127" column="31" selection-start-line="127" selection-start-column="31" selection-end-line="127" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
           <folding>
+            <element signature="e#0#13199#0" expanded="false" />
+            <element signature="imports" expanded="false" />
             <marker date="1495577423068" expanded="false" signature="10135:10250" ph="(e) → {" />
             <marker date="1495577423068" expanded="false" signature="10666:10693" ph="}" />
           </folding>
@@ -3430,7 +3454,7 @@
         <state relative-caret-position="102">
           <caret line="21" column="40" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="52" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#0#1832#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3443,6 +3467,17 @@
         <state relative-caret-position="340">
           <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ParseStarterProject/src/main/java/com/parse/starter/MainActivityTemp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="97" column="11" selection-start-line="0" selection-start-column="0" selection-end-line="245" selection-end-column="1" />
+          <folding>
+            <element signature="e#4614#5316#0" expanded="true" />
+            <element signature="e#5315#5316#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

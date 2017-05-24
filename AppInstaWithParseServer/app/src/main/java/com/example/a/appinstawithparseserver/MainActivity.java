@@ -1,17 +1,15 @@
 package com.example.a.appinstawithparseserver;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         buttonSignUp.setVisibility(View.INVISIBLE);
 
+        //check if user already logged in adn if true - forward him to userList intent
+        if(ParseUser.getCurrentUser()!=null){
+            changeIntent();
+        }
+
+
 
         buttonLogIn.setOnClickListener(new LoginListener());
         buttonSignUp.setOnClickListener(new SignUpListener());
@@ -69,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
             String username = String.valueOf(editUser.getText());
             String password = String.valueOf(editPassword.getText());
             if (!username.equals("") && !password.equals("")) {
-                //if (!String.valueOf(editUser.getText()).equals("")  && !String.valueOf(editPassword.getText()).equals("")) {
-                //if()
 
                 functionButtonLogin(username, password);
             } else {
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     Log.i("Login", "Successful");
                     toast("Login successful");
+                    changeIntent();
                 } else {
                     toast(e.getMessage().toString());
                 }
@@ -222,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 if (e == null) {
                     Log.i("SignUp", "Successful");
                     toast("SignUp successful");
+                    changeIntent();
                 } else {
                     toast(e.getMessage().toString());
                 }
@@ -291,6 +295,11 @@ public class MainActivity extends AppCompatActivity {
         Log.i("function", "hide keyboard");
         //hideSoftKeyboard(this);
         hideSoftKeyboard2();
+    }
+
+    public void changeIntent(){
+        Intent intent = new Intent(getApplicationContext(), UserListActivity.class);
+        startActivity(intent);
     }
 
 }
