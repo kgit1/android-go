@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
@@ -436,3 +439,50 @@ Parse.enableLocalDatastore(this);
 //    setContentView(R.layout.activity_starter_application);
 // }*/
 //}
+
+
+//FULLSCREEN + STATUS BAR REMOVE
+//working
+//or in styles.xml modify theme like
+/*<!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>*/
+
+
+//working partialy, only fullscreen line removes status bar
+//FULLSCREEN
+//add to onCreate()
+//requestWindowFeature(Window.FEATURE_NO_TITLE);
+//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+//example
+/*@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+    setContentView(R.layout.activity_main);
+}*/
+
+//not working crashes app - you need to change not here, but in styles.xml
+//Or you can do it via your AndroidManifest.xml file:
+/*<activity android:name=".ActivityName"
+    android:label="@string/app_name"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>*/
+
+
+//not working
+//FULLSCREEN + status line
+//add to onCreate()
+//requestWindowFeature(Window.FEATURE_NO_TITLE);
