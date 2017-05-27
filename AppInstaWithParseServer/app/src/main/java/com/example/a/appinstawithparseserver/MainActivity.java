@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         editUser = (EditText) findViewById(R.id.editTextUser);
         editPassword = (EditText) findViewById(R.id.editTextPassword);
+        Log.i("onCreate","main");
 
         //two realisations of keyboard Done(Enter) key listeners
         //editPassword.setOnEditorActionListener(new KeyboardDoneListener());
@@ -53,10 +54,9 @@ public class MainActivity extends AppCompatActivity {
         buttonSignUp.setVisibility(View.INVISIBLE);
 
         //check if user already logged in adn if true - forward him to userList intent
-        if(ParseUser.getCurrentUser()!=null){
+        /*(if (ParseUser.getCurrentUser() != null) {
             changeIntent();
-        }
-
+        }*/
 
 
         buttonLogIn.setOnClickListener(new LoginListener());
@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
         hideSoftKeyboard2();
     }
 
-    public void changeIntent(){
+    public void changeIntent() {
         Intent intent = new Intent(getApplicationContext(), UserListActivity.class);
         startActivity(intent);
     }
