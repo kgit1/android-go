@@ -15,7 +15,7 @@
 //3. add StarterApplication with this code
 //package com.example.a.appinstawithparseserver;
 
-// import android.app.Application;
+// import and roid.app.Application;
 
 // import com.parse.Parse;
 // import com.parse.ParseACL;
