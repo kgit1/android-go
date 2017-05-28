@@ -61,17 +61,7 @@ public class UserListActivity extends AppCompatActivity {
             }
         });
 
-        //Log In
-        /*try {
-            ParseUser.logIn("12345","123456");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String user =ParseUser.getCurrentUser().getString("username");
-        Log.i("Username",user);*/
-
-
-        //create querry to obtain set of users from parse server
+        //create query to obtain set of users from parse server
         ParseQuery<ParseUser> usersQuery = ParseUser.getQuery();
 
         //if we need not all, but all except current user
@@ -99,27 +89,8 @@ public class UserListActivity extends AppCompatActivity {
                 } else {
                     Log.i("Fail", "users query");
                 }
-
             }
         });
-
-        /*ParseQuery<ParseObject> usersQuery = ParseQuery.getQuery("Users");
-
-        usersQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if(e == null){
-                    for(ParseObject object : objects){
-                        usersList.add(object.getString("username"));
-                        Log.i("objects","here");
-                        Log.i("objects",objects.toString());
-                        Log.i("object",object.toString());
-                    }
-                }else{
-                    Log.i("Fail",e.toString());
-                }
-            }
-        });*/
     }
 
     @Override
@@ -149,23 +120,11 @@ public class UserListActivity extends AppCompatActivity {
                 getPhoto();
             }
         }
-        if (item.getItemId() == R.id.logOut) {
-            /*ParseUser.logOutInBackground(new LogOutCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if(e==null){
-                        Log.i("LogOut", "Successful");
-                        ParseUser.logOut();
-                    }else{
-                        Log.i("LogOut", "Failed");
-                    }
-                }
-            });*/
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+        else if (item.getItemId() == R.id.logOut) {
             Log.i("UserBefore", ParseUser.getCurrentUser().toString());
             Log.i("UserBefore", ParseUser.getCurrentUser().getUsername() + 1);
             Log.i("UserBefore", ParseUser.getCurrentUser().getUsername() + " 1");
+            //to logout - just ParseUser.logOut()
             ParseUser.logOut();
             Log.i("UserAfter", ParseUser.getCurrentUser().toString());
             if (ParseUser.getCurrentUser().getUsername() != null) {
@@ -174,6 +133,10 @@ public class UserListActivity extends AppCompatActivity {
                 Log.i("UserAfter", "null");
                 Log.i("UserAfter", ParseUser.getCurrentUser().getUsername() + " 1");
             }
+
+            //return to main screen
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

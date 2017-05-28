@@ -79,7 +79,7 @@ public class ImagesActivity extends AppCompatActivity {
         //create query for parse server for class Image
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Image");
         //limit to ParseObjects with username of needed user
-        parseQuery.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        parseQuery.whereEqualTo("username", username);
         //add descending order to objects by field createdAt
         parseQuery.orderByDescending("createdAt");
 
@@ -101,11 +101,12 @@ public class ImagesActivity extends AppCompatActivity {
                             public void done(byte[] data, ParseException e) {
                                 if (e == null && data != null) {
                                     Log.i("Images", "inQuery3");
+                                    //create image in bitmap by decoding byte array from parse server
                                     Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
                                     //add images to LinearLayout programmatically
                                     ImageView imageView = new ImageView(getApplicationContext());
-                                    imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                                    imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                     imageView.setImageBitmap(bitmap);
                                     linearLayout.addView(imageView);
                                 }
