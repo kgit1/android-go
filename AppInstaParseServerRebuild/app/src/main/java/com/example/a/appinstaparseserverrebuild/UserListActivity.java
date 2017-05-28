@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,7 +42,7 @@ public class UserListActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list_);
 
@@ -49,6 +51,15 @@ public class UserListActivity extends AppCompatActivity {
 
         arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, usersList);
         usersListView.setAdapter(arrayAdapter);
+        usersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ImagesActivity.class);
+                intent.putExtra("user",usersList.get(position).toString());
+                Log.i("Clicked",usersList.get(position).toString());
+                startActivity(intent);
+            }
+        });
 
         //Log In
         /*try {
@@ -203,9 +214,9 @@ public class UserListActivity extends AppCompatActivity {
                 byte[] byteArray = stream.toByteArray();
 
                 //convert byteArray to parseFile with name "image.png"
-                ParseFile parseFile = new ParseFile("1111image"+imageNumber+".png", byteArray);
+                ParseFile parseFile = new ParseFile("1111image" + imageNumber + ".png", byteArray);
                 imageNumber++;
-                Log.i("Filename",parseFile.getName()+" - ");
+                Log.i("Filename", parseFile.getName() + " - ");
 
                 //create parse object of class Image where we will store all images
                 ParseObject object = new ParseObject("Image");

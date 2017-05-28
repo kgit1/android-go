@@ -15,14 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:label="Insta">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".UserListActivity">
+        <activity android:name=".UserListActivity" android:label="UsersList">
+        </activity>
+        <activity android:name=".ImagesActivity" android:label="Images">
         </activity>
     </application>
 
