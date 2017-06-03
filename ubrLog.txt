@@ -1,4 +1,5 @@
 start from creating new instace of ec2 parse server 
+->go to aws.amazon.com
 ->login ->(kgit2) ->console ->EC2 ->Launche Instance ->AWS Marketplace
 ->search for parse ->select Parse Server powered by Bitnami ->select t2.micro free instance
 ->press rewiev and launch ->press launch ->create new keypair ->download keypoair ->launch instance
@@ -77,4 +78,92 @@ public class StarterApplication extends Application {
 
 ->run app to see if starter connects successfuly and than block with creating and saving object to parse can be commented
 ->proceed to creating app
+
+to acess dashboard
+->connect to app's parse server using app's public dns+/apps
+->login to parse server dashboard ->user - user
+->password - The application password is randomly generated during the first boot. This password can be viewed as follows:
+->Log in to the AWS Cloud Console ->from Services choose EC2 ->Running instances ->In the left navigation bar, select the "Instances -> Instances" menu item ->Select your instance in the dashboard ->From the "Actions" drop-down menu, select the "Get System Log" menu item ->Server credentials ->Review the system log until you find the application password.
+
+
+//////////ANONYMOUS USER ON PARSE SERVER////////////
+https://dzone.com/articles/parsecom-anonymous-and
+
+Enabling anonymous access
+To enable your Parse.com app for using anonymous access, you have to do the following:
+
+1. Enable anonymous access in the Parse.com console. Go to Settings -> Authentication and enable "Allow anonymous access".
+
+2. Add the following code in the onCreate method of your Android Application class:
+
+@Override
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this, "APPLICATION_ID", "CLIENT_KEY");
+        ParseUser.enableAutomaticUser();
+}
+
+By enabling automatic user, the call to ParseUser.getCurrentUser() always returns a user and thus is never null. You can check if the user is an anonymous user or a registered one by using the following code:
+
+ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser());
+This can be useful to check if the sign-up button should be displayed or disabling some functionality which is only accessible to registered users.
+
+Converting an anonymous user into a registered one
+An anonymous user can be converted to a registered one. The data belonging to the anonymous user is also present on the registered one.
+
+Before converting an anonymous user, there are some things to consider:
+
+
+The username can not be left blank. You must explicitly specify a username and password on the user which is to be converted into a registered one.
+It is adviced to save the anonymous user to the backend as soon as it is created. If this is not done and a call to saveInBackground is called on the registered user (after converting it from an anonymous one) a stack overflow is generated from the Android parse SDK. See also the following question on Stack-overflow (created by me): http://stackoverflow.com/questions/27595057/converting-an-anonymous-user-to-a-regular-user-and-saving
+To save the user immediately after it is created, modify the Application code so that it looks like this:
+@Override
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this, "APPLICATION_ID", "CLIENT_KEY");
+        ParseUser.enableAutomaticUser();
+        ParseUser.getCurrentUser.saveInBackground();
+}
+
+The anonymous user can now be converted into a registered one with the following code:
+findViewById(R.id.createUser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final String accountUsername = username.getText().toString();
+                final String accountPassword = password.getText().toString();
+                final ParseUser user = ParseUser.getCurrentUser();
+                user.setUsername(accountUsername);
+                user.setPassword(accountPassword);
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(final ParseException e) {
+                        if (e != null) {
+                            Toast.makeText(MainActivity.this, "Signup Fail", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Signup fail", e);
+                        } else {
+                            Toast.makeText(MainActivity.this, "Signup success", Toast.LENGTH_SHORT).show();
+                            final ParseUser user = ParseUser.getCurrentUser();
+                            user.put("phone_no", "31612345678");
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(final ParseException e) {
+                                    if (e != null) {
+                                        Toast.makeText(MainActivity.this, "Save data Fail", Toast.LENGTH_SHORT).show();
+                                        Log.e(TAG, "Signup fail", e);
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "Save data success", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        })
+
+Please note that the data associated with the user in the saveInBackground call (after sign-up is successful) could also be associated immediately to the user before the signUp call. This saves an extra network call. The call to saveInBackground is pure for demonstration purposes. 
+
+
+
+
  

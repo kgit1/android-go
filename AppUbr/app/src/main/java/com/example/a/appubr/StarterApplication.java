@@ -51,11 +51,5 @@ public class StarterApplication extends Application {
         ParseACL.setDefaultACL(defaultACL, true);
 
     }
-
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_starter_application);
-    }*/
 }
 
