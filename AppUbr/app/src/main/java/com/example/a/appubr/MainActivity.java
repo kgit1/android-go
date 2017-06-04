@@ -13,14 +13,15 @@ import com.parse.ParseUser;
 //http://ec2-54-218-40-215.us-west-2.compute.amazonaws.com/apps
 public class MainActivity extends AppCompatActivity {
 
-    Switch switchMode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        switchMode = (Switch) findViewById(R.id.switchMode);
+        //hide action bar
+        getSupportActionBar().hide();
 
         Log.i("####",ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())+" !");
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void functionLogin(View view){
+        Switch switchMode = (Switch) findViewById(R.id.switchMode);
         if(switchMode.isChecked()){
             Log.i("Login","User");
         }else{
