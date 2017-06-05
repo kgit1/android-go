@@ -1,18 +1,19 @@
 package com.example.a.appubr;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 
+import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
-//http://ec2-54-245-63-66.us-west-2.compute.amazonaws.com/apps
 //http://ec2-54-218-40-215.us-west-2.compute.amazonaws.com/apps
 public class MainActivity extends AppCompatActivity {
-
 
 
     @Override
@@ -23,19 +24,49 @@ public class MainActivity extends AppCompatActivity {
         //hide action bar
         getSupportActionBar().hide();
 
-        Log.i("####",ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())+" !");
-
-
+        //if not logged in - log as anonymous user
+        if (ParseUser.getCurrentUser() == null) {
+            ParseAnonymousUtils.logIn(new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    if (e == null) {
+                        Log.i("Login", "Anonymous login successful");
+                    } else {
+                        Log.i("Login", "Anonymous login failed");
+                    }
+                }
+            });
+        }
+        //if  already logged in
+        else {
+            if(ParseUser.getCurrentUser().get("riderOrDriver")!=null){
+                Log.i("Info","Redirecting as " + ParseUser.getCurrentUser().get("riderOrDriver"));
+            }
+        }
     }
 
-
-    public void functionLogin(View view){
+    //if logged as anonymous user - save user choice rider or driver and redirect
+    public void functionLogin(View view) {
         Switch switchMode = (Switch) findViewById(R.id.switchMode);
-        if(switchMode.isChecked()){
-            Log.i("Login","User");
-        }else{
-            Log.i("Login","Driver");
+
+        String userType = "rider";
+
+        if (switchMode.isChecked()) {
+            userType = "driver";
         }
+
+        Log.i("Login", userType);
+        ParseUser.getCurrentUser().put("riderOrDriver", userType);
+        Log.i("Info","Redirecting as "+ userType);
+
+        Intent intent;
+
+        if(userType.equals("rider")){
+            intent = new Intent(getApplicationContext(),RiderActivity.class);
+        }else{
+            intent = new Intent(getApplicationContext(),DriverActivity.class);
+        }
+        startActivity(intent);
     }
 }
 
