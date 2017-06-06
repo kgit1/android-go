@@ -1,6 +1,5 @@
 package com.example.a.appubr;
 
-import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,15 +22,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.util.List;
+
+//https://github.com/googlemaps/ - google maps examples
 public class RiderActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    double latitude;
-    double longitude;
-    private boolean callTaxi;
+
+    Button buttonCallCancelTaxi;
+    private boolean requestActive;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -38,6 +48,11 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (lastKnownLocation != null) {
+                    updateMap(lastKnownLocation);
+                }
             }
         }
     }
@@ -51,11 +66,30 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        callTaxi = false;
+        /*Button button = new Button(getApplicationContext());
+        button.setText("Test");
+        button.setBackgroundColor(Color.rgb(70, 80, 90));//button.setX(800);
+        //button.setY(1800);
+        addContentView(button,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));*/
 
+        buttonCallCancelTaxi = (Button) findViewById(R.id.buttonCallCancel);
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
+        query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+
+                        requestActiveTrue();
+
+                    }
+                }
+            }
+        });
 
     }
-
 
     /**
      * Manipulates the map once available.
@@ -77,8 +111,7 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
             public void onLocationChanged(Location location) {
                 Log.i("Location", location.toString());
 
-                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                addMarkerAndMoveToUserLocation(userLocation, mMap);
+                updateMap(location);
                 /*mMap.addMarker(new MarkerOptions().position(userLocation).title(latitude + " : " + longitude));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));*/
             }
@@ -108,15 +141,17 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //ask permission
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
             }//if have - run code to update location ,take lastKnownLocation to do this
             else {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                latitude = lastKnownLocation.getLatitude();
-                longitude = lastKnownLocation.getLongitude();
-                LatLng userLastKnownLocation = new LatLng(latitude, longitude);
-                addMarkerAndMoveToUserLocation(userLastKnownLocation, mMap);
+                if (lastKnownLocation != null) {
+
+                    updateMap(lastKnownLocation);
+
+                }
             }
         }
 
@@ -127,31 +162,103 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
     }
 
     public void callCancelTaxi(View view) {
-        Button buttonCallCancelTaxi = (Button) findViewById(R.id.buttonCallCancel);
-        if (callTaxi) {
-            Log.i("Info", "Cancel a taxi");
-            callTaxi = false;
-            buttonCallCancelTaxi.setText("Call a taxi");
+        if (requestActive) {
+
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
+            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        if (objects.size() > 0) {
+
+                            for (ParseObject object : objects) {
+
+                                object.deleteInBackground();
+
+                            }
+
+                            requestActiveFalse();
+
+                        }
+                    }
+                }
+            });
+
+            makeToast("Taxi cancelled");
+            requestActiveFalse();
         } else {
-            Log.i("Info", "Call a taxi");
-            callTaxi = true;
-            buttonCallCancelTaxi.setText("Cancel a taxi");
+            requestActiveTrue();
+            callTaxi();
         }
     }
 
-    private void addMarkerAndMoveToUserLocation(LatLng userLocation, GoogleMap mMap) {
+    public void requestActiveFalse() {
+        Log.i("Info", "Cancel a taxi");
+        requestActive = false;
+        buttonCallCancelTaxi.setText("Call a taxi");
+    }
+
+    public void requestActiveTrue() {
+        Log.i("Info", "Call a taxi");
+        requestActive = true;
+        buttonCallCancelTaxi.setText("Cancel a taxi");
+    }
+
+    public void makeToast(String toast) {
+        Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_SHORT).show();
+    }
+
+    public void callTaxi() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (lastKnownLocation != null) {
+                ParseObject request = new ParseObject("Request");
+                request.put("username", ParseUser.getCurrentUser().getUsername());
+                ParseGeoPoint parseGeoPoint = new ParseGeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+
+                request.put("location", parseGeoPoint);
+                request.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Toast.makeText(getApplicationContext(), "Taxi called", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            } else {
+                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void updateMap(Location location) {
+        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //to remove any previous markers
         mMap.clear();
         //add new marker for current location
         mMap.addMarker(new MarkerOptions().position(userLocation).title("You location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+
+        //move camera to marker
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
         // Zoom in, animating the camera.
         // mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+
+        //move camera to marker + zoom
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12));
     }
 
-    /*Provide marker position.
+
+}
+
+ /*Provide marker position.
 
     private void pointToPosition(LatLng position) {
     //Build camera position
@@ -161,7 +268,6 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
     //Zoom in and animate the camera.
     mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 }*/
-}
 
 
 /*

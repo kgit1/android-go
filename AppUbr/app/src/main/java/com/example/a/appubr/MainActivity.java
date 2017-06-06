@@ -11,7 +11,9 @@ import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+//https://github.com/googlemaps/ - google maps examples
 //http://ec2-54-218-40-215.us-west-2.compute.amazonaws.com/apps
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
         }
         //if  already logged in
         else {
-            if(ParseUser.getCurrentUser().get("riderOrDriver")!=null){
-                Log.i("Info","Redirecting as " + ParseUser.getCurrentUser().get("riderOrDriver"));
+            if (ParseUser.getCurrentUser().get("riderOrDriver") != null) {
+                Log.i("Info", "Redirecting else " + ubrUseType());
+                redirectActivity();
             }
         }
     }
@@ -57,16 +60,32 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("Login", userType);
         ParseUser.getCurrentUser().put("riderOrDriver", userType);
-        Log.i("Info","Redirecting as "+ userType);
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    redirectActivity();
+                }
+            }
+        });
+        Log.i("Info", "Redirecting userType " + userType);
+    }
 
+    public void redirectActivity() {
         Intent intent;
 
-        if(userType.equals("rider")){
-            intent = new Intent(getApplicationContext(),RiderActivity.class);
-        }else{
-            intent = new Intent(getApplicationContext(),DriverActivity.class);
+        if (ubrUseType().equals("rider")) {
+            intent = new Intent(getApplicationContext(), RiderActivity.class);
+            Log.i("Info", "Redirecting as " + ubrUseType());
+        } else {
+            intent = new Intent(getApplicationContext(), DriverActivity.class);
+            Log.i("Info", "Redirecting as " + ubrUseType());
         }
         startActivity(intent);
+    }
+
+    public String ubrUseType() {
+        return String.valueOf(ParseUser.getCurrentUser().getString("riderOrDriver"));
     }
 }
 
