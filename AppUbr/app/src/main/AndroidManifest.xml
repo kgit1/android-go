@@ -38,9 +38,7 @@
             android:name=".RiderActivity"
             android:label="@string/title_activity_rider">
         </activity>
-        <activity
-            android:name=".DriverActivity"
-            android:label="@string/title_activity_driver">
+        <activity android:name=".DriverActivity">
         </activity>
     </application>
 
