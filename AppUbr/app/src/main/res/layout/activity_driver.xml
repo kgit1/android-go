@@ -8,7 +8,7 @@
     tools:context="com.example.a.appubr.DriverActivity">
 
     <ListView
-        android:id="@+id/listViewRiders"
+        android:id="@+id/requestListView"
         android:layout_width="357dp"
         android:layout_height="493dp"
         android:layout_marginLeft="8dp"

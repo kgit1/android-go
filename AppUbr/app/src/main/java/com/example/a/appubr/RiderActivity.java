@@ -1,6 +1,7 @@
 package com.example.a.appubr;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -253,6 +254,13 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
 
         //move camera to marker + zoom
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12));
+    }
+
+    public void logout(View view){
+        ParseUser.logOut();
+
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
     }
 
 
