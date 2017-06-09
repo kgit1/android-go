@@ -1,7 +1,7 @@
 package com.example.a.appubr;
 
-import android.*;
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,6 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -27,16 +29,20 @@ import java.util.List;
 
 public class DriverActivity extends AppCompatActivity {
 
-    ListView requestListView;
+    private ListView requestListView;
+    private List<String> requests = new ArrayList<>();
+    private ArrayAdapter arrayAdapter;
 
-    List<String> requests;
+    private List<Double> requestLatitudes = new ArrayList<>();
+    private List<Double> requestLongitudes = new ArrayList<>();
 
-    ArrayAdapter arrayAdapter;
+    private List<String> userNames = new ArrayList<>();
 
     private LocationManager locationManager;
 
     private LocationListener locationListener;
 
+    private Location lastKnownLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +51,36 @@ public class DriverActivity extends AppCompatActivity {
 
         setTitle("Nearby Requests");
 
-        requestListView = (ListView)findViewById(R.id.requestListView);
-
-        requests = new ArrayList<>();
+        requestListView = (ListView) findViewById(R.id.requestListView);
 
         requests.add("Test");
 
-        arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,requests);
+        arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, requests);
 
         requests.clear();
 
         requests.add("Getting nearby requests");
 
         requestListView.setAdapter(arrayAdapter);
+
+        requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (requestLatitudes.size() > position && requestLongitudes.size() > position && lastKnownLocation != null && userNames.size() > position) {
+
+                    Intent intent = new Intent(getApplicationContext(), DriverLocationActivity.class);
+
+                    intent.putExtra("requestLatitude", requestLatitudes.get(position));
+                    intent.putExtra("requestLongitude", requestLongitudes.get(position));
+                    intent.putExtra("driverLatitude", lastKnownLocation.getLatitude());
+                    intent.putExtra("driverLongitude", lastKnownLocation.getLongitude());
+                    intent.putExtra("username", userNames.get(position));
+
+                    startActivity(intent);
+                }
+            }
+        });
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -101,7 +124,7 @@ public class DriverActivity extends AppCompatActivity {
             else {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastKnownLocation != null) {
 
                     updateListView(lastKnownLocation);
@@ -109,7 +132,6 @@ public class DriverActivity extends AppCompatActivity {
                 }
             }
         }
-
     }
 
     @Override
@@ -130,13 +152,13 @@ public class DriverActivity extends AppCompatActivity {
     public void updateListView(Location location) {
 
         if (location != null) {
-            requests.clear();
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
 
             final ParseGeoPoint geoPointLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
 
             query.whereNear("location", geoPointLocation);
+            query.whereDoesNotExist("driverUserName");
 
             query.setLimit(10);
 
@@ -146,19 +168,31 @@ public class DriverActivity extends AppCompatActivity {
 
                     if (e == null) {
 
-                        if(objects.size()>0){
+                        requests.clear();
+                        requestLatitudes.clear();
+                        requestLongitudes.clear();
 
-                            for(ParseObject object : objects){
+                        if (objects.size() > 0) {
 
-                                Double distanceInMile = geoPointLocation.distanceInMilesTo((ParseGeoPoint) object.getParseGeoPoint("location"));
+                            for (ParseObject object : objects) {
 
-                                Double distanceInOneDecimal = (double) Math.round(distanceInMile * 10) / 10;
+                                ParseGeoPoint requestLocation = object.getParseGeoPoint("location");
 
-                                requests.add(distanceInOneDecimal+ " miles");
+                                if (requestLocation != null) {
+                                    Double distanceInMile = geoPointLocation.distanceInMilesTo(requestLocation);
 
+                                    Double distanceInOneDecimal = (double) Math.round(distanceInMile * 10) / 10;
+
+                                    requests.add(distanceInOneDecimal + " miles");
+
+                                    requestLatitudes.add(requestLocation.getLatitude());
+                                    requestLongitudes.add(requestLocation.getLongitude());
+
+                                    userNames.add(object.getString("username"));
+                                }
                             }
 
-                            } else{
+                        } else {
                             requests.add("No active requests nearby");
                         }
 
@@ -167,12 +201,8 @@ public class DriverActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
-
         }
         ;
-
     }
 
 }
