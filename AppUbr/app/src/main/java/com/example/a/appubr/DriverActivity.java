@@ -23,6 +23,8 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,7 @@ public class DriverActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 Log.i("Location", location.toString());
 
+                driverSaveLocation(location);
                 updateListView(location);
                 /*mMap.addMarker(new MarkerOptions().position(userLocation).title(latitude + " : " + longitude));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));*/
@@ -127,6 +130,7 @@ public class DriverActivity extends AppCompatActivity {
                 lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastKnownLocation != null) {
 
+                    driverSaveLocation(lastKnownLocation);
                     updateListView(lastKnownLocation);
 
                 }
@@ -203,6 +207,20 @@ public class DriverActivity extends AppCompatActivity {
             });
         }
         ;
+    }
+
+
+    public void driverSaveLocation(Location location){
+        ParseGeoPoint driverGeoLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseUser.getCurrentUser().put("location", driverGeoLocation);
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null){
+                    Log.i("location","saved");
+                }
+            }
+        });
     }
 
 }
