@@ -42,5 +42,14 @@
         android:onClick="buttonAcceptRequest"
         android:text="Accept rider"/>
 
+    <Button
+        android:id="@+id/buttonRequests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:onClick="buttonRequestList"
+        android:text="Requests"/>
+
 
 </RelativeLayout>

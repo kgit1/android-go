@@ -39,6 +39,15 @@
         android:onClick="logout"
         android:text="logout"/>
 
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/buttonCallCancel"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="31dp"
+        />
+
 </RelativeLayout>
 
 

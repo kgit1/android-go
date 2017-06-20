@@ -210,14 +210,14 @@ public class DriverActivity extends AppCompatActivity {
     }
 
 
-    public void driverSaveLocation(Location location){
+    public void driverSaveLocation(Location location) {
         ParseGeoPoint driverGeoLocation = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseUser.getCurrentUser().put("location", driverGeoLocation);
         ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if(e == null){
-                    Log.i("location","saved");
+                if (e == null) {
+                    Log.i("location", "saved");
                 }
             }
         });

@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -15,13 +16,17 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -31,6 +36,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //https://github.com/googlemaps/ - google maps examples
@@ -39,9 +45,15 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private Location userLocation;
 
-    Button buttonCallCancelTaxi;
+    private Button buttonCallCancelTaxi;
     private boolean requestActive;
+    private boolean driverActive = false;
+
+    private Handler handler = new Handler();
+    private TextView infoTextView;
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -52,7 +64,8 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
 
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastKnownLocation != null) {
-                    updateMap(lastKnownLocation);
+                    userLocation = lastKnownLocation;
+                    updateMap(userLocation);
                 }
             }
         }
@@ -75,6 +88,8 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
 
         buttonCallCancelTaxi = (Button) findViewById(R.id.buttonCallCancel);
 
+        infoTextView = (TextView) findViewById(R.id.infoTextView);
+
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
         query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -84,6 +99,8 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
                     if (objects.size() > 0) {
 
                         requestActiveTrue();
+
+                        checkForUpdates();
 
                     }
                 }
@@ -112,7 +129,8 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
             public void onLocationChanged(Location location) {
                 Log.i("Location", location.toString());
 
-                updateMap(location);
+                userLocation = location;
+                updateMap(userLocation);
                 /*mMap.addMarker(new MarkerOptions().position(userLocation).title(latitude + " : " + longitude));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));*/
             }
@@ -150,7 +168,8 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (lastKnownLocation != null) {
 
-                    updateMap(lastKnownLocation);
+                    userLocation = lastKnownLocation;
+                    updateMap(userLocation);
 
                 }
             }
@@ -160,6 +179,119 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+    }
+
+    public void checkForUpdates() {
+
+        if (requestActive) {
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
+            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+            query.whereExists("driverUserName");
+
+            Log.i("checkForUpdates", "1");
+
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+
+                    if (e == null && objects.size() > 0) {
+
+                        Log.i("checkForUpdates", "2");
+
+                        driverActive = true;
+
+                        ParseQuery<ParseUser> query = ParseUser.getQuery();
+
+                        query.whereEqualTo("username", objects.get(0).get("driverUserName"));
+
+                        query.findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> objects, ParseException e) {
+
+                                Log.i("checkForUpdates", "3");
+
+                                if (e == null && objects.size() > 0) {
+
+                                    ParseGeoPoint driverGeoPoint = objects.get(0).getParseGeoPoint("location");
+
+                                    if (userLocation != null) {
+
+                                        ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLocation.getLatitude(), userLocation.getLongitude());
+
+                                        Double distanceInMiles = userGeoPoint.distanceInMilesTo(driverGeoPoint);
+
+                                        Double distanceOneDP = (double) Math.round(distanceInMiles * 10) / 10;
+
+                                        Log.i("checkForUpdates", "4");
+
+                                        if (distanceOneDP > 0.01) {
+
+                                            infoTextView.setText("You driver is " + distanceOneDP + " miles away");
+
+                                            drawRiderAndDriverMarkers(driverGeoPoint, userGeoPoint);
+
+                                            buttonCallCancelTaxi.setVisibility(View.INVISIBLE);
+
+                                        } else {
+
+                                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
+                                            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+
+                                            query.findInBackground(new FindCallback<ParseObject>() {
+                                                @Override
+                                                public void done(List<ParseObject> objects, ParseException e) {
+
+                                                    if (e == null) {
+
+                                                        for (ParseObject object : objects) {
+
+                                                            object.deleteInBackground();
+
+                                                        }
+
+                                                    }
+
+                                                }
+                                            });
+
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+
+                                                    infoTextView.setText("You driver is HERE!");
+                                                    buttonCallCancelTaxi.setVisibility(View.VISIBLE);
+                                                    requestActiveFalse();
+                                                    driverActive = false;
+                                                    updateMap(userLocation);
+
+                                                }
+                                            }, 5000);
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+                        });
+
+                    }
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Log.i("updates", String.valueOf(driverActive));
+                            checkForUpdates();
+
+
+                        }
+                    }, 2000);
+
+                }
+            });
+        }
     }
 
     public void callCancelTaxi(View view) {
@@ -227,39 +359,92 @@ public class RiderActivity extends FragmentActivity implements OnMapReadyCallbac
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
+
                             Toast.makeText(getApplicationContext(), "Taxi called", Toast.LENGTH_SHORT).show();
+
+                            checkForUpdates();
+
                         }
                     }
                 });
 
             } else {
-                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Some error", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void updateMap(Location location) {
-        LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        //to remove any previous markers
-        mMap.clear();
-        //add new marker for current location
-        mMap.addMarker(new MarkerOptions().position(userLocation).title("You location"));
+        if (!driverActive) {
+            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            //to remove any previous markers
+            mMap.clear();
+            //add new marker for current location
+            mMap.addMarker(new MarkerOptions().position(userLocation).title("You location"));
 
-        //move camera to marker
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-        // Zoom in, animating the camera.
-        // mMap.animateCamera(CameraUpdateFactory.zoomIn());
-        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+            //move camera to marker
+            //mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+            // Zoom in, animating the camera.
+            // mMap.animateCamera(CameraUpdateFactory.zoomIn());
+            // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+            //mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
 
-        //move camera to marker + zoom
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12));
+            //move camera to marker + zoom
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12));
+        }
     }
 
-    public void logout(View view){
+    public void drawRiderAndDriverMarkers(ParseGeoPoint driver, ParseGeoPoint rider) {
+
+        mMap.clear();
+
+        LatLng driverLocation = new LatLng(driver.getLatitude(), driver.getLongitude());
+        LatLng requestLocation = new LatLng(rider.getLatitude(), rider.getLongitude());
+
+        if (!driverLocation.equals(requestLocation)) {
+            ArrayList<Marker> markers = new ArrayList<>();
+            markers.add(mMap.addMarker(new MarkerOptions().position(driverLocation).title("driverLocation").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))));
+            markers.add(mMap.addMarker(new MarkerOptions().position(requestLocation).title("requestLocation").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
+
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+
+                builder.include(marker.getPosition());
+
+            }
+
+            LatLngBounds bounds = builder.build();
+
+            int markersPadding = 290;
+
+            //to avoid error map cant be 0 size - when map didn't load to the moment when method called
+            //use on maploadcallback
+            /*mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, markersPadding));
+                }
+            });*/
+
+            //this better way to avoid crash on map size 0 when app cant get in time with map layer calulation and deploy
+            int mapWidth = getResources().getDisplayMetrics().widthPixels;
+            int mapHeight = getResources().getDisplayMetrics().heightPixels;
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, mapWidth, mapHeight, markersPadding));
+
+
+        } else {
+            mMap.addMarker(new MarkerOptions().position(driverLocation).title("driverLocation"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLocation, 10));
+        }
+
+    }
+
+
+    public void logout(View view) {
         ParseUser.logOut();
 
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 

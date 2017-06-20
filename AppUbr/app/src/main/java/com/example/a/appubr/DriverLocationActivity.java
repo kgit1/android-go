@@ -119,6 +119,11 @@ public class DriverLocationActivity extends FragmentActivity implements OnMapRea
         startActivity(intent);
     }
 
+    public void buttonRequestList(View view){
+        Intent intent = new Intent(getApplicationContext(), DriverActivity.class);
+        startActivity(intent);
+    }
+
     public void buttonAcceptRequest(View view) {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
