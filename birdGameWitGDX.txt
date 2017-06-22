@@ -1,0 +1,42 @@
+- go to http://libgdx.badlogicgames.com/download.html
+
+- download Setup App
+
+- run gdx setup app and generate new game project
+
+- name - name of project - Flappy Bird
+- package - our package structure like - com.konggit.flappybird
+- game class - name of our main class - FlappyBird
+- destination - place where project will be generated
+- android path(to get android path - android studio-> tools-> android-> 
+  SDK Manager-> Android SDK Location) C:\Users\username\AppData\Local\Android\Sdk
+- libGDXVersion - choose latest one - 1.6.5
+- Sub Projects - mark only Android
+
+click Generate click Yes on question about more recent version than reccomended
+
+open project with android studio
+
+core-> java-> our main class FlappyBird
+
+create() method - creates app when started
+
+render() method - gets run again and again - like in endless loop
+
+classes 
+SpriteBatch - batch of sprites(images)
+Texture - some sprite(image)
+
+so our render method now doing -
+@Override
+	public void render () {
+        //draw color(1,0,0,1 is red)
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //start gathering batch
+		batch.begin();
+        //add img to batch
+		batch.draw(img, 0, 0);
+        //end batch build
+		batch.end();
+	}
