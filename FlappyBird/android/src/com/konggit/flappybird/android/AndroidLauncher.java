@@ -1,4 +1,4 @@
-package com.robpercival.flappybird.android;
+package com.konggit.flappybird.android;
 
 import android.os.Bundle;
 
