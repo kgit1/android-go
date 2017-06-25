@@ -12,7 +12,8 @@ public class FlappyBird extends ApplicationAdapter {
     //Texture - some sprite(image)
     private Texture background;
     private Texture[] birds;
-    private Texture[] tubes;
+    private Texture topTube;
+    private Texture bottomTube;
 
     private int flapState = 0;
     private boolean gameState = false;
@@ -40,11 +41,10 @@ public class FlappyBird extends ApplicationAdapter {
         batch = new SpriteBatch();
         background = new Texture("background.jpg");
         birds = new Texture[2];
-        tubes = new Texture[2];
         birds[0] = new Texture("bird1a.png");
         birds[1] = new Texture("bird2a.png");
-        tubes[0] = new Texture("tube_down.png");
-        tubes[1] = new Texture("tube_up.png");
+        topTube = new Texture("tube_up.png");
+        bottomTube = new Texture("tube_down.png");
 
         //draw background image starting from coordinates half of the screen width - half of birds width - 30px
         birdX = Gdx.graphics.getWidth() / 2 - birds[flapState].getWidth() / 2 - 30;
@@ -67,7 +67,7 @@ public class FlappyBird extends ApplicationAdapter {
 
             if (gameState) {
                 Gdx.app.log("GDXLog", "Touched");
-                Gdx.app.log("Log", "DownMovement " + String.valueOf(-tubes[0].getWidth()));
+                Gdx.app.log("Log", "DownMovement " + String.valueOf(-topTube.getWidth()));
                 Gdx.app.log("Log", "DownMovement " + String.valueOf(tubesX - tubesXMoved));
 
                 if (birdDownMove < birdMaxUp) {
@@ -110,8 +110,8 @@ public class FlappyBird extends ApplicationAdapter {
 
         if (gameState) {
             tubesXMoved += tubesVelocity;
-            if ((tubesX - tubesXMoved) < -tubes[0].getWidth()) {
-                Gdx.app.log("Log", "DownMovement " + String.valueOf(-tubes[0].getWidth()));
+            if ((tubesX - tubesXMoved) < -topTube.getWidth()) {
+                Gdx.app.log("Log", "DownMovement " + String.valueOf(-topTube.getWidth()));
                 Gdx.app.log("Log", "DownMovement " + String.valueOf(tubesX));
                 tubesXMoved = 0;
             }
@@ -125,8 +125,8 @@ public class FlappyBird extends ApplicationAdapter {
 
         //draw bird image starting from coordinates birdX and birdY
         batch.draw(birds[flapState], birdX, birdY - birdDownMove);
-        batch.draw(tubes[0], tubesX - tubesXMoved, tubeDownY);
-        batch.draw(tubes[1], tubesX - tubesXMoved, tubeUpY);
+        batch.draw(bottomTube, tubesX - tubesXMoved, tubeDownY);
+        batch.draw(topTube, tubesX - tubesXMoved, tubeUpY);
         batch.end();
 
     }
