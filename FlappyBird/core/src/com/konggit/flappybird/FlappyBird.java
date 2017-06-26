@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
 
@@ -40,8 +41,8 @@ public class FlappyBird extends ApplicationAdapter {
 
     private ShapeRenderer shapeRenderer;
     private Circle birdCircle;
-    private Rectangle topRectangle;
-    private Rectangle bottomRectangle;
+    private Rectangle[] topRectangle;
+    private Rectangle[] bottomRectangle;
 
 
     @Override
@@ -57,8 +58,8 @@ public class FlappyBird extends ApplicationAdapter {
 
         shapeRenderer = new ShapeRenderer();
         birdCircle = new Circle();
-        topRectangle = new Rectangle();
-        bottomRectangle = new Rectangle();
+        topRectangle = new Rectangle[numberOfTubes];
+        bottomRectangle = new Rectangle[numberOfTubes];
 
         topTube = new Texture("top_tube.png");
         bottomTube = new Texture("bottom_tube.png");
@@ -84,6 +85,13 @@ public class FlappyBird extends ApplicationAdapter {
         tubeYDefaults[2][1] = halfScreenWidth * 2 - halfTubesGap;
 
         initTubesCoordinates(numberOfTubes);
+
+        for (int i = 0; i < numberOfTubes; i++) {
+
+            topRectangle[i] = new Rectangle();
+            bottomRectangle[i] = new Rectangle();
+
+        }
 
     }
 
@@ -119,6 +127,23 @@ public class FlappyBird extends ApplicationAdapter {
         if (birdDownMove < birdMaxDown) {
 
             if (gameState) {
+
+                birdCircle.set(Gdx.graphics.getWidth() / 2 - 20, birdY - birdDownMove + birds[flapState].getHeight() / 2, birds[flapState].getWidth() / 2);
+
+                for (int i = 0; i < numberOfTubes; i++) {
+
+                    //shapeRenderer.rect(bottomRectangle[i].x,bottomRectangle[i].y,bottomRectangle[i].width, bottomRectangle[i].height);
+                    //shapeRenderer.rect(topRectangle[i].x,topRectangle[i].y,topRectangle[i].width, topRectangle[i].height);
+
+                    if (Intersector.overlaps(birdCircle, topRectangle[i]) || Intersector.overlaps(birdCircle, bottomRectangle[i])) {
+
+                        Gdx.app.log("Log", "Collision");
+                        gameOver();
+
+                    }
+
+                }
+
                 if (birdVelocity < 10) {
                     birdVelocity++;
                     // Gdx.app.log("Log", "Velocity: " + String.valueOf(birdVelocity));
@@ -127,10 +152,7 @@ public class FlappyBird extends ApplicationAdapter {
                 //Gdx.app.log("Log", "DownMovement " + String.valueOf(birdDownMove));
             }
         } else {
-            gameState = false;
-            birdDownMove = 0;
-            initTubesCoordinates(numberOfTubes);
-            //Gdx.app.log("GDXLog", "GAME OVER");
+            gameOver();
         }
 
         if (gameState) {
@@ -139,15 +161,8 @@ public class FlappyBird extends ApplicationAdapter {
                 batch.draw(bottomTube, tubesX[i], tubeY[i][0]);
                 batch.draw(topTube, tubesX[i], tubeY[i][1]);
 
-                bottomRectangle.set(tubesX[i], tubeY[i][0], bottomTube.getWidth(), bottomTube.getHeight());
-                topRectangle.set(tubesX[i], tubeY[i][1], topTube.getWidth(), topTube.getHeight());
-
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-               // shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-               shapeRenderer.setColor(Color.CYAN);
-                shapeRenderer.rect(bottomRectangle.x,bottomRectangle.y,bottomRectangle.width, bottomRectangle.height);
-                shapeRenderer.rect(topRectangle.x,topRectangle.y,topRectangle.width, topRectangle.height);
-                shapeRenderer.end();
+                bottomRectangle[i].set(tubesX[i], tubeY[i][0], bottomTube.getWidth(), bottomTube.getHeight());
+                topRectangle[i].set(tubesX[i], tubeY[i][1], topTube.getWidth(), topTube.getHeight());
 
                 tubesX[i] -= tubesVelocity;
                 if (tubesX[i] < -topTube.getWidth()) {
@@ -178,13 +193,31 @@ public class FlappyBird extends ApplicationAdapter {
         batch.end();
 
         //set values of circle
-        birdCircle.set(Gdx.graphics.getWidth() / 2-20, birdY - birdDownMove + birds[flapState].getHeight() / 2, birds[flapState].getWidth() / 2);
+       // birdCircle.set(Gdx.graphics.getWidth() / 2 - 20, birdY - birdDownMove + birds[flapState].getHeight() / 2, birds[flapState].getWidth() / 2);
 
         //create and fill shapeRenderer
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.ROYAL);
-        shapeRenderer.circle(birdCircle.x, birdCircle.y, birdCircle.radius);
-        shapeRenderer.end();
+        //shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        //shapeRenderer.setColor(Color.ROYAL);
+        //shapeRenderer.circle(birdCircle.x, birdCircle.y, birdCircle.radius);
+
+       /*
+       birdCircle.set(Gdx.graphics.getWidth() / 2 - 20, birdY - birdDownMove + birds[flapState].getHeight() / 2, birds[flapState].getWidth() / 2);
+
+       for (int i = 0; i < numberOfTubes; i++) {
+
+            //shapeRenderer.rect(bottomRectangle[i].x,bottomRectangle[i].y,bottomRectangle[i].width, bottomRectangle[i].height);
+            //shapeRenderer.rect(topRectangle[i].x,topRectangle[i].y,topRectangle[i].width, topRectangle[i].height);
+
+            if (Intersector.overlaps(birdCircle, topRectangle[i]) || Intersector.overlaps(birdCircle, bottomRectangle[i])) {
+
+                Gdx.app.log("Log", "Collision");
+
+            }
+
+
+        }*/
+
+        //shapeRenderer.end();
 
 
     }
@@ -200,5 +233,14 @@ public class FlappyBird extends ApplicationAdapter {
             tubeY[i][1] = tubeYDefaults[randomInt][1];
             tubesX[i] = Gdx.graphics.getWidth() + bottomTube.getWidth() / 2 + i * (distanceBetweenTubes);
         }
+    }
+
+    private void gameOver(){
+
+        gameState = false;
+        birdDownMove = 0;
+        initTubesCoordinates(numberOfTubes);
+        Gdx.app.log("GDXLog", "GAME OVER");
+
     }
 }
