@@ -2,8 +2,12 @@ package com.konggit.flappybird;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 
 
 public class FlappyBird extends ApplicationAdapter {
@@ -34,16 +38,28 @@ public class FlappyBird extends ApplicationAdapter {
     private float jump;
     private float tubesVelocity = 4;
 
+    private ShapeRenderer shapeRenderer;
+    private Circle birdCircle;
+    private Rectangle topRectangle;
+    private Rectangle bottomRectangle;
+
 
     @Override
     //when app starts
     public void create() {
 
         batch = new SpriteBatch();
+
         background = new Texture("background.jpg");
         birds = new Texture[2];
         birds[0] = new Texture("bird1a.png");
         birds[1] = new Texture("bird2a.png");
+
+        shapeRenderer = new ShapeRenderer();
+        birdCircle = new Circle();
+        topRectangle = new Rectangle();
+        bottomRectangle = new Rectangle();
+
         topTube = new Texture("top_tube.png");
         bottomTube = new Texture("bottom_tube.png");
 
@@ -123,6 +139,16 @@ public class FlappyBird extends ApplicationAdapter {
                 batch.draw(bottomTube, tubesX[i], tubeY[i][0]);
                 batch.draw(topTube, tubesX[i], tubeY[i][1]);
 
+                bottomRectangle.set(tubesX[i], tubeY[i][0], bottomTube.getWidth(), bottomTube.getHeight());
+                topRectangle.set(tubesX[i], tubeY[i][1], topTube.getWidth(), topTube.getHeight());
+
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+               // shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+               shapeRenderer.setColor(Color.CYAN);
+                shapeRenderer.rect(bottomRectangle.x,bottomRectangle.y,bottomRectangle.width, bottomRectangle.height);
+                shapeRenderer.rect(topRectangle.x,topRectangle.y,topRectangle.width, topRectangle.height);
+                shapeRenderer.end();
+
                 tubesX[i] -= tubesVelocity;
                 if (tubesX[i] < -topTube.getWidth()) {
 
@@ -151,13 +177,23 @@ public class FlappyBird extends ApplicationAdapter {
         batch.draw(birds[flapState], birdX, birdY - birdDownMove);
         batch.end();
 
+        //set values of circle
+        birdCircle.set(Gdx.graphics.getWidth() / 2-20, birdY - birdDownMove + birds[flapState].getHeight() / 2, birds[flapState].getWidth() / 2);
+
+        //create and fill shapeRenderer
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.ROYAL);
+        shapeRenderer.circle(birdCircle.x, birdCircle.y, birdCircle.radius);
+        shapeRenderer.end();
+
+
     }
 
     private int randomNumber() {
         return (int) (Math.random() * 3);
     }
 
-    private void initTubesCoordinates(int numberOfTubes){
+    private void initTubesCoordinates(int numberOfTubes) {
         for (int i = 0; i < numberOfTubes; i++) {
             int randomInt = randomNumber();
             tubeY[i][0] = tubeYDefaults[randomInt][0];
