@@ -40,3 +40,28 @@ so our render method now doing -
         //end batch build
 		batch.end();
 	}
+
+to draw sprite\image in app - add it to app with Texture.class and draw with batch.draw()
+//this add to render() method, which draws all in app
+batch.draw(image, x, y, width, height);
+
+to add shapes - use Circle.class, Rectangle.class etc
+Circle circle = new Circle();
+circle.set(x, y, radius);
+
+to draw shapes - use ShapeRenderer.class
+ShapeRenderer shapeRenderer = new ShapeRenderer();
+//this add to render() method, which draws all in app
+shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+shapeRenderer.setColor(Color.ROYAL);
+shapeRenderer.circle(circle.x, circle.y, circle.radius);
+shapeRenderer.end();
+
+to detect collisions in your app - use shapes with coordinates of sprites you want to check on collision
+and than use method overlaps() of class Intersector on this shapes
+if (Intersector.overlaps(circle, topRectangle) || Intersector.overlaps(circle, bottomRectangle)) {
+
+                        Gdx.app.log("Log", "Collision");
+                        gameOver();
+
+                    } 
