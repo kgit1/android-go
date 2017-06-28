@@ -24,6 +24,7 @@ public class FlappyBird extends ApplicationAdapter {
     private Texture[] birds;
     private Texture topTube;
     private Texture bottomTube;
+    private Texture gameOver;
 
     private int flapState = 0;
     private boolean gameState = false;
@@ -68,6 +69,7 @@ public class FlappyBird extends ApplicationAdapter {
         birds = new Texture[2];
         birds[0] = new Texture("bird1a.png");
         birds[1] = new Texture("bird2a.png");
+        gameOver = new Texture("gameover.png");
 
         shapeRenderer = new ShapeRenderer();
         birdCircle = new Circle();
@@ -290,6 +292,8 @@ public class FlappyBird extends ApplicationAdapter {
         birdDownMove = 0;
         score = 0;
         scoringTube = 0;
+
+        batch.draw(gameOver, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         initTubesCoordinates(numberOfTubes);
 
