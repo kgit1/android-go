@@ -355,7 +355,7 @@ public class FlappyBird extends ApplicationAdapter {
     private void birdWingFlipper() {
 
         if (gameState == STARTED) {
-            
+
             if (flapState == 0) {
 
                 flapState = 1;
