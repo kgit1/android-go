@@ -1,4 +1,4 @@
-package com.example.a.appfirebase;
+package com.konggit.appfirebase;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.a.appfirebase", appContext.getPackageName());
+        assertEquals("com.konggit.appfirebase", appContext.getPackageName());
     }
 }

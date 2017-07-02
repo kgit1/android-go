@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "398311978354",
+    "firebase_url": "https://fir-demo-project-1200b.firebaseio.com",
+    "project_id": "fir-demo-project-1200b",
+    "storage_bucket": "fir-demo-project-1200b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398311978354:android:982b5dcabb7fb2af",
+        "android_client_info": {
+          "package_name": "com.konggit.appfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398311978354-rdp1arcvbcntre5lko0jme4rg18nu11h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj614bRc7ga07jJ5UEYPYla8-GBZJTCgY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

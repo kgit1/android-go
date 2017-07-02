@@ -1,4 +1,4 @@
-package com.example.a.appfirebase;
+package com.konggit.appfirebase;
 
 import org.junit.Test;
 
