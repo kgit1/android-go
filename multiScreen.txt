@@ -1,0 +1,50 @@
+to add miltiScreen(splitScreen) ability to the whole app
+add to AndroidManifest.xml
+<application
+        android:resizeableActivity="true"
+</application>
+
+or to certain activity
+<activity android:name=".MainActivity"
+                  android:supportsPictureInPicture="true">
+
+	//to set default size of splited view
+            <layout
+                android:defaultHeight="500dp"
+                android:gravity="top"
+                android:minWidth="300dp"/>            
+        </activity>
+
+use in MainActivity
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+        //Multi window mode has changed
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //to invoke split screen behaviour in app - log tap on square button
+        
+        if(isInMultiWindowMode()){
+            //We're in ,ulti window mode
+
+        }
+
+        if(isInPictureInPictureMode()){
+
+            //We're in picture in picture mode
+
+        }
+    }
+}
