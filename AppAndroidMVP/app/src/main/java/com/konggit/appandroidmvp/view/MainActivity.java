@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.konggit.appandroidmvp.MVP_MainActivity;
+import com.konggit.appandroidmvp.R;
 import com.konggit.appandroidmvp.presenter.MainPresenter;
 import com.konggit.mvp.mvp.GenericMVPActivity;
 
