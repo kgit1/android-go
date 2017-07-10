@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.github.dcendents.android-maven'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+
+    // Unit testing dependencies
+    testCompile 'junit:junit:4.12'
+
+    // Set this dependency if you want to use Mockito
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
+    // Set this dependency if you want to use Hamcrest matching
+    testCompile 'org.hamcrest:hamcrest-library:1.1'
+
+    testCompile "org.robolectric:robolectric:3.0"
+}
+
+
+group = 'com.tinmegali.mvp' // Change this to match your package name
+version = '0.0.7' // Change this to match your version number
+
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+}
+
+
+task generateJavaDocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath()
+            .join(File.pathSeparator))
+    failOnError false
+}
+
+task generateJavaDocsJar(type: Jar, dependsOn: generateJavaDocs) {
+    from generateJavaDocs.destinationDir
+    classifier 'javadoc'
+}
+
+//bintray {
+//    user = BINRAY_USER
+//    key = BINRAY_KEY
+//    pkg {
+//        repo = 'maven'
+//        name = BINRAY_NAME
+//
+//        version {
+//            name = 'simple-mvp'
+//            desc = 'A simple MVP Framework without any external libraries.'
+//            vcsTag = '0.0.7'
+//        }
+//
+//        licenses = ['Apache-2.0']
+//        vcsUrl = 'https://github.com/tinmegali/simple-mvp'
+//        websiteUrl = 'https://github.com/tinmegali/simple-mvp'
+//    }
+//    configurations = ['archives']
+//}
+
+artifacts {
+    archives generateJavaDocsJar
+
+    archives generateSourcesJar
+}
