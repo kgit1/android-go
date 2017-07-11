@@ -1,0 +1,114 @@
+https://medium.com/wolox-driving-innovation/the-good-the-bad-and-the-ugly-things-about-the-new-recyclerview-1795df6f94c9
+The Good, the Bad and the Ugly Things About the New RecyclerView
+
+What it is and what it is not
+If you are an Android developer, no doubt you know that ListView is one of the most popular Android widgets. Its functionality and usage has no equal amongst its peers… until now.
+Android Lollipop (API 21) introduced the new RecyclerView widget, with the intention of increasing ListView functionalities and taking them to the next level. Bear in mind that what Google purposely did with RecyclerView was to extend rather than to replace ListView functionalities and responsibilities. So, if you want to update your old and reliable ListView with the new state-of-the-art RecyclerView, you should know that it is possible, but not without some gotchas in the middle.
+There is only one word that describes RecyclerView perfectly: flexibility. By decoupling the data from its visual representation, this widget can be used for many different purposes and provides the developer with a powerful tool.
+Components
+
+
+Related post: Sir, here is a handcrafted RecyclerView for you
+Almost vintage retrocompatibility
+RecyclerView has super retrocompatibility. This is because it is part of Android’s v7 Support Libraries. This means that any device running on API 7 or higher will be able to use RecyclerView right away.
+The easiest way to get RecyclerView in your project is by using Gradle:
+dependencies {
+    ...
+    compile 'com.android.support:recyclerview-v7:21.0.+'
+}
+
+And on your XML layout:
+<android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+Boost your app with the ViewHolder pattern
+RecyclerView forces you to use the ViewHolder pattern. To cut a long story short, this pattern holds references to views to avoid UI lookups as much as possible. In other words, instead of calling the method findViewById(…) each time you need to modify something from the UI, you just need to execute this method once and then save a reference to its result for future usage.
+This results in a greater memory consumption (remember that you are using memory to keep the view’s references), but you also get a general improvement in the performance by not executing UI lookups anymore, which is a relatively expensive method (it is way faster to access an instance variable instead). This is where RecyclerView got its name from: recycling (reusing) view’s references.
+However, don’t expect any miracles from the ViewHolder pattern. It does, indeed, give a performance boost to your app, but it will be much more evident on older (or low-end) devices. Generally speaking, powerful devices usually work fine with both ListViews and RecyclerViews.
+Important: the ViewHolder pattern can also be used with ListViews and its performance impact will be the same. The only difference is that if you use RecyclerView, you must implement this pattern, while in ListViews this is an optional, but recommended technique.
+Be flexible like chewing gum with LayoutManagers
+The first big difference that we found in RecyclerView is that even though its purpose in life is to represent a given dataset graphically (just like any ListView), it does not necessarily need to be in a list of rows. RecyclerView has some tools (called LayoutManagers) that will help you achieve not only a list of rows, but also, grids and staggered grids of views.
+For a ListView styled RecyclerView use the LinearLayoutManager
+For a GridView styled RecyclerView use the GridLayoutManager
+For a staggered grid effect, use the StaggeredGridLayoutManager
+For a custom layout manager, extend the RecyclerView.LayoutManager class
+For instance:
+mActivity = getActivity();
+mRecyclerView = (RecyclerView) mActivity.findViewById(R.id.recycler_view);
+mLinearLayoutManager = new LinearLayoutManager(mActivity.getApplicationContext());
+mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+Even with LayoutManagers, there will be cases where you need to have more than one layout per item at the same time. Check out Part II of this post to learn how to manage these situations efficiently.
+
+Related post: Every rose has its thorns
+One Adapter to rule them all
+Instead of having different adapters according to where the dataset comes from (like ArrayAdapter or CursorAdapter in ListView), RecyclerView uses a universal adapter implemented by you to handle the data sources. This reflects RecyclerView’s flexibility once again.
+Make sure to extend RecyclerView.Adapter<RecyclerView.ViewHolder> and implement the following methods according to your views and dataset:
+onCreateViewHolder(…)
+onBindViewHolder(…)
+getItemCount(…)
+Pixar grade animations
+If you are looking for a way to make the latest Toy Story animation movie then RecyclerView may not be your first choice. But, if you want to animate items such as adding, removing or swiping gestures, then RecyclerView may be useful for you.
+The RecyclerView widget has out of the box support for custom animations by extending the ItemAnimator class.
+A fade animation is applied by default. Besides, you can explicitly do this with:
+mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+If you are looking for some already prepared animations for your RecyclerView you can use this library by Gabriele Marrioti.
+
+Check out the second part of the post to learn some click listeners, layouts and performance tips and tricks!
+Click here to read Part 2
+Posted by Juan Ignacio Molina (juan.molina@wolox.com.ar)
+www.wolox.com.ar
+=======================================
+
+Sir, Here is a Handcrafted RecyclerView for You
+On the one hand, ListView had a pretty straightforward way to handle click events, all you had to do was to implement the OnItemClickListener() method. That was it.
+On the other hand, RecyclerView is much more flexible but demanding. You have to implement the click listeners by yourself. Don’t panic, this is neither a bad nor a hard thing to do. The idea is to allow you to customize this behavior according to your needs, in case you want to use a grid instead of a list, for example.
+
+Related post: The Good, the Bad and the Ugly Things About the New RecyclerView
+Currently there are several ways of handling click events:
+Implement the listeners in the Activity or Fragment
+Implement the listeners in your RecyclerView Adapter
+Implement the listeners in your item’s ViewHolder class
+Here is an example of how to implement this according to the most upvoted answer in Stackoverflow regarding click events on RecyclerView.
+RowViewHolder.java:
+RecylerViewAdapter.java:
+Using different layouts
+One of the great things about RecyclerView is that it can handle different layouts for its items. Doing so will be responsibility of the Adapter.
+Below, you will see the code used to create a loader item’s layout (based on the best answer in Stackoverflow).
+RecylerViewAdapter.java:
+
+Related post: Every Rose has its Thorns
+Additional notes
+Setting recyclerView.setHasFixedSize(true); optimizes the Recycler if changes in the adapter content cannot change the size of RecyclerView itself. Set this true if you don’t need to dynamically change your Recycler’s size.
+RecyclerView does not come with default dividers. With ListViews you can set a default divider for the rows by using the XML attributes android:divider and android:dividerHeight. For RecyclerViews you can place the dividers in your item’s layout, code a custom implementation of RecyclerView.ItemDecoration or decide not to use dividers at all.
+By now you probably have an idea of how the RecyclerView works and how to get the most from it. Despite of this, there are some things left to say about this widget that may raise some red flags.
+============================
+
+
+Every Rose has its Thorns
+It’s undeniable that being a brand new widget, RecyclerView has some downsides that need to be addressed in the short/mid term, most probably in the shape of new open source libraries.
+Multiple selection
+One of these downsides is the single or multiple selection UI pattern. This feature has been covered extensively in ListViews, but ViewHolder does not include any tool for implementing selection.
+If you want to use this UI pattern, ask yourself if using a RecyclerView will add significant value to your app because unfortunately the solution to this issue is not so simple.
+Luckily for us, Bill Phillips from Big Nerd Ranch has found a nice workaround to get the multiple selection working. You can find his solution here.
+
+Related post: The Good, the Bad and the Ugly Things About the New RecyclerView
+Headers and footers
+It would have been nice to have native support for headers and footers in RecyclerView. However, we are facing here another use case in which we need to rely on third party libraries to achieve this.
+Obviously, you can make this functionality a reality by coding it yourself. As stated above, it is not so complicated to place a custom layout as a first or last item of RecyclerView. Besides providing a custom layout for those elements, you just have to include the header (or footer) element to the dataset and notify the Adapter. It’s a shame that such a common use case has to be coded in every single project.
+Be careful when accessing the UI from a background thread
+This is not a characteristic that is exclusive to RecyclerView, but I think it is important to mention it because this is a very common mistake.
+In Android you can not access the UI from a background thread. This may be a problem when trying to update the adapter from a callback (for example: trying to notify the adapter of changes in the dataset after fetching data from the Internet) .
+If you find yourself getting the following exception:
+java.lang.IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling
+This probably occurs because you are calling notifyItemInserted(position);, notifyItemChanged(position), or notifyItemRemoved(position); from a background thread (or from a callback, which runs on a background thread).
+To solve this, use a handler:
+android.os.Handler mHandler = getActivity().getWindow().getDecorView().getHandler();
+mHandler.post(new Runnable() {
+        public void run(){
+                //change adapter contents
+                mRecyclerViewAdapter.notifyItemInserted(position);
+        }
+});
