@@ -1,0 +1,455 @@
+=======================================================================================================
+Snackbar: Android design support library
+
+In this post we will talk about Snackbar.
+
+Snackbars provide lightweight feedback about an operation by showing a brief message at the bottom of the screen. Snackbars can contain an action.
+
+Firstly need to add library or add dependency for gradle.
+dependencies {
+    compile 'com.android.support:design:22.2.0'
+}
+
+You can use Snackbar without Action:
+Snackbar.make(findViewById(R.id.root), "Click", Snackbar.LENGTH_SHORT).show();
+
+Snackbar without action
+If you want add to action to Snackbar you must use setAction function:
+Snackbar.make(findViewById(R.id.root), "Click", Snackbar.LENGTH_SHORT).setAction("UNDO", 
+        new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //some action
+            }
+        }).show();
+
+Snackbar with action
+Layout file for this project
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+    android:id="@+id/root">
+    <Button
+        android:id="@+id/button"
+        android:text="Click me!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
+
+Certainly better way move “Click” and “UNDO” strings to strings.xml and use link like R.string.undo.
+=======================================================================================================
+
+
+=======================================================================================================
+Animated toolbar: Android design support library
+http://alexzh.com/tutorials/animated-toolbar-android-design-support-library/
+
+Today, I’m talking about animated toolbar. For realisation this toolbar we will use Android design support library.
+toolbar_animation_demo
+Android Toolbar Animation
+
+STEP 1: ADD LIBRARIES TO THE PROJECT
+Firstly need to add libraries to gradle file for a project.
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:palette-v7:22.2.0'
+}
+
+STEP 2: ADD STRINGS AND ARRAY TO THE PROJECT
+Next step update strings.xml file in folder /res/values/. Need to add some strings and an array.
+<resources>
+    <string name="app_name">ToolbarAnimation</string>
+    <string name="one">One</string>
+    <string name="two">Two</string>
+    <string name="three">Three</string>
+    <string name="four">Four</string>
+    <string name="five">Five</string>
+    <string name="six">Six</string>
+    <string name="seven">Seven</string>
+    <string name="eight">Eight</string>
+    <string name="nine">Nine</string>
+    <string name="ten">Ten</string>
+    <string name="eleven">Eleven</string>
+    <string name="twelve">Twelve</string>
+    <string name="numbers">Numbers</string>
+    <string-array name="numbers">
+        <item>@string/one</item>
+        <item>@string/two</item>
+        <item>@string/three</item>
+        <item>@string/four</item>
+        <item>@string/five</item>
+        <item>@string/six</item>
+        <item>@string/seven</item>
+        <item>@string/eight</item>
+        <item>@string/nine</item>
+        <item>@string/ten</item>
+        <item>@string/eleven</item>
+        <item>@string/twelve</item>
+    </string-array>
+</resources>
+STEP 4: UPDATE LAYOUT FOR MAIN ACTIVITY
+After it need to update layout for main activity in the project.
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="192dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginBottom="32dp"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            <ImageView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/header"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/anim_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</android.support.design.widget.CoordinatorLayout>
+
+In this source code we using CoordinatorLayout, AppBarLayout, CollapsingToolbarLayout. These may be new layout for some of us.
+CoordinatorLayout
+CoordinatorLayout is a super-powered FrameLayout.
+
+AppBarLayout
+AppBarLayout is a vertical LinearLayout which implements many of the features of material designs app bar concept, namely scrolling gestures.
+
+CollapsingToolbarLayout
+CollapsingToolbarLayout is a wrapper for Toolbar which implements a collapsing app bar. It is designed to be used as a direct child of a AppBarLayout.
+
+STEP 5: UPDATE MAIN ACTIVITY
+public class MainActivity extends AppCompatActivity {
+    private Toolbar mToolbar;
+    private CollapsingToolbarLayout mCollapsingToolbar;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mToolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        setSupportActionBar(mToolbar);
+        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbar.setTitle(getString(R.string.numbers));
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.header);
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                int mutedColor = palette.getLightMutedColor(R.attr.colorPrimary);
+                mCollapsingToolbar.setContentScrimColor(mutedColor);
+            }
+        });
+    }
+}
+STEP 6: UPDATE STYLE FOR THIS PROJECT
+Firstly need to add a primaryColorDark for colors.xml in folder /res/values/.
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColorDark">#1976D2</color>
+</resources>
+
+After it need to update style for whole application, for it need to update styles.xml file in folder /res/values/.
+<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimaryDark">@color/primaryColorDark</item>
+</style>
+
+Android Toolbar Animation
+Android Toolbar Animation
+STEP 7: ADD LAYOUT FOR ITEM OF RECYCLERVIEW
+For using recylcerView need to use Adapter with items. Firstly need to add layout for item of recycler view. For it need to add layout for item to folder /res/layout/. In my case this file called “item.xml“, source code for this file is next:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textView"
+        android:textSize="22sp"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+STEP 8: ADD ADAPTER FOR RECYLCER VIEW 
+Next step is create adapter for recycler view. For it need to create java class. In my case this file called “RecyclerViewAdapter.java“.
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+    private String[] mList;
+    public RecyclerViewAdapter(String[] list) {
+        this.mList = list;
+    }
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.item, parent, false);
+        return new ViewHolder(itemView);
+    }
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.titleTextView.setText(mList[position]);
+    }
+    @Override
+    public int getItemCount() {
+        return mList.length;
+    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView titleTextView;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = (TextView)itemView.findViewById(R.id.textView);
+            itemView.setTag(itemView);
+        }
+    }
+}
+
+STEP 9: UPDATE MAIN ACTIVITY
+Last step is update activity for work with recycler view and display some information.
+mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+mRecyclerView.setLayoutManager(mGridLayoutManager);
+mAdapter = new RecyclerViewAdapter(getResources().getStringArray(R.array.numbers));
+mRecyclerView.setAdapter(mAdapter);
+Full source code of main activity is next:
+public class MainActivity extends AppCompatActivity {
+    private Toolbar mToolbar;
+    private RecyclerView mRecyclerView;
+    private RecyclerViewAdapter mAdapter;
+    private CollapsingToolbarLayout mCollapsingToolbar;
+    private StaggeredGridLayoutManager mGridLayoutManager;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mToolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        setSupportActionBar(mToolbar);
+        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbar.setTitle(getString(R.string.numbers));
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mGridLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
+        mAdapter = new RecyclerViewAdapter(getResources().getStringArray(R.array.numbers));
+        mRecyclerView.setAdapter(mAdapter);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.header);
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                int mutedColor = palette.getLightMutedColor(R.attr.colorPrimary);
+                mCollapsingToolbar.setContentScrimColor(mutedColor);
+            }
+        });
+    }
+}
+=======================================================================================================
+
+
+=======================================================================================================
+Floating action button: Android design support library
+
+In this post we will talk about Floating Action Button.
+
+Floating action buttons are used for a promoted action. They are distinguished by a circled icon floating above the UI and have motion behaviors that include morphing, launching, and a transferring anchor point.
+
+Floating action buttons come in two sizes:
+
+Default size: For most use cases
+Mini size: Only used to create visual continuity with other screen elements
+different size of fab
+For change size of button need to use fabSize attribute with value: mini or normal.
+
+Firstly need to add library or add dependency for gradle.
+dependencies {
+    compile 'com.android.support:design:22.2.0'
+}
+Next step is adding floating action button to layout.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha" />
+</RelativeLayout>
+After it need to update Activity.
+public class FABActivity extends ActionBarActivity implements View.OnClickListener {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fab_layout);
+        ((FloatingActionButton)findViewById(R.id.fab)).setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View v) {
+        Snackbar.make(findViewById(R.id.main_content), "TEST", Snackbar.LENGTH_SHORT).show();
+    }
+}
+Unfortunately Snackbar lock floating action button.
+
+snackbar locked fab
+
+For fix this problem need to use CoordinatorLayout.
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+            app:layout_anchorGravity="bottom|right|end"/>
+    </android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
+After it all works correctly.
+=======================================================================================================
+
+
+=======================================================================================================
+EditText Floating Labels: Android design support library
+
+Today, I’m talking about EditText Floating Labels in Android application.
+
+The new TextInputLayout allows us to wrap EditText views in order to display floating labels above the EditText field. This layout also let show error messages below the EditText field. When an EditText has focus, the assigned hint will ‘float’ above the view to the top-left hand side.
+
+Firstly need to add library or add a dependency to gradle file.
+dependencies {
+    compile 'com.android.support:design:22.2.0'
+}
+After it need to update the strings.xml file in the project.
+<resources>
+    <string name="app_name">EditText Floating Labels Demo</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="login_error">Username can not be empty</string>
+</resources>
+Next step is updating layout for the project.
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <EditText
+            android:id="@+id/edit_text_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/username" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/password_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <EditText
+            android:id="@+id/edit_text_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/password" />
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in"
+        android:id="@+id/sing_in_button"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>
+Last step is update activity.
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
+    }
+}
+We also can show error in TextInputLayout. For it need use method setErrorEnabled(boolean) and setError(CharSequence). As example we can check login field during focus another view. For it need to update onCreate function and implement onFocusChange function.
+public class MainActivity extends AppCompatActivity implements View.OnFocusChangeListener {
+    TextInputLayout mUsernameLayout;
+    EditText mUsername;
+    EditText mPassword;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
+        mUsernameLayout = (TextInputLayout) findViewById(R.id.login_layout);
+        mUsername = (EditText) findViewById(R.id.edit_text_email);
+        mPassword = (EditText) findViewById(R.id.edit_text_password);
+        mUsername.setOnFocusChangeListener(this);
+        mPassword.setOnFocusChangeListener(this);
+    }
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v != mUsername && mUsername.getText().toString().isEmpty()) {
+            mUsernameLayout.setErrorEnabled(true);
+            mUsernameLayout.setError(getResources().getString(R.string.login_error));
+        } else {
+            mUsernameLayout.setErrorEnabled(false);
+        }
+    }
+}
+edittext floating labels
