@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="withText"/>
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_settings1"
+            android:icon="@drawable/ic_launcher"
+            android:orderInCategory="100"
+            android:title="1"/>
+        <!--app:showAsAction="withText"-->
+        <item
+            android:id="@+id/action_settings2"
+            android:orderInCategory="100"
+            android:title="4"/>
+
+        <item
+            android:id="@+id/action_settings4"
+            android:orderInCategory="100"
+            android:title="3"/>
+    </group>
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/action_settings5"
+            android:orderInCategory="100"
+            android:title="5"/>
+
+        <item
+            android:id="@+id/action_settings6"
+            android:orderInCategory="100"
+            android:title="6"/>
+
+        <item
+            android:id="@+id/action_settings7"
+            android:orderInCategory="100"
+            android:title="7"/>
+
+        <item
+            android:id="@+id/action_settings8"
+            android:orderInCategory="100"
+            android:title="8"/>
+    </group>
+    <group
+        android:id="@+id/group3">
+        <!-- item with icon-->
+        <item
+            android:id="@+id/action_settings9"
+            android:icon="@drawable/ic_launcher"
+            android:orderInCategory="100"
+            android:title="9"/>
+
+        <item
+            android:id="@+id/action_settings10"
+            android:orderInCategory="100"
+            android:title="10"/>
+
+        <item
+            android:id="@+id/action_settings11"
+            android:orderInCategory="100"
+            android:title="11"/>
+
+        <!-- item in action bar as icon-->
+        <!-- long click will show title-->
+        <item
+            android:id="@+id/action_settings12"
+            android:icon="@drawable/ic_launcher"
+            android:orderInCategory="100"
+            android:title="12"
+            app:showAsAction="always"/>
+
+        <!-- item with icon-->
+        <item
+            android:id="@+id/action_settings13"
+            android:title="Share"
+            app:showAsAction="always"/>
+
+        <!-- item in action bar as text-->
+        <item
+            android:id="@+id/action_settings14"
+            android:icon="@drawable/ic_launcher"
+            android:orderInCategory="100"
+            android:title="Share"/>
+
+        <item
+            android:id="@+id/action_settings15"
+            android:orderInCategory="100"
+            android:title="15"/>
+
+        <item
+            android:id="@+id/action_settings16"
+            android:orderInCategory="100"
+            android:title="16"
+            app:showAsAction="never">
+            <menu>
+                <item
+                    android:id="@+id/submenu_item1"
+                    android:title="submenu_item1"/>
+            </menu>
+        </item>
+    </group>
+</menu>
