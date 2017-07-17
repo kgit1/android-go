@@ -1,0 +1,172 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:layout_gravity="center_horizontal"
+                                             android:gravity="center"
+                                             android:orientation="vertical">
+
+    <Button
+        android:id="@+id/buttonDialog"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="16dp"
+        android:text="dialog"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+        android:id="@+id/buttonProgress"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:text="progress"
+        app:layout_constraintLeft_toRightOf="@+id/buttonDialog"
+        android:layout_marginLeft="153dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintHorizontal_bias="0.0"/>
+
+    <ProgressBar
+        android:id="@+id/progress2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="22dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress1"/>
+    <!--android:rotation="-90"-->
+
+    <ProgressBar
+        android:id="@+id/progress1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:animationResolution="20"
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="64dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/progress3"
+        style="?android:attr/progressBarStyleInverse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress2"/>
+
+    <ProgressBar
+        android:id="@+id/progress4"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+
+        android:layout_marginTop="8dp"
+        android:background="@color/color2"
+        android:indeterminateDrawable="@anim/progress_ring"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress3"/>
+
+    <ProgressBar
+        android:id="@+id/progress5"
+        style="?android:attr/progressBarStyleLargeInverse"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+
+        android:indeterminateDrawable="@anim/progress"
+
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress4"/>
+
+    <ProgressBar
+        android:id="@+id/progress6"
+        style="?android:attr/progressBarStyleSmallTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress5"/>
+
+    <Button
+        android:id="@+id/buttonProgressPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"/>
+
+
+</android.support.constraint.ConstraintLayout>
+
+    <!--XML attributes-->
+    <!--android:animationResolution	Timeout between frames of animation in milliseconds.-->
+    <!--android:indeterminate	Allows to enable the indeterminate mode.-->
+    <!--android:indeterminateBehavior	Defines how the indeterminate mode should behave when the progress reaches max.-->
+    <!--android:indeterminateDrawable	Drawable used for the indeterminate mode.-->
+    <!--android:indeterminateDuration	Duration of the indeterminate animation.-->
+    <!--android:indeterminateOnly	Restricts to ONLY indeterminate mode (state-keeping progress mode will not work).-->
+    <!--android:indeterminateTint	Tint to apply to the indeterminate progress indicator.-->
+    <!--android:indeterminateTintMode	Blending mode used to apply the indeterminate progress indicator tint.-->
+    <!--android:interpolator-->
+    <!--android:max	Defines the maximum value.-->
+    <!--android:maxHeight	An optional argument to supply a maximum height for this view.-->
+    <!--android:maxWidth	An optional argument to supply a maximum width for this view.-->
+    <!--android:min	Defines the minimum value.-->
+    <!--android:minHeight-->
+    <!--android:minWidth-->
+    <!--android:mirrorForRtl	Defines if the associated drawables need to be mirrored when in RTL mode.-->
+    <!--android:progress	Defines the default progress value, between 0 and max.-->
+    <!--android:progressBackgroundTint	Tint to apply to the progress indicator background.-->
+    <!--android:progressBackgroundTintMode	Blending mode used to apply the progress indicator background tint.-->
+    <!--android:progressDrawable	Drawable used for the progress mode.-->
+    <!--android:progressTint	Tint to apply to the progress indicator.-->
+    <!--android:progressTintMode	Blending mode used to apply the progress indicator tint.-->
+    <!--android:secondaryProgress	Defines the secondary progress value, between 0 and max.-->
+    <!--android:secondaryProgressTint	Tint to apply to the secondary progress indicator.-->
+    <!--android:secondaryProgressTintMode	Blending mode used to apply the secondary progress indicator tint.-->
