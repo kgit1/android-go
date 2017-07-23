@@ -327,3 +327,90 @@ public class LoginActivity extends AppCompatActivity implements LoginView, View.
         presenter.validateCredentials(username.getText().toString(), password.getText().toString());
     }
 }
+
+
+//    AsyncTask Implement callback function with interface
+//This example demonstrate how to implement callback function with interface.
+//
+//        Implement callback function with interface
+//
+//Create a MyAsyncTask class extends AsyncTask. Inside MyAsyncTask, interface DoSomething declared. MyAsyncTask class handle the background timing only, know knowing about the actual jobs. The actual jobs are in the class implement DoSomething.
+//
+//        package com.example.androidcallback;
+//
+//        import android.os.AsyncTask;
+//        import android.os.SystemClock;
+//
+//public class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+//
+//    interface DoSomething {
+//        void doInBackground(int progress);
+//        void doPostExecute();
+//    }
+//
+//    DoSomething myDoSomethingCallBack;
+//    int myMax;
+//
+//    MyAsyncTask(DoSomething callback, int max){
+//        myDoSomethingCallBack = callback;
+//        myMax = max;
+//    }
+//
+//    @Override
+//    protected Void doInBackground(Void... params) {
+//        for (int i = 0; i <= myMax; i++) {
+//            SystemClock.sleep(100);
+//            myDoSomethingCallBack.doInBackground(i);
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    protected void onPostExecute(Void result) {
+//        super.onPostExecute(result);
+//        myDoSomethingCallBack.doPostExecute();
+//    }
+//
+//}
+
+//
+//MainActivity.java, implements DoSomething. Itself (this) will be passed to MyAsyncTask constructor, to implement callback function.
+//        package com.example.androidcallback;
+//
+//        import com.example.androidcallback.MyAsyncTask.DoSomething;
+//
+//        import android.os.Bundle;
+//        import android.widget.ProgressBar;
+//        import android.widget.Toast;
+//        import android.app.Activity;
+//
+//public class MainActivity extends Activity implements DoSomething{
+//
+//    ProgressBar myProgressBar;
+//    MyAsyncTask myAsyncTask;
+//    int myProgress;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//
+//        myProgressBar = (ProgressBar)findViewById(R.id.myprogressbar);
+//
+//        myProgress = 0;
+//        myAsyncTask = new MyAsyncTask(this, 100);
+//        myAsyncTask.execute();
+//    }
+//
+//    @Override
+//    public void doInBackground(int i) {
+//        myProgressBar.setProgress(i);
+//    }
+//
+//    @Override
+//    public void doPostExecute() {
+//        Toast.makeText(MainActivity.this,
+//                "Finish", Toast.LENGTH_LONG).show();
+//    }
+//
+//}

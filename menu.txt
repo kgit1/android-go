@@ -1,0 +1,46 @@
+///////////MENU///////////////
+
+to add menu - add new menu directory ro resources directory
+add new menu resource file main_manu.xml
+
+add to file main_menu.xml 
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/settings"
+        android:id="@+id/settings"/>
+
+    <item android:title="@string/help"
+        android:id="@+id/help"/>
+
+</menu>
+
+add to MainActivity
+
+@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+and add
+
+@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.settings:
+                Log.i("Menu", "settings selected");
+                return true;
+            case R.id.help:
+                Log.i("Menu", " help selected");
+                return true;
+            default:
+                return false;
+        }
+    }
