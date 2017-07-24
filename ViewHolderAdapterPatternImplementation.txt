@@ -1,0 +1,156 @@
+create in layout xml file to define how one item(line) of the list will be looks like
+contacts_list_item.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:weightSum="1">
+
+
+    <TextView
+        android:id="@+id/textItem1"
+        android:layout_width="154dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="item"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textItem2"
+        android:layout_width="177dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="item"
+        android:textSize="18sp"
+        />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>
+
+create class ViewHolderAdapter which extends BaseAdapter
+implement BaseAdapter's methods 
+@Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+    }
+
+add 2 fields - for context and for list
+Context context;
+List<String> data;
+
+generate constructor using both fields
+
+ public ViewHolderAdapter(Context context, List<String> data) {
+        this.context = context;
+        this.data = data;
+    }
+
+add static class ViewHolder to cash list elements
+
+static class ViewHolder{
+
+        TextView textItem1;
+        TextView textItem2;
+
+    }
+
+redifine implemented from BaseAdapter methods
+
+@Override
+    public int getCount() {
+
+        return data.size();
+    }
+
+@Override
+    public Object getItem(int position) {
+        
+        return data.get(position);        
+    }
+
+@Override
+    public long getItemId(int position) {
+        
+        return position;        
+    }
+
+@Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        ViewHolder viewHolder;
+
+        if (convertView == null) {
+
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            convertView = inflater.inflate(R.layout.contacts_list_item, parent, false);
+            viewHolder = new ViewHolder();
+
+            viewHolder.textItem1 = (TextView) convertView.findViewById(R.id.textItem1);
+            viewHolder.textItem2 = (TextView) convertView.findViewById(R.id.textItem2);
+
+            convertView.setTag(viewHolder);
+
+        } else {
+
+            viewHolder = (ViewHolder) convertView.getTag();
+
+        }
+
+        List<String> box = (List<String>) getItem(position);
+        ((TextView) convertView.findViewById(R.id.textItem1)).setText(box.get(0));
+        ((TextView) convertView.findViewById(R.id.textItem2)).setText(box.get(1));
+
+        viewHolder.textItem1.setText(String.valueOf(((List<String>) getItem(position)).get(0)));
+        viewHolder.textItem2.setText(String.valueOf(((List<String>) getItem(position)).get(1)));
+
+        return convertView;
+    }
+
+
+use adapter on list in onCreate method in some activity
+
+@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contacts_list);
+
+        list = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            List<String> box = new ArrayList<>();
+            box.add("Mimi " + i);
+            box.add("BiBi " + i);
+            list.add(box);
+
+        }
+
+        listView = (ListView) findViewById(R.id.contactsList);
+        ViewHolderAdapter adapter = new ViewHolderAdapter(getApplicationContext(), list);
+        listView.setAdapter(adapter);
+
+    }
+
