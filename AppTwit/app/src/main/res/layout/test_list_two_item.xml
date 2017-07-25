@@ -8,19 +8,28 @@
 
     <TextView
         android:id="@+id/textItem1"
-        android:layout_width="wrap_content"
+        android:layout_width="154dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="item"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textItem2"
+        android:layout_width="177dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="item"
         android:textSize="18sp"
-        android:layout_weight="0.99"/>
+        />
 
     <CheckBox
         android:id="@+id/checkBox"
-        android:layout_width="53dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.konggit.apptwit;
+package com.konggit.apptwit2;
 
 import android.app.Application;
 import android.util.Log;
@@ -7,7 +7,6 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 public class StarterApplication extends Application {
@@ -27,8 +26,9 @@ public class StarterApplication extends Application {
                 .build()
         );
 
-        /*
-        ParseObject object = new ParseObject("ExampleObject");
+
+       /*
+       ParseObject object = new ParseObject("ExampleObject");
         object.put("myNumber", "123");
         object.put("myString", "rob");
 
@@ -42,8 +42,7 @@ public class StarterApplication extends Application {
                 }
             }
         });
-         */
-
+        */
 
 
         //ParseUser.enableAutomaticUser();

@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     private void signupOrLogin(final String username, final String password) {
 
         ParseUser user = new ParseUser();
