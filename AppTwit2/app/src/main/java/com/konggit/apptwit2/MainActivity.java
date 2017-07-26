@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,7 +23,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Twit: Login");
+        setTitle("Twit Login");
+
+        if(ParseUser.getCurrentUser()!= null){
+
+            redirectToUserList();
+
+        }
+
     }
 
     public void signupLogin(View view) {
@@ -35,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 if (e == null) {
 
                     Log.i("Login", "Success! User " + username + " logged in");
-                    usersList();
+                    redirectToUserList();
 
                 } else {
 
@@ -51,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             if (e == null) {
 
                                 Log.i("Signup", "Success! User " + username + " signed up");
-                                usersList();
+                                redirectToUserList();
 
                             } else {
 
@@ -78,11 +88,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void usersList(){
-        Log.i("Intent","Start");
+    private void redirectToUserList(){
+        Log.i("Intent","Main->UserList");
 
         Intent intent = new Intent(getApplicationContext(), UsersListActivity.class);
         startActivity(intent);
 
     }
+
+    ///////MENU
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.help:
+                Log.i("Menu", " help selected");
+                return true;
+            default:
+                return false;
+        }
+    }
+
 }
