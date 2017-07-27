@@ -1,0 +1,411 @@
+Using multiple Fragment with single Activity is recommended by professional Android developers but we could decide to create more Activities for easier management and faster understanding.
+
+Activities: are top-level application components that manage a hierarchy of views. An activity can not be inserted into a view hierarchy; it must always be the root, and there is always exactly one active Activity at any given time.
+Fragments are view containers that contain a hierarchy of views. A fragment must be inserted into a view hierarchy, with an Activity as its root. There can be zero or more active fragments at any given time.
+
+
+=================================================================================================================
+Well, according to Google's lectures, you should consider using Fragments whenever it's possible, as it makes your code easier to maintain and control. Important points about fragment:
+
+A fragment has its own layout and its own behaviour with its own life cycle callbacks.
+You can add or remove fragments in an activity while the activity is running.
+You can combine multiple fragments in a single activity to build a multi-plane UI.
+A fragment can be used in multiple activities.
+A fragment can implement a behaviour that has no user interface component.
+Fragments are Android's solution to creating reusable user interfaces.
+
+
+=================================================================================================================
+Let me introduce some decisions by examples.
+Is the screen required to launch from outside (Share intent)?
+Activity is better as it can be opened directly from what AndroidManifest gives.
+Does the screen require page-by-page views (recipe pages)?
+Fragment is better as Fragment+ViewPager give flexible paging fuctionality. Moreover, some Android devices or theme editors override Activity opening effects so page-turning animation does not run as expected if we implements it in Activity-by-Activity manner.
+Does the screen execute Camera or Photo intent with StartActivity?
+Activity is better as OnActivityResult is hard to manage inner fragments when the app restores back from the Camera apps. For this reason, "writing a post" screen could be a good example to be a single Activity.
+Does the screen have to run regardless of screen on/off (Timers)?
+Activity is better as it can show up faster and lighter without Activity-Fragment dancing.
+Does the screen have a kind of master-detail hierarchy?
+Fragment is better because we could prepare tablet layout.
+Does the screen consume memory a lot?
+Activity is better because we can focus on the activity solely not inner fragments memory usage.
+Does the screen has nested fragments more than 3-depth?
+Fragment, reluctantly. Communication between fragment is unstable and Activity-Fragment bridging/dancing is always headache 1 2. We can make complexity lower but Activity-inside-Fragment-inside-ViewPager-inside-fragment-... is hard to acheive manageability.
+Using multiple Fragment with single Activity is recommended by professional Android developers but we could decide to create more Activities for easier management and faster understanding.
+
+In your case, I would like to implement components as below.
+
+MainActivity with Fragments: Ingredients, Categories, Recipe.
+ResultActivity with Fragments: Search and its Results are a kind of master-detail view.
+TimerActivity: It should be good to run in single Activity.
+RecipeActivity: If each recipe has its own id and can be shared as permalink, your app could open directly the recipe page by RecipeActivity. And, it could be better to show recipe even if your app is restored from turned-off or switched back from another app situation.
+
+
+=================================================================================================================
+One thing that fragments are cool for is to reuse throughout the app. You can also display multiple fragments at the same time. Another way to think of it is left to right movement can be done with fragments, for example clicking on a list view item and going to a detail view. However this can be done with activities if you want to, it's a matter of preference a lot of the time.
+
+
+=================================================================================================================
+Don't forget that an activity is application's block/component which can be shared and started through Intent! So each activity in your application should solve only one kind of task. If you have only one task in your application then I think you need only one activity and many fragments if needed. 
+
+
+=================================================================================================================
+Why I prefer Fragment over Activity in ALL CASES.
+Activity is expensive. In Fragment, views and property states are separated - whenever a fragment is in backstack, its views will be destroyed. So you can stack much more Fragments than Activity.
+Backstack manipulation. With FragmentManager, it's easy to clear all the Fragments, insert more than on Fragments and etcs. But for Activity, it will be a nightmare to manipulate those stuff.
+A much predictable lifecycle. As long as the host Activity is not recycled. the Fragments in the backstack will not be recycled. So it's possible to use FragmentManager::getFragments() to find specific Fragment (not encouraged).
+
+
+=================================================================================================================
+From my personal experience over the past few months, I found that the best way to construct my applications is to create groups of fragments that come to represent a flow in the application and present all those fragments in one Activity. So basically you will have the same number of Activities in your application as the number of flows. That way the action bar stays intact on all the flow's screens, but is being recreated on changing a flow which makes a lot of sense. As Eric Burke states and as I have come to realize as well, the philosophy of using as few Activities as possible is not applicable for all situations because it creates a mess in what he calls the "God" activity.
+
+
+=================================================================================================================
+but? https://medium.com/square-corner-blog/advocating-against-android-fragments-81fd0b462c97
+
+Advocating Against Android Fragments
+Alternatives for dealing with (painful) Android fragments.
+
+Written by Pierre-Yves Ricau.
+Recently I gave a tech talk (fr) at Droidcon Paris, where I explained the problems Square had with Android fragments and how others could avoid using any fragments.
+In 2011, we decided to use fragments for the following reasons:
+At this time, we did not yet support tablets?—?but knew we wanted to eventually. Fragments help build responsive UIs.
+Fragments are view controllers; they hold decoupled chunks of business logic that can be tested.
+The fragment API provides backstack management, (i.e. it mirrors the behavior of the activity stack within a single activity).
+Because fragments are built on top of views and views can easily be animated, fragments would give us better control over screen transitions.
+Google recommended fragments, and we wanted to make our code standard.
+Since 2011, we’ve discovered better options for Square.
+What your parents never told you about fragments
+The lolcycle
+On Android, Context is a god object, and Activity is a context with extra lifecycle. A god with lifecycle? Kind of ironic. Fragments aren’t gods, but they make up for it by having extremely complex lifecycle.
+Steve Pomeroy made a diagram of the complete lifecycle, and it’s not pretty:
+
+Created by Steve Pomeroy, modified to remove the activity lifecycle, shared under the CC BY-SA 4.0 license.
+The lifecycle makes it difficult to figure out what you should do with each callback. Are they called synchronously or in a post? In what order?
+Hard to debug
+When a bug occurs in your app, you take your debugger and execute the code step by step to understand what is happening exactly. It usually works great… until you hit FragmentManagerImpl: Landmine!
+This code is hard to follow and debug, which makes it hard to correctly fix bugs in your app.
+switch (f.mState) {
+    case Fragment.INITIALIZING:
+        if (f.mSavedFragmentState != null) {
+            f.mSavedViewState = f.mSavedFragmentState.getSparseParcelableArray(
+                    FragmentManagerImpl.VIEW_STATE_TAG);
+            f.mTarget = getFragment(f.mSavedFragmentState,
+                    FragmentManagerImpl.TARGET_STATE_TAG);
+            if (f.mTarget != null) {
+                f.mTargetRequestCode = f.mSavedFragmentState.getInt(
+                        FragmentManagerImpl.TARGET_REQUEST_CODE_STATE_TAG, 0);
+            }
+            f.mUserVisibleHint = f.mSavedFragmentState.getBoolean(
+                    FragmentManagerImpl.USER_VISIBLE_HINT_TAG, true);
+            if (!f.mUserVisibleHint) {
+                f.mDeferStart = true;
+                if (newState > Fragment.STOPPED) {
+                    newState = Fragment.STOPPED;
+                }
+            }
+        }
+// ...
+}
+If you ever found yourself with a stale unattached fragment recreated on rotation, you know what I’m talking about. (And don’t get me started on nested fragments.)
+As Coding Horror puts it, I am now required by law to link to this cartoon.
+
+After years of in-depth analysis, I came to the conclusion that WTFs/min = 2^fragment count.
+View controllers? Not so fast.
+Because fragments create, bind, and configure views, they contain a lot of view-related code. This effectively means that business logic isn’t decoupled from view code?—?making it hard to write unit tests against fragments.
+Fragment transactions
+Fragment transactions allow you to perform a set of fragment operations. Unfortunately, committing a transaction is async and posted at the end of the main thread handler queue. This can leave your app in an unknown state when receiving multiple click events or during configuration changes.
+class BackStackRecord extends FragmentTransaction {
+    int commitInternal(boolean allowStateLoss) {
+        if (mCommitted)
+            throw new IllegalStateException("commit already called");
+        mCommitted = true;
+        if (mAddToBackStack) {
+            mIndex = mManager.allocBackStackIndex(this);
+        } else {
+            mIndex = -1;
+        }
+        mManager.enqueueAction(this, allowStateLoss);
+        return mIndex;
+    }
+}
+Fragment creation magic
+Fragment instances can be created by you or by the fragment manager. This code seems fairly reasonable:
+DialogFragment dialogFragment = new DialogFragment() {
+  @Override public Dialog onCreateDialog(Bundle savedInstanceState) { ... }
+};
+dialogFragment.show(fragmentManager, tag);
+However, when restoring the activity instance state, the fragment manager may try to recreate an instance of that fragment class using reflection. Since it’s an anonymous class, it has a hidden constructor argument to reference the outer class.
+android.support.v4.app.Fragment$InstantiationException:
+    Unable to instantiate fragment com.squareup.MyActivity$1:
+    make sure class name exists, is public, and has an empty
+    constructor that is public
+Fragments: lessons learned
+Despite their drawbacks, fragments taught us invaluable lessons which we can now reapply when writing apps:
+Single Activity Interface: there is no need to use one activity for each screen. We can split our app into decoupled widgets and assemble them as we please. This makes animating and lifecycle easy. We can split our widgets into view code and controller code.
+The backstack isn’t an activity specific notion; you can implement a backstack within an activity.
+There is no need for new APIs; everything we needed was there from the very beginning: activities, views, and layout inflaters.
+Responsive UI: fragments vs custom views
+Fragments
+Let’s look at the fragment basic example, a list / detail UI.
+The HeadlinesFragment is a pretty straightforward list:
+public class HeadlinesFragment extends ListFragment {
+  OnHeadlineSelectedListener mCallback;
+  public interface OnHeadlineSelectedListener {
+    void onArticleSelected(int position);
+  }
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setListAdapter(
+        new ArrayAdapter<String>(getActivity(),
+            R.layout.fragment_list,
+            Ipsum.Headlines));
+  }
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    mCallback = (OnHeadlineSelectedListener) activity;
+  }
+  @Override
+  public void onListItemClick(ListView l, View v, int position, long id) {
+    mCallback.onArticleSelected(position);
+    getListView().setItemChecked(position, true);
+  }
+}
+Now this is interesting: ListFragmentActivity has to handle whether the detail is on the same screen or not.
+public class ListFragmentActivity extends Activity
+    implements HeadlinesFragment.OnHeadlineSelectedListener {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.news_articles);
+    if (findViewById(R.id.fragment_container) != null) {
+      if (savedInstanceState != null) {
+        return;
+      }
+      HeadlinesFragment firstFragment = new HeadlinesFragment();
+      firstFragment.setArguments(getIntent().getExtras());
+      getFragmentManager()
+          .beginTransaction()
+          .add(R.id.fragment_container, firstFragment)
+          .commit();
+    }
+  }
+  public void onArticleSelected(int position) {
+    ArticleFragment articleFrag =
+        (ArticleFragment) getFragmentManager()
+            .findFragmentById(R.id.article_fragment);
+    if (articleFrag != null) {
+      articleFrag.updateArticleView(position);
+    } else {
+      ArticleFragment newFragment = new ArticleFragment();
+      Bundle args = new Bundle();
+      args.putInt(ArticleFragment.ARG_POSITION, position);
+      newFragment.setArguments(args);
+      getFragmentManager()
+          .beginTransaction()
+          .replace(R.id.fragment_container, newFragment)
+          .addToBackStack(null)
+          .commit();
+    }
+  }
+}
+Custom views
+Let’s reimplement a similar version of that code using only views.
+First, we’ll have the notion of a Container, which can show an item and also handle back presses.
+public interface Container {
+  void showItem(String item);
+  boolean onBackPressed();
+}
+The activity assumes there’s always a container and merely delegates the work to it.
+public class MainActivity extends Activity {
+  private Container container;
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main_activity);
+    container = (Container) findViewById(R.id.container);
+  }
+  public Container getContainer() {
+    return container;
+  }
+  @Override public void onBackPressed() {
+    boolean handled = container.onBackPressed();
+    if (!handled) {
+      finish();
+    }
+  }
+}
+The list is also quite trivial.
+public class ItemListView extends ListView {
+  public ItemListView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+  }
+  @Override protected void onFinishInflate() {
+    super.onFinishInflate();
+    final MyListAdapter adapter = new MyListAdapter();
+    setAdapter(adapter);
+    setOnItemClickListener(new OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view,
+            int position, long id) {
+        String item = adapter.getItem(position);
+        MainActivity activity = (MainActivity) getContext();
+        Container container = activity.getContainer();
+        container.showItem(item);
+      }
+    });
+  }
+}
+Now, the meat of the work: loading different XML layouts based on resource qualifiers.
+res/layout/main_activity.xml
+<com.squareup.view.SinglePaneContainer
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container"
+    >
+  <com.squareup.view.ItemListView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+</com.squareup.view.SinglePaneContainer>
+res/layout-land/main_activity.xml
+<com.squareup.view.DualPaneContainer
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/container"
+    >
+  <com.squareup.view.ItemListView
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="0.2"
+      />
+  <include layout="@layout/detail"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="0.8"
+      />
+</com.squareup.view.DualPaneContainer>
+Here is a very simple implementation for those containers:
+public class DualPaneContainer extends LinearLayout implements Container {
+  private MyDetailView detailView;
+  public DualPaneContainer(Context context, AttributeSet attrs) {
+    super(context, attrs);
+  }
+  @Override protected void onFinishInflate() {
+    super.onFinishInflate();
+    detailView = (MyDetailView) getChildAt(1);
+  }
+  public boolean onBackPressed() {
+    return false;
+  }
+  @Override public void showItem(String item) {
+    detailView.setItem(item);
+  }
+}
+public class SinglePaneContainer extends FrameLayout implements Container {
+  private ItemListView listView;
+  public SinglePaneContainer(Context context, AttributeSet attrs) {
+    super(context, attrs);
+  }
+  @Override protected void onFinishInflate() {
+    super.onFinishInflate();
+    listView = (ItemListView) getChildAt(0);
+  }
+  public boolean onBackPressed() {
+    if (!listViewAttached()) {
+      removeViewAt(0);
+      addView(listView);
+      return true;
+    }
+    return false;
+  }
+  @Override public void showItem(String item) {
+    if (listViewAttached()) {
+      removeViewAt(0);
+      View.inflate(getContext(), R.layout.detail, this);
+    }
+    MyDetailView detailView = (MyDetailView) getChildAt(0);
+    detailView.setItem(item);
+  }
+  private boolean listViewAttached() {
+    return listView.getParent() != null;
+  }
+}
+It’s not hard to imagine abstracting these containers and building an app this way?—?not only do we not need fragments, but we also have code that is easier to understand.
+Views & presenters
+Using custom views works great, but we’d like to isolate business logic into dedicated controllers. We call those presenters. This makes the code much more readable and facilitates testing. MyDetailView from the previous example could look something like that:
+public class MyDetailView extends LinearLayout {
+  TextView textView;
+  DetailPresenter presenter;
+  public MyDetailView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    presenter = new DetailPresenter();
+  }
+  @Override protected void onFinishInflate() {
+    super.onFinishInflate();
+    presenter.setView(this);
+    textView = (TextView) findViewById(R.id.text);
+    findViewById(R.id.button).setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View v) {
+        presenter.buttonClicked();
+      }
+    });
+  }
+  public void setItem(String item) {
+    textView.setText(item);
+  }
+}
+Let’s look at code from Square Register, the screen for editing discounts.
+
+The presenter manipulates the view at a high level:
+class EditDiscountPresenter {
+  // ...
+  public void saveDiscount() {
+    EditDiscountView view = getView();
+    String name = view.getName();
+    if (isBlank(name)) {
+      view.showNameRequiredWarning();
+      return;
+    }
+    if (isNewDiscount()) {
+      createNewDiscountAsync(name, view.getAmount(), view.isPercentage());
+    } else {
+      updateNewDiscountAsync(discountId, name, view.getAmount(),
+        view.isPercentage());
+    }
+    close();
+  }
+}
+Writing tests for this presenter is a breeze:
+@Test public void cannot_save_discount_with_empty_name() {
+  startEditingLoadedPercentageDiscount();
+  when(view.getName()).thenReturn("");
+  presenter.saveDiscount();
+  verify(view).showNameRequiredWarning();
+  assertThat(isSavingInBackground()).isFalse();
+}
+Backstack management
+Managing a backstack does not require async transactions. We released a tiny library that does just that: Flow. Ray Ryan already wrote a great blog post about Flow.
+I’m deep in fragment spaghetti, how do I escape?
+Make your fragments shells of themselves. Pull view code up into custom view classes, and push business logic down into a presenter that knows how to interact with the custom views. Then, your fragment is nearly empty, just inflating custom views that connect themselves with presenters:
+public class DetailFragment extends Fragment {
+  @Override public View onCreateView(LayoutInflater inflater,
+    ViewGroup container, Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.my_detail_view, container, false);
+  }
+}
+At that point you can eliminate the fragment.
+Migrating away from fragments wasn’t easy, but we went through it?—?thanks to the awesome work of Dimitris Koutsogiorgas and Ray Ryan.
+What about Dagger & Mortar?
+Dagger & Mortar are orthogonal to fragments; they can be used with or without fragments.
+Dagger helps you modularize your app into a graph of decoupled components. It takes care of all the wiring and therefore makes it easy to extract dependencies and write single concern objects.
+Mortar works on top of Dagger and has two main advantages:
+It provides simple lifecycle callbacks to injected components. This allows you to write singleton presenters that won’t be destroyed on rotation, but can still save their state into a bundle to survive process death.
+It manages Dagger subgraphs for you and helps you tie them to the activity lifecycle. This effectively lets you implement the notion of scopes: a view comes in, its presenter and dependencies are created as a subgraph. When the view goes out, you can easily destroy that scope and let the garbage collector do its work.
+Conclusion
+We used fragments intensively and eventually changed our minds:
+Most of our difficult crashes were related to the fragment lifecycle.
+We only need views to build a responsive UI, a backstack, and screen transitions.

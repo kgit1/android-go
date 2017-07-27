@@ -1,0 +1,16 @@
+Snackbar
+
+Providing lightweight, quick feedback about an operation is a perfect opportunity to use a snackbar. Snackbars are shown on the bottom of the screen and contain text with an optional single action. They automatically time out after the given time length by animating off the screen. In addition, users can swipe them away before the timeout.
+
+
+0:00
+/ 0:04
+
+
+By including the ability to interact with the Snackbar through swiping it away or actions, these are considerably more powerful than toasts, another lightweight feedback mechanism. However, you’ll find the API very familiar:
+
+Snackbar
+  .make(parentLayout, R.string.snackbar_text, Snackbar.LENGTH_LONG)
+  .setAction(R.string.snackbar_action, myOnClickListener)
+  .show(); // Don’t forget to show!
+You’ll note the use of a View as the first parameter to make() - Snackbar will attempt to find an appropriate parent of the Snackbar’s view to ensure that it is anchored to the bottom.
