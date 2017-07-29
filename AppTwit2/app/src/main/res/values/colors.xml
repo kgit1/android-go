@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <color name="colorPrimary">#238d11</color>
+    <color name="colorPrimaryDark">#238d11</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorFeedUser">#ffdfd4</color>
+    <color name="colorFeedTweet">#effcff</color>
+    <color name="colorFeedCreated">#fe4861</color>
+    <color name="colorFeedChanged">#fe4861</color>
+    <color name="colorFeedTextGeneral">#122dc4</color>
+    <!--<color name="colorFeedBackground">#238d11</color>-->
+    <color name="colorFeedBackground">#ffffff</color>
 </resources>
+

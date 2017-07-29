@@ -4,8 +4,8 @@
     <item android:title="Tweet"
           android:id="@+id/tweet"/>
 
-    <item android:title="Feed"
-          android:id="@+id/feed"/>
+    <item android:title="Users"
+          android:id="@+id/users"/>
 
     <item android:title="LogOut"
           android:id="@+id/logout"/>

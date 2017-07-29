@@ -16,6 +16,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+//http://ec2-34-212-136-147.us-west-2.compute.amazonaws.com:80/apps
 public class MainActivity extends AppCompatActivity {
 
     @Override

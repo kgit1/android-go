@@ -1,6 +1,8 @@
 package com.konggit.apptwit2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListPopupWindow;
@@ -14,10 +16,13 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -32,12 +37,16 @@ public class UsersListActivity extends AppCompatActivity {
     ListView listView;
     ArrayAdapter adapter;
 
+    private String currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users_list);
 
-        setTitle("User List");
+        currentUser = ParseUser.getCurrentUser().getUsername();
+
+        setTitle("Userslist for user :  " + currentUser);
 
         if (ParseUser.getCurrentUser().getList("isFollowing") == null) {
 
@@ -46,7 +55,7 @@ public class UsersListActivity extends AppCompatActivity {
             ParseUser.getCurrentUser().saveInBackground();
             Log.i("-log list", "" + ParseUser.getCurrentUser().getList("isFollowing"));
 
-        }else{
+        } else {
 
             Log.i("+log list", "" + ParseUser.getCurrentUser().getList("isFollowing"));
 
@@ -80,19 +89,19 @@ public class UsersListActivity extends AppCompatActivity {
                     Log.i("CheckedItem", "Row is checked");
 
                     ParseUser.getCurrentUser().getList("isFollowing").add(usersList.get(position));
-                    ParseUser.getCurrentUser().put("isFollowing",ParseUser.getCurrentUser().getList("isFollowing"));
+                    ParseUser.getCurrentUser().put("isFollowing", ParseUser.getCurrentUser().getList("isFollowing"));
 
                     ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
 
-                            if(e==null){
+                            if (e == null) {
 
-                                Log.i("Save","Success");
+                                Log.i("Save", "Success");
 
-                            }else{
+                            } else {
 
-                                Log.i("Save",""+e);
+                                Log.i("Save", "" + e);
 
                             }
 
@@ -107,19 +116,19 @@ public class UsersListActivity extends AppCompatActivity {
                     Log.i("log list", "" + ParseUser.getCurrentUser().getList("isFollowing"));
 
                     ParseUser.getCurrentUser().getList("isFollowing").remove(usersList.get(position));
-                    ParseUser.getCurrentUser().put("isFollowing",ParseUser.getCurrentUser().getList("isFollowing"));
+                    ParseUser.getCurrentUser().put("isFollowing", ParseUser.getCurrentUser().getList("isFollowing"));
 
                     ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
 
-                            if(e==null){
+                            if (e == null) {
 
-                                Log.i("Save","Success");
+                                Log.i("Save", "Success");
 
-                            }else{
+                            } else {
 
-                                Log.i("Save",""+e);
+                                Log.i("Save", "" + e);
 
                             }
 
@@ -162,19 +171,15 @@ public class UsersListActivity extends AppCompatActivity {
 
                         adapter.notifyDataSetChanged();
 
-                       // for(String username : usersList){
+                        for (String followedUser : (ArrayList<String>) ParseUser.getCurrentUser().get("isFollowing")) {
 
-                            for(String followedUser: (ArrayList<String>)ParseUser.getCurrentUser().get("isFollowing")){
+                            if (usersList.contains(followedUser)) {
 
-                                if(usersList.contains(followedUser)){
-
-                                    listView.setItemChecked(usersList.indexOf(followedUser),true);
-
-                                }
+                                listView.setItemChecked(usersList.indexOf(followedUser), true);
 
                             }
 
-                        //}
+                        }
 
                     }
 
@@ -201,8 +206,16 @@ public class UsersListActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.logout:
-                logout();
                 Log.i("Menu", " logout selected");
+                logout();
+                return true;
+            case R.id.tweet:
+                Log.i("Menu", " tweet selected");
+                tweet();
+                return true;
+            case R.id.feed:
+                Log.i("Menu", " feed selected");
+                feed();
                 return true;
             case R.id.help:
                 Log.i("Menu", " help selected");
@@ -212,7 +225,76 @@ public class UsersListActivity extends AppCompatActivity {
         }
     }
 
+    private void tweet() {
+
+        //create alertDialog for frame from menu
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Send a tweet");
+
+        //create edit text for input field
+        final EditText tweetContentEditText = new EditText(this);
+
+        //set editeText as view for alertDialog
+        builder.setView(tweetContentEditText);
+
+        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Log.i("Tweet", "Content "+String.valueOf(tweetContentEditText.getText()));
+
+                ParseObject tweetObject = new ParseObject("Tweet");
+
+                tweetObject.put("username",ParseUser.getCurrentUser().getUsername());
+
+                tweetObject.put("tweet", tweetContentEditText.getText().toString());
+
+                tweetObject.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+
+                        if(e==null){
+
+                            Log.i("Tweet","Saved successfully");
+                            Toast.makeText(getApplicationContext(),"Tweet sent successfully", Toast.LENGTH_SHORT).show();
+
+                        }else{
+
+                            Log.i("Tweet","Failed to save");
+                            Toast.makeText(getApplicationContext(),"Tweet Failed to sent", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Log.i("Tweet","Canceled");
+                dialog.cancel();
+
+            }
+        });
+
+        builder.show();
+    }
+
+    private void feed() {
+
+        Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+        startActivity(intent);
+
+    }
+
     private void logout() {
+
+        Log.i("Logout", "logout user");
 
         ParseUser.logOut();
         redirectToMain();
@@ -220,6 +302,7 @@ public class UsersListActivity extends AppCompatActivity {
     }
 
     private void redirectToMain() {
+
         Log.i("Intent", "UserList->Main");
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
