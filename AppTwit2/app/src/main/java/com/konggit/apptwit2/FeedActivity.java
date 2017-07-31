@@ -44,7 +44,7 @@ public class FeedActivity extends AppCompatActivity {
         // feelDummy();
 
         //feelFeedFromParse();
-        //feelFeedFromParse2();
+        //feelFeedFromParse();
 
         feelUsers();
 
@@ -107,48 +107,9 @@ public class FeedActivity extends AppCompatActivity {
 
     private void feelFeedFromParse() {
 
-        tweets.clear();
-
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Tweet");
-        query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-
-                if (e == null) {
-
-                    Log.i("Tweets", objects.toString());
-                    for (ParseObject tweetObject : objects) {
-
-                        Tweet tweet = new Tweet();
-                        tweet.setUsername(String.valueOf(tweetObject.get("username")));
-                        tweet.setTweet(String.valueOf(tweetObject.get("tweet")));
-                        tweet.setCreatedAt(String.valueOf(tweetObject.getCreatedAt()));
-                        tweet.setChangedAt(String.valueOf(tweetObject.getUpdatedAt()));
-
-                        tweets.add(tweet);
-
-                    }
-
-
-                    adapter.notifyDataSetChanged();
-
-                } else {
-
-                    Log.i("Tweets", "Fail " + e.getMessage());
-
-                }
-
-            }
-        });
-    }
-
-    private void feelFeedFromParse2() {
-
 
         //feelUsers();
-        Log.i("feelFeedFromParse2", "" + followingUsers.size());
+        Log.i("feelFeedFromParse", "" + followingUsers.size());
 
         tweets.clear();
 
@@ -156,6 +117,8 @@ public class FeedActivity extends AppCompatActivity {
 
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Tweet");
             query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
+            query.orderByDescending("createdAt");
+            query.setLimit(20);
 
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -199,46 +162,46 @@ public class FeedActivity extends AppCompatActivity {
         followingUsers = ParseUser.getCurrentUser().getList("isFollowing");
         Log.i("Following", "Users" + followingUsers.toString());
 
-        feelFeedFromParse2();
+        feelFeedFromParse();
 
     }
 
 
-    private void feelDummy() {
-
-        Tweet tweet1 = new Tweet();
-        tweet1.setUsername("user1");
-        tweet1.setTweet("This is the first tweet");
-        tweet1.setCreatedAt("Created at 20202");
-        tweet1.setChangedAt("Changed 200404");
-
-        Tweet tweet2 = new Tweet();
-        tweet2.setUsername("user2");
-        tweet2.setTweet("11111111111111111This is the first tweet");
-        tweet2.setCreatedAt("Created at 20213202");
-        tweet2.setChangedAt("Changed 202130404");
-
-        Tweet tweet3 = new Tweet();
-        tweet3.setUsername("user3");
-        tweet3.setTweet("222222222222222222This is the first tweet");
-        tweet3.setCreatedAt("Created at 22310202");
-        tweet3.setChangedAt("Changed 20023404");
-
-        Tweet tweet4 = new Tweet();
-        tweet4.setUsername("user4");
-        tweet4.setTweet("33333333333333This is the first tweet");
-        tweet4.setCreatedAt("Created at 210202");
-        tweet4.setChangedAt("Changed 203404");
-
-        tweets.add(tweet1);
-        tweets.add(tweet2);
-        tweets.add(tweet3);
-        tweets.add(tweet4);
-        tweets.add(tweet4);
-        tweets.add(tweet4);
-        tweets.add(tweet4);
-        tweets.add(tweet4);
-        tweets.add(tweet4);
-
-    }
+//    private void feelDummy() {
+//
+//        Tweet tweet1 = new Tweet();
+//        tweet1.setUsername("user1");
+//        tweet1.setTweet("This is the first tweet");
+//        tweet1.setCreatedAt("Created at 20202");
+//        tweet1.setChangedAt("Changed 200404");
+//
+//        Tweet tweet2 = new Tweet();
+//        tweet2.setUsername("user2");
+//        tweet2.setTweet("11111111111111111This is the first tweet");
+//        tweet2.setCreatedAt("Created at 20213202");
+//        tweet2.setChangedAt("Changed 202130404");
+//
+//        Tweet tweet3 = new Tweet();
+//        tweet3.setUsername("user3");
+//        tweet3.setTweet("222222222222222222This is the first tweet");
+//        tweet3.setCreatedAt("Created at 22310202");
+//        tweet3.setChangedAt("Changed 20023404");
+//
+//        Tweet tweet4 = new Tweet();
+//        tweet4.setUsername("user4");
+//        tweet4.setTweet("33333333333333This is the first tweet");
+//        tweet4.setCreatedAt("Created at 210202");
+//        tweet4.setChangedAt("Changed 203404");
+//
+//        tweets.add(tweet1);
+//        tweets.add(tweet2);
+//        tweets.add(tweet3);
+//        tweets.add(tweet4);
+//        tweets.add(tweet4);
+//        tweets.add(tweet4);
+//        tweets.add(tweet4);
+//        tweets.add(tweet4);
+//        tweets.add(tweet4);
+//
+//    }
 }
