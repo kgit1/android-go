@@ -10,9 +10,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
     Toolbar toolbar;
-    private NavigationView nvDrawer;
+    private NavigationView navigationView;
 
 
     @Override
@@ -31,16 +31,16 @@ public class MainActivity extends AppCompatActivity {
         //or add to theme in themes.xml
         //<item name="android:textColorPrimary">#ffffff</item>
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         //add icon for navigation bar(because without it - doesn't show default icon for navBar?)
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
 
         // Find our drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         // Setup drawer view
-        setupDrawerContent(nvDrawer);
+        setupDrawerContent(navigationView);
 
 
     }
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // The action bar home/up action should open or close the drawer.
         switch (item.getItemId()) {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
 
@@ -76,6 +76,6 @@ public class MainActivity extends AppCompatActivity {
         // Set action bar title
         setTitle(menuItem.getTitle());
         // Close the navigation drawer
-        mDrawerLayout.closeDrawers();
+        drawerLayout.closeDrawers();
     }
 }

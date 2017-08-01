@@ -12,10 +12,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
 
     private List<Movie> moviesList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
+    public MoviesAdapter(List<Movie> moviesList) {
+        this.moviesList = moviesList;
+    }
 
-        public MyViewHolder(View view) {
+    //viewHolder class which saves inside link to every item on the list
+    class MyViewHolder extends RecyclerView.ViewHolder {
+
+        TextView title, year, genre;
+
+        MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             genre = (TextView) view.findViewById(R.id.genre);
@@ -23,11 +29,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
         }
     }
 
-
-    public MoviesAdapter(List<Movie> moviesList) {
-        this.moviesList = moviesList;
-    }
-
+    //creates new views (called by layout manager)
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -36,6 +38,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
         return new MyViewHolder(itemView);
     }
 
+    //switches content of individual view(called by layout manager)
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Movie movie = moviesList.get(position);
