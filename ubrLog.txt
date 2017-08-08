@@ -4,10 +4,14 @@ start from creating new instace of ec2 parse server
 ->search for parse ->select Parse Server powered by Bitnami ->select t2.micro free instance
 ->press rewiev and launch ->press launch ->create new keypair ->download keypoair ->launch instance
 ->view instance -> get instance ID and instance public DNS 
-->convert *.pem key to ppk key with load - save by puttygen
+->convert *.pem key to ppk key with load - save private key by puttygen
 ->connect with putty using ubuntu@public_DNS as user and converted ppk key for Auth
 on succesful connect - type ->cd apps/parse/htdocs ->vi server.js 
 ->save for future - AppId as applicationId and masterKey as clientKey for app to connect
+
+for parse console
+Username: user
+Password: -> On EC2 / Amazon you must go this way: Instance Settings -> Get System Log -> Look for your password, which was given from system by setup
 
 ->create new project
 ->add permissions to Androidmanifest and add to <application - android:name=".StarterApplication"
