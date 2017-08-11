@@ -3452,4 +3452,1116 @@ protected void onCreate(Bundle savedInstanceState) {
 //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////AppWazup//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+StarterAplication
+
+package com.konggit.appwazup;
+
+import android.app.Application;
+import android.util.Log;
+
+import com.parse.Parse;
+import com.parse.ParseACL;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
+
+public class StarterApplication extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+
+        // Add your initialization code here
+        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                .applicationId("3f96519daf38ecdda591ae6b660eac8dd43e7189")
+                .clientKey("ee5352bf6595ac63e04c4b4fe54cc00af2784f92")
+                .server("http://ec2-54-191-135-84.us-west-2.compute.amazonaws.com:80/parse/")
+                .build()
+        );
+
+
+
+//       ParseObject object = new ParseObject("ExampleObject");
+//        object.put("myNumber", "123");
+//        object.put("myString", "rob");
+//
+//        object.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException ex) {
+//                if (ex == null) {
+//                    Log.i("Parse Result", "Successful!");
+//                } else {
+//                    Log.i("Parse Result", "Failed" + ex.toString());
+//                }
+//            }
+//        });
+
+
+
+        //ParseUser.enableAutomaticUser();
+
+        ParseACL defaultACL = new ParseACL();
+        defaultACL.setPublicReadAccess(true);
+        defaultACL.setPublicWriteAccess(true);
+        ParseACL.setDefaultACL(defaultACL, true);
+
+    }
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+MainActivity
+
+package com.konggit.appwazup;
+
+import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
+//http://ec2-54-191-135-84.us-west-2.compute.amazonaws.com/apps/
+public class MainActivity extends AppCompatActivity {
+
+    private Button buttonLogin;
+    private TextView textLoginOrSignup;
+    private boolean loginMode = true;
+    private EditText editTextUsername;
+    private EditText editTextPassword;
+    private String username;
+    private String password;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        setTitle("Wazup Login Activity");
+        redirectIfLoggedIn();
+
+        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+        constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                hideSoftKeyboard();
+
+            }
+        });
+
+        editTextUsername = (EditText) findViewById(R.id.editTextLogin);
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+
+        buttonLogin = (Button) findViewById(R.id.buttonLogin);
+        buttonLogin.setOnClickListener(new ButtonLoginOnClickListener());
+
+        textLoginOrSignup = (TextView) findViewById(R.id.loginOrSignup);
+        textLoginOrSignup.setOnClickListener(new TextLoginOnClickListener());
+
+    }
+
+    private class ButtonLoginOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            username = String.valueOf(editTextUsername.getText());
+            password = String.valueOf(editTextPassword.getText());
+
+            if (loginMode) {
+
+                ParseUser.logInInBackground(username, password, new LogInCallback() {
+                    @Override
+                    public void done(ParseUser user, ParseException e) {
+
+                        if (e == null) {
+
+                            Log.i("Login", "Login success");
+                            Toast.makeText(getApplicationContext(), "Login: success", Toast.LENGTH_SHORT).show();
+                            redirectToUserList();
+
+                        } else {
+
+                            errorMessage(e);
+
+                        }
+
+                    }
+                });
+
+            } else {
+
+                ParseUser parseUser = new ParseUser();
+                parseUser.setUsername(username);
+                parseUser.setPassword(password);
+                parseUser.signUpInBackground(new SignUpCallback() {
+                    @Override
+
+                    public void done(ParseException e) {
+
+                        if (e == null) {
+
+                            Log.i("Login", "Signup success");
+                            Toast.makeText(getApplicationContext(), "Signup: success", Toast.LENGTH_SHORT).show();
+                            redirectToUserList();
+
+                        } else {
+
+                            errorMessage(e);
+
+                        }
+
+                    }
+                });
+
+            }
+
+        }
+
+    }
+
+    private class TextLoginOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            if (loginMode) {
+
+                buttonLogin.setText("Signup");
+                textLoginOrSignup.setText("or Login");
+                loginMode = false;
+
+            } else {
+
+                buttonLogin.setText("Login");
+                textLoginOrSignup.setText("or Signup");
+                loginMode = true;
+
+            }
+
+        }
+
+    }
+
+    private void errorMessage( ParseException e){
+
+        String message = e.getMessage();
+
+        if(message.toLowerCase().contains("java")){
+
+            e.getMessage().substring(e.getMessage().indexOf(" "));
+
+        }
+
+        Log.i("Login", "Fail: " + e.getCode() + " " + message);
+        Toast.makeText(getApplicationContext(), "Signup Fail: " + e.getCode() + " " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void hideSoftKeyboard() {
+
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+    }
+
+    private void redirectToUserList(){
+
+        Log.i("Info", "Redirecting to userList");
+        Intent intent = new Intent(getApplicationContext(),UserListActivity.class);
+        startActivity(intent);
+
+    }
+
+    private void redirectIfLoggedIn(){
+
+        if(ParseUser.getCurrentUser()!=null){
+
+            Log.i("Info", "Already logged");
+            redirectToUserList();
+
+        }
+
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+UserListActivity
+
+package com.konggit.appwazup;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class UserListActivity extends AppCompatActivity {
+
+    ListView userListView;
+    ArrayList<String> userList;
+    UserViewHolderAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_list);
+
+        setTitle("User: " + ParseUser.getCurrentUser().getUsername());
+
+        userList = new ArrayList<>();
+        feelUserList();
+
+        userListView = (ListView) findViewById(R.id.listVievUserList);
+        adapter = new UserViewHolderAdapter(getApplicationContext(), userList);
+
+        userListView.setAdapter(adapter);
+        userListView.setOnItemClickListener(new UserListOnClickListener());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.userlist_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+
+            case R.id.settings:
+                return true;
+
+            case R.id.logout:
+                logout();
+                return true;
+
+            default:
+                return false;
+        }
+
+    }
+
+    private void feelUserList() {
+
+        userList.clear();
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername());
+
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+
+                if (e == null) {
+
+                    if (objects.size() > 0) {
+
+                        for (ParseUser user : objects) {
+
+                            userList.add(user.getUsername());
+
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } else {
+
+                    Log.i("Info userlist", e.getMessage());
+
+                }
+
+            }
+        });
+
+    }
+
+    private class UserListOnClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            redirectToChat(userList.get(position));
+
+        }
+    }
+
+    private void redirectToChat(String chatbaddy) {
+
+        Log.i("Info", "Redirect to chat with " + chatbaddy);
+        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+        intent.putExtra("activeUser", chatbaddy);
+        startActivity(intent);
+
+    }
+
+    private void logout() {
+
+        ParseUser.logOut();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+UserViewHolderAdapter
+
+package com.konggit.appwazup;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import java.util.List;
+
+public class UserViewHolderAdapter extends BaseAdapter{
+
+    Context context;
+    List<String> data;
+
+    public UserViewHolderAdapter(Context context, List<String> data) {
+        this.context = context;
+        this.data = data;
+    }
+
+    static class ViewHolder{
+
+        TextView item;
+
+    }
+
+    @Override
+    public int getCount() {
+        return data.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return data.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        ViewHolder viewHolder;
+
+        if(convertView == null){
+
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.userlist_item, parent, false);
+            viewHolder = new ViewHolder();
+
+            viewHolder.item = (TextView) convertView.findViewById(R.id.textViewItem);
+            convertView.setTag(viewHolder);
+
+        }else{
+
+            viewHolder = (ViewHolder) convertView.getTag();
+
+        }
+
+        viewHolder.item.setText(String.valueOf(getItem(position)));
+
+        return convertView;
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ChatActivity
+
+package com.konggit.appwazup;
+
+import android.content.Intent;
+import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChatActivity extends AppCompatActivity {
+
+    String activeUser;
+    ListView chatView;
+    List<String> messagesList;
+    ArrayAdapter adapter;
+    EditText chatEditText;
+    Button chatSendButton;
+
+    Handler handler;
+    Runnable runnable;
+    int delay = 1000;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
+        Intent intent = getIntent();
+        activeUser = intent.getStringExtra("activeUser");
+
+        chatView = (ListView) findViewById(R.id.chatListView);
+
+        messagesList = new ArrayList<>();
+        marryList();
+
+        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, messagesList);
+
+        chatView.setAdapter(adapter);
+
+
+        chatEditText = (EditText) findViewById(R.id.chatEditText);
+        chatSendButton = (Button) findViewById(R.id.chatSendButton);
+        chatSendButton.setOnClickListener(new ChatSendButtonOnClickListener());
+
+        setTitle("Chat with " + activeUser);
+
+        queryChat();
+
+        //hide keyboard by touching list view(not item)
+        chatView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                hideSoftKeyboard();
+                return false;
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+
+        refreshChat();
+
+        super.onStart();
+    }
+
+    //stop handler when activity not visible
+    @Override
+    protected void onPause() {
+        handler.removeCallbacks(runnable);
+        super.onPause();
+    }
+
+    private class ChatSendButtonOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            if (chatEditText.getText() != null && String.valueOf(chatEditText.getText()).length() > 0) {
+
+                ParseObject message = new ParseObject("Message");
+                message.put("sender", ParseUser.getCurrentUser().getUsername());
+                message.put("recipient", activeUser);
+                message.put("message", String.valueOf(chatEditText.getText()));
+
+                message.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+
+                        if (e == null) {
+
+                            Toast.makeText(getApplicationContext(), "Message sent :" + String.valueOf(chatEditText.getText()), Toast.LENGTH_SHORT).show();
+
+                        } else {
+
+                            Toast.makeText(getApplicationContext(), "Send error :" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                });
+            }
+
+            chatEditText.setText("");
+            queryChat();
+            hideSoftKeyboard();
+
+        }
+    }
+
+    //two parseQueries assembled to one by list and used together by third query
+    private void queryChat() {
+
+        Log.i("Info", " Query chat method");
+
+        ParseQuery<ParseObject> querySender = new ParseQuery<ParseObject>("Message");
+
+        querySender.whereEqualTo("sender", ParseUser.getCurrentUser().getUsername());
+        querySender.whereEqualTo("recipient", activeUser);
+
+        ParseQuery<ParseObject> queryRecipient = new ParseQuery<ParseObject>("Message");
+
+        queryRecipient.whereEqualTo("recipient", ParseUser.getCurrentUser().getUsername());
+        queryRecipient.whereEqualTo("sender", activeUser);
+
+        List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+
+        queries.add(querySender);
+        queries.add(queryRecipient);
+
+        ParseQuery<ParseObject> query = ParseQuery.or(queries);
+
+        query.orderByAscending("createdAt");
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                if (e == null) {
+
+                    if (objects.size() > 0) {
+
+                        messagesList.clear();
+
+                        for (ParseObject message : objects) {
+
+                            String messageContent = message.getString("message");
+
+                            if (message.getString("sender").equals(ParseUser.getCurrentUser().getUsername())) {
+
+                                messageContent = "me: " + messageContent;
+
+                            } else {
+
+                                messageContent = activeUser + ": " + messageContent;
+
+                            }
+
+                            messagesList.add(messageContent);
+
+                        }
+
+                        //Log.i("Messages", messagesList.toString());
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                }
+
+            }
+        });
+
+    }
+
+    private void refreshChat() {
+
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                runnable = this;
+
+                queryChat();
+
+                handler.postDelayed(runnable, delay);
+
+            }
+        }, delay);
+
+
+        //with Handler
+        //Handler h = new Handler();
+        //int delay = 15000; //15 seconds
+        //Runnable runnable;
+        // @Override
+        //protected void onStart() {
+        ////start handler as activity become visible
+        //
+        //h.postDelayed(new Runnable() {
+        //public void run() {
+        //yourMethod()
+        //
+        //runnable=this;
+        //
+        //h.postDelayed(runnable, delay);
+        //}
+        //}, delay);
+        //
+        //super.onStart();
+        //}
+        //
+        //@Override
+        //protected void onPause() {
+        //h.removeCallbacks(runnable); //stop handler when activity not visible
+        //super.onPause();
+        //}
+
+        //with Timer
+        //Timer myTimer = new Timer();
+        // myTimer.schedule(new TimerTask() {
+        //    @Override
+        //    public void run() {
+        //        //yourMethod()
+        //   }
+        //}, 10000);
+
+        //with CountDownTimer
+        //private  CountDownTimer countDownTimer;
+        //private void startTimer(final Context context) {
+        //
+        //if (countDownTimer != null) {
+        //countDownTimer.cancel();
+        //countDownTimer = null;
+        // }
+        //
+        //countDownTimer = new CountDownTimer(20 * 1000, 1 * 1000) {
+        //
+        // public void onTick(long millisUntilFinished) {
+        //
+        //
+        //}
+        //
+        //public void onFinish() {
+        //
+        //yourMethod();
+        //
+        //startTimer(context);
+        //
+        //}
+        //}
+        //
+        //}.start();
+        //}
+
+    }
+
+    private void hideSoftKeyboard() {
+
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+        //Disable the keyboard on activity window startup
+        //this .getWindow().setSoftInputMode(WindowManager.LayoutParams. SOFT_INPUT_STATE_ALWAYS_HIDDEN );
+
+        //<!-- to prevent keyboard over editText field - android:windowSoftInputMode="adjustPan
+        //resizes window - but keyboard covers editText again... - android:windowSoftInputMode="stateHidden|adjustResize"-->
+        //<activity android:name=".ChatActivity"
+        //android:windowSoftInputMode="adjustPan">
+        //</activity>
+
+        //https://android-developers.googleblog.com/2009/04/updating-applications-for-on-screen.html
+
+    }
+
+    private void marryList() {
+
+        messagesList.add("Mary had a little lamb");
+        messagesList.add("Little lamb, little lamb");
+        messagesList.add("Mary had a little lamb");
+        messagesList.add("Its fleece was white as snow");
+        messagesList.add("And everywhere that Mary went");
+        messagesList.add("Mary went, Mary went");
+        messagesList.add("The lamb was sure to go");
+
+        messagesList.add("He followed her to school one day");
+        messagesList.add("School one day, school one day");
+        messagesList.add("He followed her to school one day");
+        messagesList.add("Which was against the rule");
+        messagesList.add("It made the children laugh and play");
+        messagesList.add("Laugh and play, laugh and play");
+        messagesList.add("It made the children laugh and play");
+        messagesList.add("To see a lamb at school");
+
+        messagesList.add("And so the teacher turned him out\n" +
+                "Turned him out, turned him out\n" +
+                "And so the teacher turned him out\n" +
+                "But still he lingered near\n" +
+                "And waited patiently\n" +
+                "Patiently, patiently\n" +
+                "And waited patiently\n" +
+                "Til Mary did appear");
+
+        messagesList.add("Mary had a little lamb" +
+                "Little lamb, little lamb" +
+                "Mary had a little lamb" +
+                "Its fleece was white as snow" +
+                "And everywhere that Mary went" +
+                "Mary went, Mary went" +
+                "Everywhere that Mary went" +
+                "The lamb was sure to go");
+
+    }
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_light"
+    tools:context="com.konggit.appwazup.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WELCOME"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.032"/>
+
+    <EditText
+        android:id="@+id/editTextLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="45dp"
+        android:ems="10"
+        android:hint="Login"
+        android:inputType="textPersonName"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"/>
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="29dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLogin"/>
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintVertical_bias="0.105"/>
+
+    <TextView
+        android:id="@+id/loginOrSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="or Signup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+        app:layout_constraintVertical_bias="0.019"
+        app:layout_constraintHorizontal_bias="0.501"/>
+
+</android.support.constraint.ConstraintLayout>
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+activity_user_list.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.konggit.appwazup.UserListActivity">
+
+    <ListView
+        android:id="@+id/listVievUserList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+</android.support.constraint.ConstraintLayout>
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+userlist_item.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"/>
+</LinearLayout>
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+activity_chat.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutChat"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_light"
+    tools:context="com.konggit.appwazup.ChatActivity">
+
+    <!-- stop keyboard from hiding listView on call
+    android:stackFromBottom="true"
+    android:transcriptMode="normal"
+    or
+    in your activity:
+    listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+    listView.setStackFromBottom(true);    -->
+    <ListView
+        android:id="@+id/chatListView"
+        android:layout_width="match_parent"
+        android:layout_height="553dp"
+        android:background="@android:color/holo_blue_bright"
+        android:transcriptMode="normal"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chatListView"
+        app:layout_constraintVertical_bias="0.902">
+
+        <!-- Multiline input - android:inputType="textMultiLine" -->
+        <!-- Total Lines prior display - android:lines="8" -->
+        <!-- Minimum lines - android:minLines="6"-->
+        <!-- Cursor Position - android:maxLines="10" -->
+        <!-- Vertical Scroll Bar - android:scrollbars="vertical"-->
+        <EditText
+            android:id="@+id/chatEditText"
+            android:layout_width="345dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="2dp"
+            android:ems="10"
+            android:maxLength="2000"
+            android:gravity="top|left"
+            android:hint="..."
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:maxLines="10"
+            android:minLines="6"
+            android:scrollbars="vertical"/>
+
+        <Button
+            android:id="@+id/chatSendButton"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:text="ok"/>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+userlist_menu.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/settings"
+          android:title="Settings"/>
+    <item android:id="@+id/logout"
+          android:title="Logout"/>
+
+</menu>
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+AndroidManifest.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.konggit.appwazup">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:name=".StarterApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".UserListActivity">
+        </activity>
+        <!-- to prevent keyboard over editText field - android:windowSoftInputMode="adjustPan
+        resizes window - but keyboard covers editText again... - android:windowSoftInputMode="stateHidden|adjustResize"-->
+        <activity android:name=".ChatActivity"
+                  android:windowSoftInputMode="adjustPan">
+        </activity>
+    </application>
+
+</manifest>
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+build.gradle(module.app)
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "com.konggit.appwazup"
+        minSdkVersion 24
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.parse.bolts:bolts-tasks:1.4.0'
+    compile 'com.parse:parse-android:1.15.7'
+    testCompile 'junit:junit:4.12'
+}
+
 

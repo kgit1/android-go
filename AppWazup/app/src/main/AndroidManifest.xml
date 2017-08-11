@@ -19,6 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".UserListActivity">
+        </activity>
+        <!-- to prevent keyboard over editText field - android:windowSoftInputMode="adjustPan
+        resizes window - but keyboard covers editText again... - android:windowSoftInputMode="stateHidden|adjustResize"-->
+        <activity android:name=".ChatActivity"
+                  android:windowSoftInputMode="adjustPan">
+        </activity>
     </application>
 
 </manifest>

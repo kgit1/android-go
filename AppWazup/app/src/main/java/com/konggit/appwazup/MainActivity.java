@@ -1,5 +1,6 @@
 package com.konggit.appwazup;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonLogin;
     private TextView textLoginOrSignup;
-    private boolean login = true;
+    private boolean loginMode = true;
     private EditText editTextUsername;
     private EditText editTextPassword;
     private String username;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setTitle("Wazup Login Activity");
+        redirectIfLoggedIn();
 
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             username = String.valueOf(editTextUsername.getText());
             password = String.valueOf(editTextPassword.getText());
 
-            if (login) {
+            if (loginMode) {
 
                 ParseUser.logInInBackground(username, password, new LogInCallback() {
                     @Override
@@ -73,11 +75,11 @@ public class MainActivity extends AppCompatActivity {
 
                             Log.i("Login", "Login success");
                             Toast.makeText(getApplicationContext(), "Login: success", Toast.LENGTH_SHORT).show();
+                            redirectToUserList();
 
                         } else {
 
-                            Log.i("Login", "Fail: " + e.getCode() + " " + e.getMessage().substring(e.getMessage().indexOf(" ")));
-                            Toast.makeText(getApplicationContext(), "Login Fail: " + e.getCode() + " " + e.getMessage().substring(e.getMessage().indexOf(" ")), Toast.LENGTH_SHORT).show();
+                            errorMessage(e);
 
                         }
 
@@ -98,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
                             Log.i("Login", "Signup success");
                             Toast.makeText(getApplicationContext(), "Signup: success", Toast.LENGTH_SHORT).show();
+                            redirectToUserList();
 
                         } else {
 
-                            Log.i("Login", "Fail: " + e.getCode() + " " + e.getMessage().substring(e.getMessage().indexOf(" ")));
-                            Toast.makeText(getApplicationContext(), "Signup Fail: " + e.getCode() + " " + e.getMessage().substring(e.getMessage().indexOf(" ")), Toast.LENGTH_SHORT).show();
+                            errorMessage(e);
 
                         }
 
@@ -120,17 +122,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            if (login) {
+            if (loginMode) {
 
                 buttonLogin.setText("Signup");
                 textLoginOrSignup.setText("or Login");
-                login = false;
+                loginMode = false;
 
             } else {
 
                 buttonLogin.setText("Login");
                 textLoginOrSignup.setText("or Signup");
-                login = true;
+                loginMode = true;
 
             }
 
@@ -138,8 +140,43 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void hideSoftKeyboard() {
+    private void errorMessage( ParseException e){
+
+        String message = e.getMessage();
+
+        if(message.toLowerCase().contains("java")){
+
+            e.getMessage().substring(e.getMessage().indexOf(" "));
+
+        }
+
+        Log.i("Login", "Fail: " + e.getCode() + " " + message);
+        Toast.makeText(getApplicationContext(), "Signup Fail: " + e.getCode() + " " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void hideSoftKeyboard() {
+
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+    }
+
+    private void redirectToUserList(){
+
+        Log.i("Info", "Redirecting to userList");
+        Intent intent = new Intent(getApplicationContext(),UserListActivity.class);
+        startActivity(intent);
+
+    }
+
+    private void redirectIfLoggedIn(){
+
+        if(ParseUser.getCurrentUser()!=null){
+
+            Log.i("Info", "Already logged");
+            redirectToUserList();
+
+        }
+
     }
 }
