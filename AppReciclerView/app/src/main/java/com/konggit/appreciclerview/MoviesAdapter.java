@@ -19,7 +19,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
     //viewHolder class which saves inside link to every item on the list
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, year, genre;
+        TextView title;
+        TextView year;
+        TextView genre;
 
         MyViewHolder(View view) {
             super(view);
