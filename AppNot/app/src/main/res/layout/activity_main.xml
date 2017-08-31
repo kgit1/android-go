@@ -40,13 +40,13 @@
         android:background="@android:color/holo_blue_light"
         android:ems="10"
         android:gravity="center_vertical|center_horizontal"
+        android:imeOptions="actionDone"
         android:inputType="number"
         android:textColor="@android:color/black"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sumTextView"
-        android:imeOptions="actionDone"/>
+        app:layout_constraintTop_toBottomOf="@+id/sumTextView"/>
 
     <TextView
         android:id="@+id/sumTextView"
@@ -74,7 +74,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:text="add"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -82,15 +82,54 @@
 
     <ListView
         android:id="@+id/testList"
-        android:layout_width="365dp"
-        android:layout_height="213dp"
+        android:layout_width="400dp"
+        android:layout_height="206dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="388dp"/>
+
+    <Button
+        android:id="@+id/readButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:text="read"
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/saveEditText"
         app:layout_constraintTop_toBottomOf="@+id/addButton"/>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="save"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/addButton"/>
+
+    <EditText
+        android:id="@+id/saveEditText"
+        android:layout_width="138dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="66dp"
+        android:layout_marginRight="33dp"
+        android:background="@android:color/holo_blue_light"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/testList"
+        app:layout_constraintRight_toLeftOf="@+id/saveButton"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/addButton"
+        app:layout_constraintVertical_bias="1.0"/>
 
 </android.support.constraint.ConstraintLayout>
