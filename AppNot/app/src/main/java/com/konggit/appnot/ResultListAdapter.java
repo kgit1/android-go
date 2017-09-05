@@ -58,7 +58,7 @@ public class ResultListAdapter extends BaseAdapter{
 
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.resultslist_item, parent, false);
+            convertView = inflater.inflate(R.layout.results_list_item, parent, false);
             viewHolder = new ViewHolder();
 
             //save link to textViews in viewHolder

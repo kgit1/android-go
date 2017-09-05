@@ -9,6 +9,9 @@ public class Results {
     private int numbers;
     private Map<Date, Integer> path;
 
+    public Results() {
+    }
+
     public Results(int dayDefaultNumber, int numbers, Map<Date, Integer> path) {
         this.dayDefaultNumber = dayDefaultNumber;
         this.numbers = numbers;

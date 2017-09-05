@@ -1,13 +1,11 @@
 package com.konggit.appnot;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,13 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.konggit.appnot.data.Data;
+import com.konggit.appnot.data.InternalStorage;
+import com.konggit.appnot.data.SharedPreferencesStorage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,7 +28,6 @@ import java.util.TreeMap;
 public class MainActivity extends AppCompatActivity {
 
     public static String PREFERENCES_VALUE_NAME = "DATA_JSON_STRING";
-    public static String SAVE_FILE_NAME = "DATA_JSON_FILE";
 
     private TextView dateTextView;
     private TextView sumTextView;
@@ -40,9 +35,14 @@ public class MainActivity extends AppCompatActivity {
     private Button addButton;
     private Button saveButton;
     private Button readButton;
+    private Button sharedPreferencesListButton;
+    private Button internalStorageButton;
 
-    ListView listView;
-    ResultListAdapter adapter;
+    private Data sharedPreferencesStorage;
+    private Data internalStorage;
+
+    private ListView listView;
+    private ResultListAdapter adapter;
 
     private Map<Date, Results> info;
 
@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.layout);
         layout.setOnClickListener(new LayoutOnClickListener());
 
+        sharedPreferencesStorage = new SharedPreferencesStorage(getApplicationContext());
+        internalStorage = new InternalStorage(getApplicationContext());
+
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         sumTextView = (TextView) findViewById(R.id.sumTextView);
 
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         addButton = (Button) findViewById(R.id.addButton);
         saveButton = (Button) findViewById(R.id.saveButton);
         readButton = (Button) findViewById(R.id.readButton);
+        sharedPreferencesListButton = (Button) findViewById(R.id.sharedPreferencesListButton);
+        internalStorageButton = (Button) findViewById(R.id.internalStorageButton);
 
         info = new TreeMap<>();
         feelMap();
@@ -87,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         addButton.setOnClickListener(new AddButtonOnClickListener());
         saveButton.setOnClickListener(new SaveButtonOnClickListener());
         readButton.setOnClickListener(new ReadButtonOnClickListener());
+        sharedPreferencesListButton.setOnClickListener(new SharedPreferencesListButtonOnClickListener());
+        internalStorageButton.setOnClickListener(new InternalStorageButtonOnClickListener());
 
         dateTextView.setText(formattedDate(currentDate()));
 
@@ -96,91 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class AddButtonOnClickListener implements View.OnClickListener {
+    private void updateActivity(int number) {
 
-        @Override
-        public void onClick(View v) {
+        sumTextView.setText(String.valueOf(number));
+        numbersEditText.setText("");
 
-            //Log.i("Button", "0 " + info);
-
-            if (numbersEditText.getText().toString().trim().length() > 0) {
-
-                int number = Integer.valueOf(numbersEditText.getText().toString());
-
-                if (!info.isEmpty()) {
-
-                    //Log.i("Button", "00 " + info);
-
-                    if (!info.containsKey(normalizedDate())) {
-
-                        Map<Date, Integer> path = new TreeMap<>();
-                        path.put(currentDate(), number);
-
-                        Results results = new Results(defaultNumber, number, path);
-
-                        info.put(normalizedDate(), results);
-
-                        Log.i("Button", "01 " + number);
-                        Log.i("Button", "02 " + path);
-                        Log.i("Button", "03 " + results);
-                        Log.i("Button", "04 " + info);
-
-                        adapter.notifyDataSetChanged();
-                        updateActivity(number);
-
-                    } else {
-
-                        Results results = info.get(normalizedDate());
-
-                        int recalculatedNumber = results.getNumbers() + number;
-
-                        results.setNumbers(recalculatedNumber);
-
-                        results.getPath().put(currentDate(), recalculatedNumber);
-
-                        info.put(normalizedDate(), results);
-
-                        Log.i("Button", "11 " + number);
-                        Log.i("Button", "12 " + results.getPath());
-                        Log.i("Button", "13 " + results);
-                        Log.i("Button", "14 " + info);
-
-//                        adapter=new ResultListAdapter(getApplicationContext(), info);
-//                        listView.setAdapter(adapter);
-                        //adapter.notifyDataSetChanged();
-                        updateActivity(recalculatedNumber);
-                    }
-
-                } else {
-
-                    Map<Date, Integer> path = new TreeMap<>();
-                    path.put(currentDate(), number);
-
-                    Results results = new Results(defaultNumber, number, path);
-
-                    info.put(normalizedDate(), results);
-
-                    Log.i("Button", "21 " + number);
-                    Log.i("Button", "22 " + path);
-                    Log.i("Button", "23 " + results);
-                    Log.i("Button", "24 " + info);
-
-                    adapter.notifyDataSetChanged();
-                    updateActivity(number);
-                }
-
-                hideSoftKeyboard();
-                adapter.notifyDataSetChanged();
-
-            } else {
-
-                Toast.makeText(getApplicationContext(), "FIELD IS EMPTY", Toast.LENGTH_SHORT).show();
-
-            }
-
-
-        }
     }
+
+    ////////////date methods
 
     private Date currentDate() {
 
@@ -227,59 +157,21 @@ public class MainActivity extends AppCompatActivity {
         return normalizedDate;
     }
 
-    private void updateActivity(int number) {
+    private Date fakeDate(String date) {
 
-        sumTextView.setText(String.valueOf(number));
-        numbersEditText.setText("");
-        toJsonConverter(info);
+        DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 
-    }
-
-    private JSONObject toJsonConverter(Map<Date, Results> info) {
-
-        JSONObject jsonObject = new JSONObject();
+        Calendar calendar = Calendar.getInstance();
+        //calendar.set(Calendar.ERA, 0);
+        Date normalizedDate = calendar.getTime();
 
         try {
-
-            for (Date date : info.keySet()) {
-
-                Log.i("JSON", date.toString());
-
-                JSONObject objectInner = new JSONObject();
-
-                JSONObject objectInnerInner = new JSONObject();
-
-                for (Date pathDate : info.get(date).getPath().keySet()) {
-
-                    int pathNumber = info.get(date).getPath().get(pathDate);
-
-                    objectInnerInner.put(pathDate.toString(), pathNumber);
-
-                    //Log.i("JSOOoooOOooN in", objectInnerInner.toString());
-
-                }
-
-                //Log.i("JSOOoooOOooN in out", objectInnerInner.toString());
-
-                objectInner.put("numbers", info.get(date).getNumbers());
-
-                objectInner.put("path", objectInnerInner);
-
-                jsonObject.put(formattedDate(date), objectInner);
-
-            }
-
-
-        } catch (JSONException e) {
-
-            Log.i("JSONException", e.toString());
-
+            normalizedDate = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        Log.i("JSOOoooOOooN", jsonObject.toString());
-        Log.i("JSOOoooOOooN bytes", String.valueOf(jsonObject.toString().getBytes().length));
-
-        return jsonObject;
+        return normalizedDate;
     }
 
     private void feelMap() {
@@ -298,22 +190,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private Date fakeDate(String date) {
-
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-
-        Calendar calendar = Calendar.getInstance();
-        //calendar.set(Calendar.ERA, 0);
-        Date normalizedDate = calendar.getTime();
-
-        try {
-            normalizedDate = formatter.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return normalizedDate;
+    public void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
+
+////////////////////////////////reworked listeners
 
     private class LayoutOnClickListener implements View.OnClickListener {
 
@@ -325,97 +207,86 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void hideSoftKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-    }
 
-    //getSharedPreferences() - Use this if you need multiple preferences files identified by name, which you specify with the first parameter.
-    //getPreferences() - Use this if you need only one preferences file for your Activity. Because this will be the only preferences file for your Activity, you don't supply a name.
-    //To write values: Call edit() to get a SharedPreferences.Editor.
-    //Add values with methods such as putBoolean() and putString().
-    //Commit the new values with commit()
-    //To read values: SharedPreferences methods such as getBoolean() and getString().
+    //todo - remake to work with saved content
+    private class AddButtonOnClickListener implements View.OnClickListener {
 
-    private void save(String jsonData) {
+        @Override
+        public void onClick(View v) {
 
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("DATA_STRING", jsonData);
-        editor.commit();
+            if (numbersEditText.getText().toString().trim().length() > 0) {
 
-    }
+                int number = Integer.valueOf(numbersEditText.getText().toString());
 
-    private void multiSave(String saveName, String jsonData) {
+                if (!info.isEmpty()) {
 
-        SharedPreferences sharedPreferences = getSharedPreferences("DATA_SAVE1", 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(saveName, jsonData);
-        editor.commit();
+                    //Log.i("Button", "00 " + info);
 
-    }
+                    if (!info.containsKey(normalizedDate())) {
 
-    private String getSave(String saveName) {
+                        Map<Date, Integer> path = new TreeMap<>();
+                        path.put(currentDate(), number);
 
-        String jsonData;
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        jsonData = sharedPreferences.getString(saveName, "empty");
+                        Results results = new Results(defaultNumber, number, path);
 
-        return jsonData;
-    }
+                        info.put(normalizedDate(), results);
 
-    private String getMultiSave(String saveName) {
+                        Log.i("Button", "01 " + number);
+                        Log.i("Button", "02 " + path);
+                        Log.i("Button", "03 " + results);
+                        Log.i("Button", "04 " + info);
 
-        String jsonData;
-        SharedPreferences sharedPreferences = getSharedPreferences("DATA_SAVE1", 0);
-        jsonData = sharedPreferences.getString(saveName, "empty");
+                        adapter.notifyDataSetChanged();
+                        updateActivity(number);
 
-        return jsonData;
-    }
+                    } else {
 
-    private void saveToFileInternalStorage(String fileName, String jsonData) {
+                        Results results = info.get(normalizedDate());
 
-        try {
+                        int recalculatedNumber = results.getNumbers() + number;
 
-            //MODE_PRIVATE will create the file (or replace a file of the same name) and make it private to your application
-            FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
-            fos.write(jsonData.getBytes());
-            fos.close();
+                        results.setNumbers(recalculatedNumber);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                        results.getPath().put(currentDate(), recalculatedNumber);
 
-    }
+                        info.put(normalizedDate(), results);
 
-    private String getFromFileInternalStorage(String fileName) {
+                        Log.i("Button", "11 " + number);
+                        Log.i("Button", "12 " + results.getPath());
+                        Log.i("Button", "13 " + results);
+                        Log.i("Button", "14 " + info);
 
-        String jsonData;
-        StringBuilder sb = new StringBuilder();
+                        updateActivity(recalculatedNumber);
+                    }
 
-        try {
+                } else {
 
-            FileInputStream fis = openFileInput(fileName);
+                    Map<Date, Integer> path = new TreeMap<>();
+                    path.put(currentDate(), number);
 
-            while (fis.available() > 0) {
+                    Results results = new Results(defaultNumber, number, path);
 
+                    info.put(normalizedDate(), results);
 
-                sb.append((char) fis.read());
+                    Log.i("Button", "21 " + number);
+                    Log.i("Button", "22 " + path);
+                    Log.i("Button", "23 " + results);
+                    Log.i("Button", "24 " + info);
+
+                    adapter.notifyDataSetChanged();
+                    updateActivity(number);
+                }
+
+                hideSoftKeyboard();
+                adapter.notifyDataSetChanged();
+
+            } else {
+
+                Toast.makeText(getApplicationContext(), "FIELD IS EMPTY", Toast.LENGTH_SHORT).show();
 
             }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        jsonData = sb.toString();
-        Toast.makeText(getApplicationContext(), jsonData, Toast.LENGTH_SHORT).show();
-
-        return jsonData.toString();
     }
 
     private class SaveButtonOnClickListener implements View.OnClickListener {
@@ -423,17 +294,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            String preData = "";
-            if (getFromFileInternalStorage(SAVE_FILE_NAME).length() > 0) {
-                preData += getFromFileInternalStorage(SAVE_FILE_NAME);
-            }
+            sharedPreferencesStorage.setData(info, PREFERENCES_VALUE_NAME);
 
-            EditText saveText = (EditText) findViewById(R.id.saveEditText);
-            String data = saveText.getText().toString();
+            internalStorage.setData(info, PREFERENCES_VALUE_NAME);
 
-            saveToFileInternalStorage(SAVE_FILE_NAME, preData + ", " + data);
+            Log.i("Save click", "1 " + info.toString());
 
-            Toast.makeText(getApplicationContext(), "SAVED: " + data, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "SAVED: " + info.toString(), Toast.LENGTH_LONG).show();
 
         }
     }
@@ -443,35 +310,92 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            String data = getFromFileInternalStorage(SAVE_FILE_NAME);
+            Map<Date, Results> data = sharedPreferencesStorage.getData(PREFERENCES_VALUE_NAME);
 
-            Toast.makeText(getApplicationContext(), "LOADED: " + data, Toast.LENGTH_SHORT).show();
+            Map<Date, Results> data1 = internalStorage.getData(PREFERENCES_VALUE_NAME);
+
+            Log.i("Read click", data.toString());
+
+            Toast.makeText(getApplicationContext(), "LOADED: " + data.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "LOADED2: " + data1.toString(), Toast.LENGTH_LONG).show();
 
         }
     }
 
+    private class SharedPreferencesListButtonOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            changeActivity(SharedPreferencesListActivity.class);
+
+        }
+    }
+
+    private class InternalStorageButtonOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            changeActivity(InternalStorageListActivity.class);
+
+        }
+    }
+
+    private void changeActivity(Class activityClass) {
+
+        Intent intent = new Intent(getApplicationContext(), activityClass);
+        startActivity(intent);
+
+    }
 
 }
 
 
+//////////////////////save get methods
 
+//getSharedPreferences() - Use this if you need multiple preferences files identified by name, which you specify with the first parameter.
+//getPreferences() - Use this if you need only one preferences file for your Activity. Because this will be the only preferences file for your Activity, you don't supply a name.
+//To write values: Call edit() to get a SharedPreferences.Editor.
+//Add values with methods such as putBoolean() and putString().
+//Commit the new values with commit()
+//To read values: SharedPreferences methods such as getBoolean() and getString().
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//    private void save(String jsonData) {
+//
+//        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("DATA_STRING", jsonData);
+//        editor.commit();
+//
+//    }
+//
+//    private void multiSave(String saveName, String jsonData) {
+//
+//        SharedPreferences sharedPreferences = getSharedPreferences("DATA_SAVE1", 0);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(saveName, jsonData);
+//        editor.commit();
+//
+//    }
+//
+//    private String getSave(String saveName) {
+//
+//        String jsonData;
+//        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+//        jsonData = sharedPreferences.getString(saveName, "empty");
+//
+//        return jsonData;
+//    }
+//
+//    private String getMultiSave(String saveName) {
+//
+//        String jsonData;
+//        SharedPreferences sharedPreferences = getSharedPreferences("DATA_SAVE1", 0);
+//        jsonData = sharedPreferences.getString(saveName, "empty");
+//
+//        return jsonData;
+//    }
 
 
 
