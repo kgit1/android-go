@@ -5,9 +5,9 @@ import com.konggit.appnot.Results;
 import java.util.Date;
 import java.util.Map;
 
-public class SQLiteStorage implements Data{
+public class SQLiteMultiStorage implements Data{
 
-
+    //todo
     @Override
     public Map<Date, Results> getData(String saveName) {
         return null;

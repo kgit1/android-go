@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -75,10 +76,23 @@ public class ResultListAdapter extends BaseAdapter{
 
         }
 
-        viewHolder.date.setText(String.valueOf(list.get(position).getKey()));
+        //viewHolder.date.setText(String.valueOf(list.get(position).getKey()));
+        viewHolder.date.setText(formattedDate(list.get(position).getKey()));
         viewHolder.result.setText(String.valueOf(list.get(position).getValue().getNumbers()));
         viewHolder.defaultResult.setText(String.valueOf(list.get(position).getValue().getDayDefaultNumber()));
 
         return convertView;
+    }
+
+
+    private String formattedDate(Date currentDate) {
+
+        String formattedDate;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+
+        formattedDate = formatter.format(currentDate);
+
+        return formattedDate;
     }
 }

@@ -162,27 +162,6 @@ public class SharedPreferencesStorage implements Data {
         return data;
     }
 
-    private Date stringToDateShort(String dateString) {
-
-        //example - Sun Aug 21
-        DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-
-        try {
-
-            date = formatter.parse(dateString);
-
-        } catch (ParseException e) {
-
-            e.printStackTrace();
-
-        }
-
-        return date;
-    }
-
     private Date stringToDateLong(String stringDate) {
 
         //example - Mon Sep 04 00:15:12 GMT+00:00 2017
@@ -204,6 +183,28 @@ public class SharedPreferencesStorage implements Data {
 
         return date;
     }
+
+
+//    private Date stringToDateShort(String dateString) {
+//
+//        //example - Sun Aug 21
+//        DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+//
+//        Calendar calendar = Calendar.getInstance();
+//        Date date = calendar.getTime();
+//
+//        try {
+//
+//            date = formatter.parse(dateString);
+//
+//        } catch (ParseException e) {
+//
+//            e.printStackTrace();
+//
+//        }
+//
+//        return date;
+//    }
 
 }
 

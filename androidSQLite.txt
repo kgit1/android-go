@@ -1507,3 +1507,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return dateFormat.format(date);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+The SQLiteDataBase is the correct solution.
+
+You can save the data of every item into database. There will be a HashMap<String, Object> instead of HashMap<String, String> in each item data, in case of you want to put integer or other simple type data into the hashmap.
+
+Then, you can serialize the HashMap into json when you are going to save it into database:
+
+    // you can put multiple data into this hashmap
+    HashMap<String, Object> dataHashMap = new HashMap<String, Object>();
+
+    ContentValues values = new ContentValues();
+    values.put("data", new JSONObject(dataHashMap).toString());
+    db.insert(TABLE_NAME, COL_ID, values);
+You can do unserialize after fetch the serialized data from database:
+
+    int rawDataIndex = 6;
+    String rawData = cursor.getString(rawDataIndex);
+    HashMap<String, Object> dataHashMap = new HashMap<String, Object>();
+
+    try {
+        JSONObject json = new JSONObject(rawData);
+        JSONArray names = json.names();
+        for (int i = 0; i < names.length(); i++) {
+            String key = names.getString(i);
+            dataHashMap.put(key, json.opt(key));
+        }
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
