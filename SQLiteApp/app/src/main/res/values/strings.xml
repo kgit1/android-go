@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">SQLiteApp</string>
+
+    <string name="name_text_view"><b><u>Name </u></b></string>
+    <string name="email_text_view"><b><u>Email </u></b></string>
+    <string name="age_text_view"><b><u>Age </u></b></string>
+    <string name="id_text_view"><b><u>ID </u></b></string>
+    <string name="func_text_view"><b><u>Func </u></b></string>
+
+    <string name="add_button">add</string>
+    <string name="read_button">read</string>
+    <string name="clear_button">clear</string>
+    <string name="fill_db_button">fill database</string>
+    <string name="func_read_button">read</string>
+    <string name="update_button">update</string>
+    <string name="delete_button">delete</string>
+    <string name="age_selector_button">age></string>
+    <string name="name_button">name</string>
+    <string name="age_sum_button">age</string>
+    <string name="ages_button">ages</string>
+    <string name="sort_button">sort read</string>
+
+    <string name="byName_radio_button">byName</string>
+    <string name="byEmail_radio_button">byEmail</string>
+    <string name="byAgeAsc_radio_button">byAgeAsc</string>
+    <string name="byAgeDesc_radio_button">byAgeDesc</string>
+
+</resources>
