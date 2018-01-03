@@ -17,6 +17,7 @@ import com.konggit.appnot.data.Data;
 import com.konggit.appnot.data.InternalStorage;
 import com.konggit.appnot.data.SQLiteSingleStorageHelper;
 import com.konggit.appnot.data.SharedPreferencesStorage;
+import com.konggit.appnot.data.TestBuilder;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -103,6 +104,15 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.testList);
         adapter = new ResultListAdapter(getApplicationContext(), info);
         listView.setAdapter(adapter);
+
+//        TestBuilder testBuilder = new TestBuilder.Builder(12, 22)
+//                .thirdValue("3")
+//                .fourthValue("4")
+//                .fifthValue("5")
+//                .sixthValue("6")
+//                .build();
+//
+//        Log.i("BUILDER", testBuilder.toString());
 
     }
 

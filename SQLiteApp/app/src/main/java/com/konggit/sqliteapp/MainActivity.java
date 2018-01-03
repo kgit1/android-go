@@ -1,21 +1,25 @@
 package com.konggit.sqliteapp;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -29,10 +33,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button addButton;
     Button readButton;
     Button clearButton;
-    Button updateButton;
-    Button deleteButton;
     Button fillDatabaseButton;
     Button killDBButton;
+    Button funcButton;
+    Button updateButton;
+    Button deleteButton;
     Button ageGreaterButton;
     Button nameSelectButton;
     Button nameAgeSumButton;
@@ -53,6 +58,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
 
+    private int timerSeconds;
+    private int timerStopStartSeconds;
+    Button timerButton;
+    Button timerClearButton;
+    TextView timerTextView;
+    TextView timerStopStartTextView;
+    private boolean timerRunning = false;
+    private boolean timerStopStartRunning = false;
+    Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +75,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setTitle("SQLite example");
 
+        logs("ON CREATE");
+
         mainLinearLayout = (LinearLayout) findViewById(R.id.mainLinearLayout);
 
         addButton = (Button) findViewById(R.id.addButton);
         readButton = (Button) findViewById(R.id.readButton);
         clearButton = (Button) findViewById(R.id.clearButton);
-        updateButton = (Button) findViewById(R.id.updateButton);
-        deleteButton = (Button) findViewById(R.id.deleteButton);
         killDBButton = (Button) findViewById(R.id.killDBButton);
         fillDatabaseButton = (Button) findViewById(R.id.fillDatabaseButton);
+        funcButton = (Button) findViewById(R.id.funcReadButton);
+        updateButton = (Button) findViewById(R.id.updateButton);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
         ageGreaterButton = (Button) findViewById(R.id.ageSelectButton);
         nameSelectButton = (Button) findViewById(R.id.nameSelectButton);
         nameAgeSumButton = (Button) findViewById(R.id.nameAgeSumButton);
@@ -81,10 +99,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         addButton.setOnClickListener(this);
         readButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
-        updateButton.setOnClickListener(this);
-        deleteButton.setOnClickListener(this);
         killDBButton.setOnClickListener(this);
         fillDatabaseButton.setOnClickListener(this);
+        funcButton.setOnClickListener(this);
+        updateButton.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
         ageGreaterButton.setOnClickListener(this);
         nameSelectButton.setOnClickListener(this);
         nameAgeSumButton.setOnClickListener(this);
@@ -102,12 +121,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //create object for data
         contentValues = new ContentValues();
 
-//        sqLiteHelper = null;
-//        SQLiteDatabase sqLiteDatabase = null;
+        //timer
+        timerTextView = (TextView) findViewById(R.id.timerTextView);
+        timerStopStartTextView = (TextView) findViewById(R.id.timerStopStartTextView);
 
-        logs("11111111Rows in my table");
+        timerButton = (Button) findViewById(R.id.timerButton);
+        timerClearButton = (Button) findViewById(R.id.timerClearButton);
+        timerButton.setOnClickListener(new ButtonTimerStopStartOnclickListener());
+        timerClearButton.setOnClickListener(new ButtonTimerClearOnClickListener());
+
+        timerSeconds = 0;
+        timerStopStartSeconds = 0;
+        timerRunning = true;
+        timerStopStartRunning = false;
+
+        runTimer();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -115,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String name = nameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String age = ageEditText.getText().toString();
+        String func = funcEditText.getText().toString();
         String id = idEditText.getText().toString();
         String ageGreater = ageGreaterEditText.getText().toString();
         String nameSelect = nameSelectEditText.getText().toString();
@@ -146,18 +176,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
-            case (R.id.updateButton):
-
-                updateRow(id, name, email, age);
-
-                break;
-
-
-            case (R.id.deleteButton):
-
-                deleteRow(id);
-
-                break;
 
             case (R.id.fillDatabaseButton):
 
@@ -171,13 +189,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
+            case (R.id.funcReadButton):
+
+                //using count(*) as Count - for func editText field
+                funcReadDB(func);
+
+                break;
+
+            case (R.id.updateButton):
+
+                updateRow(id, name, email, age);
+
+                break;
+
+
+            case (R.id.deleteButton):
+
+                deleteRow(id);
+
+                break;
+
             case (R.id.ageSelectButton):
 
                 ageGreater(ageGreater);
 
                 break;
-
-            //todo
 
             case (R.id.nameSelectButton):
 
@@ -325,11 +361,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initDatabase();
 
-        //ask all data from db - obtain cursor object
-        Cursor cursor = null;
+        //ask data from db - obtain cursor object
+        Cursor cursor;
 
         try {
 
+            //method query(String table name, String[] columns, String selection, String[] selection args, String groupBy, String having, String orderBy)
+            //can have boolean distinct at beginning - which tell eliminate duplicates in result or not
+            //can have String limit at the end - which tells to how many rows limit results if contains one number like - 5 - tell limit to 5 results
+            //or can have 2 numbers like - 3,5 - tell skip first 3 results and limit to 5 results starting from 4th
+            //field colums can be used for function too, like - count(*) as Count - to get count of rows in database
             //select all from mytable
             //cursor = sqLiteDatabase.query(MY_TABLE_NAME, null, null, null, null, null, null);
             String[] columns = new String[]{"name,email"};
@@ -379,8 +420,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void recreateTable() {
 
-        //initDatabase();
-
         try {
 
             //sqLiteDatabase.execSQL("drop table mytable");
@@ -393,11 +432,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
 
         }
-//        finally {
-//
-//            closeDatabase();
-//
-//        }
+
+    }
+
+    private void funcReadDB(String func) {
+
+        if (func.equalsIgnoreCase("")) {
+
+            logsToast("Enter func fod DB read");
+
+        } else {
+
+            initDatabase();
+
+            Cursor cursor;
+
+            logs("Read func: " + func + " from database");
+
+            String[] columns = new String[]{func};
+
+            try {
+
+                cursor = sqLiteDatabase.query(MY_TABLE_NAME, columns, null, null, null, null, null);
+
+                printCursor(cursor);
+
+            } catch (SQLiteException e) {
+
+                e.printStackTrace();
+
+            } finally {
+
+                closeDatabase();
+                hideSoftKeyboard();
+
+            }
+
+
+        }
 
     }
 
@@ -789,9 +861,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void closeDatabase() {
 
+        //helper close() closes connection and nullifying reference(link) to an object
         sqLiteHelper.close();
 
-        sqLiteDatabase.close();
+//        sqLiteDatabase.close();
 
         logs("Database closed");
 
@@ -817,7 +890,121 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private class TimerRunnable implements Runnable {
 
+        @Override
+        public void run() {
+
+            if (timerRunning) {
+
+                int secondsTimer = timerSeconds % 60;
+                int minutesTimer = (timerSeconds % 3600) / 60;
+                int hoursTimer = timerSeconds / 3600;
+
+                String time = String.format("%02d:%02d:%02d", hoursTimer, minutesTimer, secondsTimer);
+
+                timerTextView.setText(time);
+
+                timerSeconds += 1;
+
+            }
+
+            if (timerStopStartRunning) {
+
+                int secondsTimerStopStart = timerStopStartSeconds % 60;
+                int minutesTimerStopStart = (timerStopStartSeconds % 3600) / 60;
+                int hoursTimerStopStart = timerStopStartSeconds / 3600;
+
+                String timeStopStart = String.format("%02d:%02d:%02d", hoursTimerStopStart, minutesTimerStopStart, secondsTimerStopStart);
+
+                timerStopStartTextView.setText(timeStopStart);
+
+                timerStopStartSeconds += 1;
+
+            }
+
+            handler.postDelayed(this, 1000);
+
+        }
+
+    }
+
+    private class ButtonTimerStopStartOnclickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            if (timerStopStartRunning) {
+
+                logs("timer stop");
+
+                timerStopStartRunning = false;
+
+            } else {
+
+                logs("timer go");
+
+                timerStopStartRunning = true;
+
+            }
+
+        }
+
+    }
+
+    private class ButtonTimerClearOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            logs("timer clear");
+
+            timerStopStartSeconds = 0;
+            timerStopStartTextView.setText("00:00:00");
+
+        }
+
+    }
+
+    private void runTimer() {
+
+        logs("running");
+
+        handler = new Handler();
+
+        handler.post(new TimerRunnable());
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.join_tables:
+
+                Intent intent = new Intent(getApplicationContext(), JoinTablesActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+}
+
+
+//transaction when opens - lock database and you can't establish new connection to database
+// before transaction close
 //    db.beginTransaction();
 //    try {
 //        ...
@@ -826,10 +1013,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        db.endTransaction();
 //    }
 
-}
 
+//to prevent data loss on orientation change
+//disable orientation change by adding to activities description in AndroidManifest.xml
+//android:screenOrientation="portrait"
 
+//or
+//forbid recreate view on orientation and size change by adding to activities description
+// in AndroidManifest.xml
+// <activity android:name=".MainActivity"
+// android:configChanges="orientation|screenSize">
 
+//or
+//pass values to onCreate method on orientation change
+//    @Override
+//    public void onSaveInstanceState(Bundle bundleOutState) {
+//
+//        bundleOutState.putInt("seconds", seconds);
+//        bundleOutState.putBoolean("running", running);
+//
+//    }
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//
+//        setTitle("SQLite example");
+//
+//        if(savedInstanceState != null){
+//
+//            seconds = savedInstanceState.getInt("seconds");
+//            running = savedInstanceState.getBoolean("running");
+//
+//        }
+//
+//    }
 
 
 
