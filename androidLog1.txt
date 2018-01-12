@@ -1,3 +1,5 @@
+format Ctrl + Alt + L
+
 lon77.5602171 lat12.9825313
 download android studio -> instal -> run
 
