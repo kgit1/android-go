@@ -1,4 +1,151 @@
-var apiQuotes=[];
+<html lang="en"><head>
+
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="https://production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico">
+  <link rel="mask-icon" type="" href="https://production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111">
+  <title>CodePen - Quoter</title>
+  
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css">
+<link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+      <style>
+      .header{
+  z-index:99;
+  position:fixed;
+/*   display:block; */
+  width:100%;
+  height:200px;
+  background:blue;
+  margin:0;
+  padding:0;
+}
+.top{
+  z-index: 99;
+  width:100%;
+  height:60px;
+  min-height:60px;
+  background:white;
+  position:fixed;
+/*   opacity:0.5; */
+/*   position:relative; */
+/*   padding:30px; */
+}
+.main{  
+  margin:0px auto 10px auto;  
+  padding:110px 0 0 0;
+  min-height:700px;
+  win-width:300px;
+  max-width:900px;
+  background:white;
+}
+.quotes{
+  max-width:900px;
+  min-width:400px;
+  padding:30px;
+}
+.quotesBot{
+  max-width:900px;
+  min-width:400px;
+  padding:0px 30px 0px 30px;
+  margin:auto;
+}
+#button{
+  float:right;
+  padding:0px 50px 0px 0px;
+  margin:auto;
+}
+footer{ 
+  display:block;
+  min-height:200px;
+  mon-width:300px;
+  background:white;
+  width:100%;
+  padding:20px;
+} 
+.twit{
+  margin:0px 0px 0px 30px;
+}
+.buttons{
+/*   display:block; */
+/*     background:red; */
+  min-width:400px;
+}
+    </style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script><style></style>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+
+</head>
+
+<body translate="no">
+
+  <!-- <div class="container fluid"> -->
+<div>
+<header class="top">  
+<!--   <p>Lorem</p> -->
+  </header>
+  <div class="main">
+    <div class="quotes">
+<!--       <h3>If your enemy is secure at all points, be prepared for him. If he is in superior strength, evade him. If your opponent is temperamental, seek to irritate him. Pretend to be weak, that he may grow arrogant. If he is taking his ease, give him no rest. If his forces are united, separate them. Attack him where he is unprepared, appear where you are not expected.</h3> -->
+      <blockquote class="blockquote text-right">
+        <p id="message">If your enemy is secure at all points, be prepared for him. If he is in superior strength, evade him. If your opponent is temperamental, seek to irritate him. Pretend to be weak, that he may grow arrogant. If he is taking his ease, give him no rest. If his forces are united, separate them. Attack him where he is unprepared, appear where you are not expected.</p>
+        <div class="blockquote-footer">Chinese general, military strategist - <cite title="Source Title"><a id="author" href="https://en.wikiquote.org/wiki/Sun_Tzu" target="_blank">Sun Tzu</a></cite></div>
+      </blockquote>
+    </div>
+    <div class="buttons">
+    <div id="button">
+      <button class="btn btn-primary btn-lg border border-warning">NEXT</button>
+    </div>
+    <button class="btn btn-primary btn-lg float-left twit border border-warning rounded-circle" style="border-width:13px !important;"><i class="fa fa-twitter"></i></button>
+    </div></div>
+  <hr>
+  <footer>
+    <div class="quotesBot">
+      <div class="row">
+        <div class="col col-3">
+          <h3>Chak</h3>
+          <p id="chak"></p>
+        </div>
+        <div class="col col-3">
+          <h3>Dad</h3>
+          <p id="dad"></p>
+        </div>
+        <div class="col col-3">
+          <h3>Donald</h3>
+          <p id="donald"></p>
+        </div>
+        <div class="col col-3">
+          <h3>Design</h3>
+          <p id="design"></p>
+        </div>
+      
+      </div>
+    </div>
+    
+  </footer>  
+</div>
+<!-- </div> -->
+    <script src="//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  
+
+    <script>
+      var apiQuotes=[];
 
 function getChak(){
   $.getJSON("https://api.chucknorris.io/jokes/random",function(json){ 
@@ -300,3 +447,15 @@ $("#button").on("click",newQuote);
 //     }
 // };
 // xhr.send();
+      //# sourceURL=pen.js
+    </script>
+
+
+
+  
+  
+
+
+
+
+ </body></html>
