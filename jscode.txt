@@ -1,0 +1,202 @@
+REQUESTS TO API
+var apiQuotes=[];
+
+function getChak(){
+  $.getJSON("https://api.chucknorris.io/jokes/random",function(json){ 
+    $(".chak").html(json["value"]);
+  });  
+}
+
+function getDadJokes(){   
+  $.getJSON("https://icanhazdadjoke.com",function(json){    
+    $(".chak").html(json["joke"]);
+  });  
+}
+
+function getDonald(){  
+  $.getJSON("https://cors.io/?https://api.tronalddump.io/random/quote",function(json){    
+    $(".chak").html(json["value"]);
+    console.log( "success" );
+    console.log(json);
+     })
+  .done(function() {
+    console.log( "second success" );
+  })
+  .fail(function() {
+    console.log( "error" );
+  })
+  .always(function() {
+    console.log( "complete" );
+  });
+  // Perform other work here ...
+ 
+// Set another completion function for the request above
+// jqxhr.complete(function() {
+//   console.log( "second complete" );
+// });
+}
+
+function getDadJokesTTTTTTTTT(){
+$.getJSON("//quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1", function(json) {
+  //"//quotesondesign.com/wp-json/posts"
+  $(".chak").html(JSON.stringify(json));
+  console.log( "success" );
+})
+  .done(function() {
+    console.log( "second success" );
+  })
+  .fail(function() {
+    console.log( "error" );
+  })
+  .always(function() {
+    console.log( "complete" );
+  });
+ 
+
+ // Using YQL and JSONP
+// $.ajax({
+//     url: "http://query.yahooapis.com/v1/public/yql",
+ 
+//     // The name of the callback parameter, as specified by the YQL service
+//     jsonp: "callback",
+ 
+//     // Tell jQuery we're expecting JSONP
+//     dataType: "jsonp",
+ 
+//     // Tell YQL what we want and that we want JSON
+//     data: {
+//         q: "select title,abstract,url from search.news where query=\"cat\"",
+//         format: "json"
+//     },
+ 
+//     // Work with the response
+//     success: function( response ) {
+//         console.log( response ); // server response
+//     }
+// });
+// jQuery handles all the complex aspects of JSONP behind-the-scenes — all we have to do is tell jQuery the name of the JSONP callback parameter specified by YQL ("callback" in this case), and otherwise the whole process looks and feels like a normal Ajax request. 
+}
+
+// A simple example
+//https://css-tricks.com/using-the-wp-api-to-fetch-posts/
+// $('#get-another-quote-button').on('click', function(e) {
+//     e.preventDefault();
+//     $.ajax( {
+//       url: '/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
+//       success: function(data) {
+//         var post = data.shift(); // The data is an array of posts. Grab the first one.
+//         $('#quote-title').text(post.title);
+//         $('#quote-content').html(post.content);
+
+//         // If the Source is available, use it. Otherwise hide it.
+//         if (typeof post.custom_meta !== 'undefined' && typeof post.custom_meta.Source !== 'undefined') {
+//           $('#quote-source').html('Source:' + post.custom_meta.Source);
+//         } else {
+//           $('#quote-source').text('');
+//         }
+//       },
+//       cache: false
+//     });
+//   });
+// });
+
+
+
+
+
+var quotes=[
+  "All warfare is based on deception. Hence, when we are able to attack, we must seem unable; when using our forces, we must appear inactive; when we are near, we must make the enemy believe we are far away; when far away, we must make him believe we are near.",
+  "If your enemy is secure at all points, be prepared for him. If he is in superior strength, evade him. If your opponent is temperamental, seek to irritate him. Pretend to be weak, that he may grow arrogant. If he is taking his ease, give him no rest. If his forces are united, separate them. Attack him where he is unprepared, appear where you are not expected.",
+  "Hold out baits to entice the enemy. Feign disorder, and crush him",
+  "The art of war is of vital importance to the State. It is a matter of life and death, a road either to safety or to ruin. Hence it is a subject of inquiry which can on no account be neglected.",
+  "What is essential in war is victory, not prolonged operations.",
+  "It is said that if you know your enemies and know yourself, you will not be imperiled in a hundred battles; if you do not know your enemies but do know yourself, you will win one and lose one; if you do not know your enemies nor yourself, you will be imperiled in every single battle.",
+  "It is the rule in war, if ten times the enemy's strength, surround them; if five times, attack them; if double, be able to divide them; if equal, engage them; if fewer, defend against them; if weaker, be able to avoid them.",
+  "For to win one hundred victories in one hundred battles is not the acme of skill. To subdue the enemy without fighting is the acme of skill.",
+  "What the ancients called a clever fighter is one who not only wins, but excels in winning with ease."
+];
+var authors="Sun Tzu";
+var min = 0;
+var max = quotes.length;
+function newQuote(){
+  var number = Math.floor(Math.random()*(max-min+1))+min;
+  var quote = quotes[number];
+  var author=authors+number;
+  $("#message").html(quote);
+  $("#author").html(author);
+}
+
+
+
+
+$(document).ready(function() {
+$("#button").on("click",newQuote);
+  // $(".twit").on("click",getChak);
+  // $(".twit").on("click",getDadJokes);
+  // $(".twit").on("click",getDonald);
+  $(".twit").on("click",getDadJokesTTTTTTTTT);
+  
+});
+
+
+
+//===================
+
+// var HttpClient = function() {
+//     this.get = function(aUrl, aCallback) {
+//         var anHttpRequest = new XMLHttpRequest();
+//         anHttpRequest.onreadystatechange = function() { 
+//             if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+//                 aCallback(anHttpRequest.responseText);
+//         }
+
+//         anHttpRequest.open( "GET", aUrl, true );            
+//         anHttpRequest.send( null );
+//     }
+// }
+
+// var client = new HttpClient();
+// client.get('http://some/thing?with=arguments', function(response) {
+//     // do something with response
+// });
+
+
+//===========
+
+
+// 101
+// down vote
+// accepted
+// Sending and receiving data in JSON format using POST method
+// // Sending and receiving data in JSON format using POST method
+// //
+// var xhr = new XMLHttpRequest();
+// var url = "url";
+// xhr.open("POST", url, true);
+// xhr.setRequestHeader("Content-type", "application/json");
+// xhr.onreadystatechange = function () {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//         var json = JSON.parse(xhr.responseText);
+//         console.log(json.email + ", " + json.password);
+//     }
+// };
+// var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+// xhr.send(data);
+// Sending a receiving data in JSON format using GET method
+// // Sending a receiving data in JSON format using GET method
+// //
+// var xhr = new XMLHttpRequest();
+// var url = "url?data=" + encodeURIComponent(JSON.stringify({"email": "hey@mail.com", "password": "101010"}));
+// xhr.open("GET", url, true);
+// xhr.setRequestHeader("Content-type", "application/json");
+// xhr.onreadystatechange = function () {
+//     if (xhr.readyState === 4 && xhr.status === 200) {
+//         var json = JSON.parse(xhr.responseText);
+//         console.log(json.email + ", " + json.password);
+//     }
+// };
+// xhr.send();
+
+================================================================================================================
+================================================================================================================
+================================================================================================================
