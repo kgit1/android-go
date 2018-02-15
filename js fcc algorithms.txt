@@ -1,0 +1,1327 @@
+Reverse a String 
+Reverse the provided string.
+You may need to turn the string into an array before you can reverse it.
+
+Your result must be a string.
+function reverseString(str) {
+  var arr = str.split("");
+  console.log("arr:" + arr);
+  var revarr=arr.reverse();
+  
+  console.log("revarr: " + revarr);
+  str=revarr.join("");
+  console.log("string: " + str);
+  return str;
+}
+
+reverseString("hello");
+
+reverseString("hello") should return a string.
+reverseString("hello") should become "olleh".
+reverseString("Howdy") should become "ydwoH".
+reverseString("Greetings from Earth") should return "htraE morf sgniteerG".
+
+##############################################################################################################
+
+Factorialize a Number 
+Return the factorial of the provided integer.
+
+If the integer is represented with the letter n, a factorial is the product of all positive integers less than or equal to n.
+
+Factorials are often represented with the shorthand notation n!
+
+For example: 5! = 1 * 2 * 3 * 4 * 5 = 120
+
+  result=1;
+  for(var i=1;i<=num;i++){
+    result*=i;
+    console.log("i:"+i+" result:"+result);
+  }
+  num=result;
+  console.log(num);
+  return num;
+}
+
+factorialize(5);
+
+factorialize(5) should return a number.
+factorialize(5) should return 120.
+factorialize(10) should return 3628800.
+factorialize(20) should return 2432902008176640000.
+factorialize(0) should return 1.
+##############################################################################################################
+
+Check for Palindromes 
+Return true if the given string is a palindrome. Otherwise, return false.
+
+A palindrome is a word or sentence that's spelled the same way both forward and backward, ignoring punctuation, case, and spacing.
+Note
+You'll need to remove all non-alphanumeric characters (punctuation, spaces and symbols) and turn everything lower case in order to check for palindromes.
+We'll pass strings with varying formats, such as "racecar", "RaceCar", and "race CAR" among others.
+We'll also pass strings with special symbols, such as "2A3*3a2", "2A3 3a2", and "2_A3*3#A2".
+
+function palindrome(str) {
+  // Good luck!
+  console.log("str " + str);
+  var tempStr=str.toLowerCase();
+  console.log("temp " +tempStr);
+//   tempStr=tempStr.replace(/ /gi,"");
+  tempStr=tempStr.replace(/[() .,_-]/g,"");
+
+  
+  console.log("temp " +tempStr);
+  var arr=tempStr.split("");
+  var reverse=arr.reverse();
+  console.log("reverse:"+reverse.join(""));
+  if(tempStr==reverse.join("")){
+    return true;
+  }
+  return false;
+}
+palindrome("eye");
+
+
+palindrome("eye") should return a boolean.
+palindrome("eye") should return true.
+palindrome("_eye") should return true.
+palindrome("race car") should return true.
+palindrome("not a palindrome") should return false.
+palindrome("A man, a plan, a canal. Panama") should return true.
+palindrome("never odd or even") should return true.
+palindrome("nope") should return false.
+palindrome("almostomla") should return false.
+palindrome("My age is 0, 0 si ega ym.") should return true.
+palindrome("1 eye for of 1 eye.") should return false.
+palindrome("0_0 (: /-\ :) 0-0") should return true.
+palindrome("five|\_/|four") should return false.
+##############################################################################################################
+
+Find the Longest Word in a String 
+Return the length of the longest word in the provided sentence.
+Your response should be a number.
+
+  result=0;
+  var arr=str.split(" ");
+  for(var i=0;i<arr.length;i++){
+    if(arr[i].length>result){
+      result=arr[i].length;
+    }
+  }
+  return result;
+}
+
+findLongestWord("The quick brown fox jumped over the lazy dog");
+
+findLongestWord("The quick brown fox jumped over the lazy dog") should return a number.
+findLongestWord("The quick brown fox jumped over the lazy dog") should return 6.
+findLongestWord("May the force be with you") should return 5.
+findLongestWord("Google do a barrel roll") should return 6.
+findLongestWord("What is the average airspeed velocity of an unladen swallow") should return 8.
+findLongestWord("What if we try a super-long word such as otorhinolaryngology") should return 19.
+##############################################################################################################
+
+Title Case a Sentence 
+Return the provided string with the first letter of each word capitalized. Make sure the rest of the word is in lower case.
+
+For the purpose of this exercise, you should also capitalize connecting words like "the" and "of".
+
+  var arr =str.split(" ");
+  console.log(arr);
+  for(var i =0;i<arr.length;i++){
+    var temp = arr[i].split("");
+    
+    temp[0]=temp[0].toUpperCase();
+    if(temp.length>1){
+      for(var j=1;j<temp.length;j++){
+        temp[j]=temp[j].toLowerCase();
+      }
+    }
+    
+    
+    
+    console.log(temp[0]);
+    arr[i]=temp.join("");
+  }
+  console.log("result:"+arr);
+  str=arr.join(" ");
+  console.log("str:"+str);
+  return arr.join(" ");
+}
+
+titleCase("I'm a little tea pot");
+
+titleCase("I'm a little tea pot") should return a string.
+titleCase("I'm a little tea pot") should return "I'm A Little Tea Pot".
+titleCase("sHoRt AnD sToUt") should return "Short And Stout".
+titleCase("HERE IS MY HANDLE HERE IS MY SPOUT") should return "Here Is My Handle Here Is My Spout".
+##############################################################################################################
+
+Return Largest Numbers in Arrays 
+Return an array consisting of the largest number from each provided sub-array. For simplicity, the provided array will contain exactly 4 sub-arrays.
+
+Remember, you can iterate through an array with a simple for loop, and access each member with array syntax arr[i].
+
+function largestOfFour(arr) {
+  // You can do this!
+  var result=[];
+  for(var i=0;i<arr.length;i++){
+    var max=arr[i][0];
+    for(var j=1;j<arr[i].length;j++){
+      if(arr[i][j]>max){
+        max=arr[i][j];
+      }
+    }
+    result.push(max);
+  }
+  console.log(result);
+  return result;
+}
+
+largestOfFour([[4, 5, 1, 3], [13, 27, 18, 26], [32, 35, 37, 39], [1000, 1001, 857, 1]]);
+
+largestOfFour([[4, 5, 1, 3], [13, 27, 18, 26], [32, 35, 37, 39], [1000, 1001, 857, 1]]) should return an array.
+largestOfFour([[13, 27, 18, 26], [4, 5, 1, 3], [32, 35, 37, 39], [1000, 1001, 857, 1]]) should return [27,5,39,1001].
+largestOfFour([[4, 9, 1, 3], [13, 35, 18, 26], [32, 35, 97, 39], [1000000, 1001, 857, 1]]) should return [9, 35, 97, 1000000].
+##############################################################################################################
+
+Confirm the Ending 
+Check if a string (first argument, str) ends with the given target string (second argument, target).
+
+This challenge can be solved with the .endsWith() method, which was introduced in ES2015. But for the purpose of this challenge, we would like you to use one of the JavaScript substring methods instead.
+
+function confirmEnding(str, target) {
+  // "Never give up and good luck will find you."
+  // -- Falcor
+  var temp=str.split("");
+  var testStr=[];
+  if(target.length<=str.length){
+    for(var i=str.length-target.length;i<str.length;i++){
+      testStr.push(temp[i]);
+    }
+  }
+  console.log("str:"+str+" test:"+testStr.join("")+" target:"+target);
+  
+  return target==testStr.join("");
+}
+
+confirmEnding("Bastian", "n");
+
+confirmEnding("Bastian", "n") should return true.
+confirmEnding("Connor", "n") should return false.
+confirmEnding("Walking on water and developing software from a specification are easy if both are frozen", "specification") should return false.
+confirmEnding("He has to give me a new name", "name") should return true.
+confirmEnding("Open sesame", "same") should return true.
+confirmEnding("Open sesame", "pen") should return false.
+confirmEnding("If you want to save our world, you must hurry. We dont know how much longer we can withstand the nothing", "mountain") should return false.
+Do not use the built-in method .endsWith() to solve the challenge.
+##############################################################################################################
+
+Repeat a string repeat a string 
+Repeat a given string (first argument) num times (second argument). Return an empty string if num is not a positive number.
+
+function repeatStringNumTimes(str, num) {
+  // repeat after me
+  if(num<1){
+    return "";
+  }
+  if(num>1){
+    var temp="";
+    for(var i=0;i<num;i++){
+      temp+=str;
+    }
+    str=temp;
+  }
+  console.log(num+" "+str);
+  return str;
+}
+
+repeatStringNumTimes("abc", 3);
+
+repeatStringNumTimes("*", 3) should return "***".
+repeatStringNumTimes("abc", 3) should return "abcabcabc".
+repeatStringNumTimes("abc", 4) should return "abcabcabcabc".
+repeatStringNumTimes("abc", 1) should return "abc".
+repeatStringNumTimes("*", 8) should return "********".
+repeatStringNumTimes("abc", -2) should return "".
+##############################################################################################################
+
+Truncate a string 
+Truncate a string (first argument) if it is longer than the given maximum string length (second argument). Return the truncated string with a ... ending.
+
+Note that inserting the three dots to the end will add to the string length.
+
+However, if the given maximum string length num is less than or equal to 3, then the addition of the three dots does not add to the string length in determining the truncated string.
+
+function truncateString(str, num) {
+  // Clear out that junk in your trunk
+  
+  if(str.length>num){
+  var tempArr=str.split("");
+  var finalLength=num;
+    if(num>3){
+    finalLength-=3;
+    }
+    for(var i=0;i<(str.length-finalLength);i++){
+    tempArr.pop();
+    }
+    str=tempArr.join("")+"...";
+  console.log(str);
+  }
+  return str;
+}
+
+truncateString("A-tisket a-tasket A green and yellow basket", 11);
+
+truncateString("A-tisket a-tasket A green and yellow basket", 11) should return "A-tisket...".
+truncateString("Peter Piper picked a peck of pickled peppers", 14) should return "Peter Piper...".
+truncateString("A-tisket a-tasket A green and yellow basket", "A-tisket a-tasket A green and yellow basket".length) should return "A-tisket a-tasket A green and yellow basket".
+truncateString("A-tisket a-tasket A green and yellow basket", "A-tisket a-tasket A green and yellow basket".length + 2) should return "A-tisket a-tasket A green and yellow basket".
+truncateString("A-", 1) should return "A...".
+truncateString("Absolutely Longer", 2) should return "Ab...".
+##############################################################################################################
+
+Chunky Monkey 
+Write a function that splits an array (first argument) into groups the length of size (second argument) and returns them as a two-dimensional array.
+
+  // Break it up.
+  console.log("start:"+arr);
+  var result=[];
+  var tempArr=[];
+  var counter=0;
+  var chunks=Math.floor(arr.length/size);
+//   var chunk=Math.floor(arr.length/size);
+//   console.log(chunk);
+  if(arr.length%size>0){
+    counter=chunks+1;
+  }else{
+    counter=arr.length/size;
+  }
+  console.log("counter:"+counter);
+  for(var i=0;i<chunks;i++){
+//     console.log("slice:"+arr.slice(1,3));
+    console.log("size*i:"+size*i);
+    tempArr=arr.slice(0+size*i,size*i+size);
+    console.log("tempArr:"+tempArr);
+    result.push(tempArr);
+    console.log("result:"+result);
+    console.log("--------------------");
+    counter--;
+    console.log("counter:"+counter);
+  }
+  if(counter>0){
+    tempArr=arr.slice(size*chunks,arr.length);
+    console.log("tempArr!:"+tempArr);
+    result.push(tempArr);
+  }
+  console.log("result!:"+result);
+  console.log("======================");
+  
+//   for(var i=0;i<arr.length;i++){    
+//     tempArr.push(arr[i]);
+//     counter++;
+// //     console.log(counter);
+//     if(counter%size==0||i==arr.length-1){
+//       console.log("temp:"+tempArr);
+//       result.push(tempArr);
+//       counter=0;
+//       tempArr=[];
+//     }
+//   }
+//   console.log("arr:"+arr);
+//   console.log("result:"+result);
+//   console.log("================");  
+  return result;
+}
+
+chunkArrayInGroups(["a", "b", "c", "d"], 2);
+
+chunkArrayInGroups(["a", "b", "c", "d"], 2) should return [["a", "b"], ["c", "d"]].
+chunkArrayInGroups([0, 1, 2, 3, 4, 5], 3) should return [[0, 1, 2], [3, 4, 5]].
+chunkArrayInGroups([0, 1, 2, 3, 4, 5], 2) should return [[0, 1], [2, 3], [4, 5]].
+chunkArrayInGroups([0, 1, 2, 3, 4, 5], 4) should return [[0, 1, 2, 3], [4, 5]].
+chunkArrayInGroups([0, 1, 2, 3, 4, 5, 6], 3) should return [[0, 1, 2], [3, 4, 5], [6]].
+chunkArrayInGroups([0, 1, 2, 3, 4, 5, 6, 7, 8], 4) should return [[0, 1, 2, 3], [4, 5, 6, 7], [8]].
+chunkArrayInGroups([0, 1, 2, 3, 4, 5, 6, 7, 8], 2) should return [[0, 1], [2, 3], [4, 5], [6, 7], [8]].
+##############################################################################################################
+
+Slasher Flick 
+Return the remaining elements of an array after chopping off n elements from the head.
+
+The head means the beginning of the array, or the zeroth index.
+
+function slasher(arr, howMany) {
+  // it doesn't always pay to be first
+  console.log(arr.splice(0,howMany));
+  return arr;
+}
+
+slasher([1, 2, 3], 2);
+
+slasher([1, 2, 3], 2) should return [3].
+slasher([1, 2, 3], 0) should return [1, 2, 3].
+slasher([1, 2, 3], 9) should return [].
+slasher([1, 2, 3], 4) should return [].
+slasher(["burgers", "fries", "shake"], 1) should return ["fries", "shake"].
+slasher([1, 2, "chicken", 3, "potatoes", "cheese", 4], 5) should return ["cheese", 4].
+##############################################################################################################
+
+Mutations 
+Return true if the string in the first element of the array contains all of the letters of the string in the second element of the array.
+
+For example, ["hello", "Hello"], should return true because all of the letters in the second string are present in the first, ignoring case.
+
+The arguments ["hello", "hey"] should return false because the string "hello" does not contain a "y".
+
+Lastly, ["Alien", "line"], should return true because all of the letters in "line" are present in "Alien".
+
+function mutation(arr) {
+  
+  var first=arr[0].toLowerCase().split("");
+  var second =arr[1].toLowerCase().split("");
+  
+  console.log(first);
+  for(var i =0;i<second.length;i++){
+    if(first.indexOf(second[i])<0){
+      console.log(first.indexOf(second[i]));
+      return false;
+    }
+  }
+  
+console.log("++++++++++++++++++++++");
+  
+  return true;
+}
+
+mutation(["hello", "hey"]);
+
+mutation(["hello", "hey"]) should return false.
+mutation(["hello", "Hello"]) should return true.
+mutation(["zyxwvutsrqponmlkjihgfedcba", "qrstu"]) should return true.
+mutation(["Mary", "Army"]) should return true.
+mutation(["Mary", "Aarmy"]) should return true.
+mutation(["Alien", "line"]) should return true.
+mutation(["floor", "for"]) should return true.
+mutation(["hello", "neo"]) should return false.
+mutation(["voodoo", "no"]) should return false.
+##############################################################################################################
+
+Falsy Bouncer 
+Remove all falsy values from an array.
+
+Falsy values in JavaScript are false, null, 0, "", undefined, and NaN.
+
+function bouncer(arr) {
+  // Don't show a false ID to this bouncer.
+  var result=arr.filter(function(val){
+    console.log("val:"+ val );
+    console.log(val!=0&&!isNaN(val));
+    return val;});
+      //!isNaN(val)&&val!==0&&val!==false&&val!==""&&val!==null
+// We can check null by ===
+//if ( value === null ){}
+//Just by using if
+//if( value ) {}
+//will evaluate to true if value is not:
+//null
+//undefined
+//NaN
+//empty string ("")
+//false
+//0
+  console.log("result:"+result+"\n===========");
+  return result;
+}
+
+bouncer([7, "ate", "", false, 9]);
+
+bouncer([7, "ate", "", false, 9]) should return [7, "ate", 9].
+bouncer(["a", "b", "c"]) should return ["a", "b", "c"].
+bouncer([false, null, 0, NaN, undefined, ""]) should return [].
+bouncer([1, null, NaN, 2, undefined]) should return [1, 2].
+##############################################################################################################
+
+Seek and Destroy 
+You will be provided with an initial array (the first argument in the destroyer function), followed by one or more arguments. Remove all elements from the initial array that are of the same value as these arguments.
+
+function destroyer(arr,first,second) {
+  // Remove all the values
+  var arrTemp=arguments[0];
+  var args=[];
+  for(var i=1;i<arguments.length;i++){
+    args.push(arguments[i]);
+  }
+  
+  for(var j=0;j<args.length;j++){
+   arrTemp=arrTemp.filter(function(val){
+      console.log("val:"+val);
+      console.log("arg:"+args[j]);
+      return val!=args[j];});
+    console.log("!result:"+arrTemp);
+  }
+  console.log("arr:"+arguments[0]);
+ 
+  console.log("result:"+arrTemp);
+  console.log("++++++++++++++++++++++++");
+  
+  return arrTemp;
+}
+
+destroyer([1, 2, 3, 1, 2, 3], 2, 3);
+
+destroyer([1, 2, 3, 1, 2, 3], 2, 3) should return [1, 1].
+destroyer([1, 2, 3, 5, 1, 2, 3], 2, 3) should return [1, 5, 1].
+destroyer([3, 5, 1, 2, 2], 2, 3, 5) should return [1].
+destroyer([2, 3, 2, 3], 2, 3) should return [].
+destroyer(["tree", "hamburger", 53], "tree", 53) should return ["hamburger"].
+##############################################################################################################
+
+Where do I belong 
+Return the lowest index at which a value (second argument) should be inserted into an array (first argument) once it has been sorted. The returned value should be a number.
+
+For example, getIndexToIns([1,2,3,4], 1.5) should return 1 because it is greater than 1 (index 0), but less than 2 (index 1).
+
+Likewise, getIndexToIns([20,3,5], 19) should return 2 because once the array has been sorted it will look like [3,5,20] and 19 is less than 20 (index 2) and greater than 5 (index 1).
+
+  // Find my place in this sorted array.
+  var tempArr=arr.sort(function(a,b){return a>b;});
+  var place=0;
+  for(var i=0;i<tempArr.length;i++){
+    if(num>tempArr[i]){
+      place++;
+    }
+  }
+  console.log("arr2:"+tempArr);
+  console.log("arr1:"+arr);
+  console.log("place:"+place+" num:"+num);
+  console.log("==============");
+  return place;
+}
+
+getIndexToIns([40, 60], 50);
+
+getIndexToIns([10, 20, 30, 40, 50], 35) should return 3.
+getIndexToIns([10, 20, 30, 40, 50], 30) should return 2.
+getIndexToIns([40, 60], 50) should return 1.
+getIndexToIns([3, 10, 5], 3) should return 0.
+getIndexToIns([5, 3, 20, 3], 5) should return 2.
+getIndexToIns([2, 20, 10], 19) should return 2.
+getIndexToIns([2, 5, 10], 15) should return 3.
+##############################################################################################################
+
+Caesars Cipher 
+One of the simplest and most widely known ciphers is a Caesar cipher, also known as a shift cipher. In a shift cipher the meanings of the letters are shifted by some set amount.
+
+A common modern use is the ROT13 cipher, where the values of the letters are shifted by 13 places. Thus 'A' - 'N', 'B' - 'O' and so on.
+
+Write a function which takes a ROT13 encoded string as input and returns a decoded string.
+
+All letters will be uppercase. Do not transform any non-alphabetic character (i.e. spaces, punctuation), but do pass them on.
+
+function rot13(str) { // LBH QVQ VG!
+//   str="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  console.log("str:"+str);
+  var tempStr="";
+  var tempCarCode=0;
+  for(var i=0;i<str.length;i++){
+   tempCharCode=str.charCodeAt(i); console.log(tempCharCode+":"+String.fromCharCode(tempCharCode));
+    
+    if(tempCharCode>64 &&tempCharCode<92){
+    if(tempCharCode>77){
+      tempCharCode-=13;
+    }else{
+      tempCharCode+=13;
+    }}
+    tempStr+=String.fromCharCode(tempCharCode);
+  }
+//   console.log()
+  console.log("result: "+tempStr);
+  console.log("============");
+  return tempStr;
+}
+
+// Change the inputs below to test
+rot13("SERR PBQR PNZC");
+
+rot13("SERR PBQR PNZC") should decode to "FREE CODE CAMP"
+rot13("SERR CVMMN!") should decode to "FREE PIZZA!"
+rot13("SERR YBIR?") should decode to "FREE LOVE?"
+rot13("GUR DHVPX OEBJA QBT WHZCRQ BIRE GUR YNML SBK.") should decode to "THE QUICK BROWN DOG JUMPED OVER THE LAZY FOX."
+##############################################################################################################
+
+Sum All Numbers in a Range 
+We'll pass you an array of two numbers. Return the sum of those two numbers and all numbers between them.
+
+The lowest number will not always come first.
+
+function sumAll(arr) {
+  //can give error on big arrays
+  console.log("min: "+Math.min.apply(null,arr));
+  var min=Math.min.apply(null,arr);
+  var max=Math.max.apply(null,arr);
+  var result=0;
+  console.log("=============");
+  //for big arrays
+//   console.log("min: "+arr.reduce(function(a,b){return Math.min(a,b);}));
+//  function arrayMax(array) {
+//   return array.reduce(function(a, b) {
+//     return Math.max(a, b);
+//   });
+// }  
+  //in ES6
+//   function arrayMax(array) {
+//   return array.reduce((a, b) => Math.max(a, b));
+// }
+  //or even just
+  //Math.max(...arr);  
+  
+    for(var i=min;i<=max;i++){
+      result+=i;
+      console.log("out:"+result);
+    }
+  console.log("out:"+result);
+  console.log("reduce=========");
+  //test reduce for array sum
+//   arr.reduce(function(rez,val){
+//     console.log("rez-"+rez);
+//     console.log("val-"+val);    
+//     return rez+val;
+//   });
+  return result;
+}
+
+sumAll([1, 4,5,6,7,8,9]);
+
+sumAll([1, 4]) should return a number.
+sumAll([1, 4]) should return 10.
+sumAll([4, 1]) should return 10.
+sumAll([5, 10]) should return 45.
+sumAll([10, 5]) should return 45.
+##############################################################################################################
+
+Diff Two Arrays 
+Compare two arrays and return a new array with any items only found in one of the two given arrays, but not both. In other words, return the symmetric difference of the two arrays.
+
+function diffArray(arr1, arr2) {
+  console.log("==================");
+  var newArr = arr1.concat(arr2);
+    newArr=newArr.filter(function(val){
+    var index=newArr.indexOf(val);
+    return newArr.indexOf(val,index+1)==-1;
+  });
+  console.log(newArr);
+  
+  return newArr;
+}
+
+diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]);
+
+diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]) should return an array.
+["diorite", "andesite", "grass", "dirt", "pink wool", "dead shrub"], ["diorite", "andesite", "grass", "dirt", "dead shrub"] should return ["pink wool"].
+["andesite", "grass", "dirt", "pink wool", "dead shrub"], ["diorite", "andesite", "grass", "dirt", "dead shrub"] should return ["diorite", "pink wool"].
+["andesite", "grass", "dirt", "dead shrub"], ["andesite", "grass", "dirt", "dead shrub"] should return [].
+[1, 2, 3, 5], [1, 2, 3, 4, 5] should return [4].
+[1, "calf", 3, "piglet"], [1, "calf", 3, 4] should return ["piglet", 4].
+[], ["snuffleupagus", "cookie monster", "elmo"] should return ["snuffleupagus", "cookie monster", "elmo"].
+[1, "calf", 3, "piglet"], [7, "filly"] should return [1, "calf", 3, "piglet", 7, "filly"].
+##############################################################################################################
+
+Roman Numeral Converter 
+Convert the given number into a roman numeral.
+
+All roman numerals answers should be provided in upper-case.
+
+var str="";
+var result=[];
+var nu=0;
+convertToRoman(36);
+
+function convertToRoman(num) {
+  str=""; 
+  result=[];
+ nu=num;
+  
+  if(nu>=1000){
+    if(nu==1000){
+      console.log("MILLLLLLLLLLLLLLLLL");
+      result.push("M");
+    }
+    else if(nu>1000&& nu<=4000){
+      numberMil(nu);
+    }    
+    result.push(str);
+  }  
+  console.log("number: "+nu);
+  if(nu>=100 && nu<1000){
+    if(nu>=900){
+      nu%=100;
+      result.push("CM");
+    }
+    else if(nu>500&& nu<900){      
+      centuries(nu-500);
+      result.push("D"+str);
+    }else if(nu==500){
+      result.push("D");
+    }
+    else if(nu>=400 && nu<500){
+      nu%=100;
+      result.push("CD");
+    }else if(nu>100 && nu<400){
+      str="";
+      for(var i=0;i<Math.floor(nu/100);i++){
+        str+="C";
+      }
+      nu%=100;
+      result.push(str);
+    }else if(nu==100){
+      result.push("C");
+    }
+  }
+  if(nu>10 && nu<100){
+    if(nu>=90){
+      nu%=10;
+      result.push("XC");
+    }else if(nu>50&&nu<90){
+      nu-=50;
+      tenth(nu);
+      result.push("L"+str);
+    }else if(nu==50){
+      result.push("L");
+    }else if(nu>=40&&nu<50){
+      nu%=10;
+      result.push("XL");
+    }else if(nu<40){
+      tenth(nu);
+      console.log("NU<40");
+      result.push(str);
+    }
+  }
+ 
+   if(nu==10){
+    result.push("X");
+  }
+  if(nu<10){
+  if(nu==9){
+    result.push("IX");
+  }
+  else if(nu>=5 &&nu<=8){
+    nu-=5;
+    ones(nu);
+    result.push("V"+str);
+  }
+  else if(nu==4){
+    result.push("IV");
+  }else 
+    if(nu<4){
+      ones(nu);
+      result.push(str);
+    }
+  }
+  
+   result=result.filter(function(val){
+    return val;
+  });
+  console.log("result: "+result);
+ 
+ return result.join("");
+}
+
+
+function numberMil(num){
+  str="";  
+  console.log("MATH: "+Math.floor(num/1000));
+    for(var i=0;i<Math.floor(num/1000);i++){
+      str+="M";
+    }    
+    console.log("nu: "+nu +" mils: "+str);
+    nu%=1000;
+    console.log("MILSnu: "+nu);
+}
+
+function ones(num){ 
+   str="";
+   for(var i=0;i<num;i++){
+     str+="I";
+   }
+ }
+
+function centuries(num){
+  str="";
+  for(var i=0;i<Math.floor(num/100);i++){
+    str+="C";
+  }
+  nu%=100;
+  console.log("CENTnu: "+nu);
+}
+function tenth(num){
+  str="";
+  for(var i=0;i<Math.floor(num/10);i++){
+    str+="X";
+  }
+  nu%=10;
+  console.log("TENTnu: "+nu+" str - "+str);
+}
+
+convertToRoman(2) should return "II".
+convertToRoman(3) should return "III".
+convertToRoman(4) should return "IV".
+convertToRoman(5) should return "V".
+convertToRoman(9) should return "IX".
+convertToRoman(12) should return "XII".
+convertToRoman(16) should return "XVI".
+convertToRoman(29) should return "XXIX".
+convertToRoman(44) should return "XLIV".
+convertToRoman(45) should return "XLV"
+convertToRoman(68) should return "LXVIII"
+convertToRoman(83) should return "LXXXIII"
+convertToRoman(97) should return "XCVII"
+convertToRoman(99) should return "XCIX"
+convertToRoman(500) should return "D"
+convertToRoman(501) should return "DI"
+convertToRoman(649) should return "DCXLIX"
+convertToRoman(798) should return "DCCXCVIII"
+convertToRoman(891) should return "DCCCXCI"
+convertToRoman(1000) should return "M"
+convertToRoman(1004) should return "MIV"
+convertToRoman(1006) should return "MVI"
+convertToRoman(1023) should return "MXXIII"
+convertToRoman(2014) should return "MMXIV"
+convertToRoman(3999) should return "MMMCMXCIX"
+##############################################################################################################
+
+Search and Replace 
+Perform a search and replace on the sentence using the arguments provided and return the new sentence.
+
+First argument is the sentence to perform the search and replace on.
+
+Second argument is the word that you will be replacing (before).
+
+Third argument is what you will be replacing the second argument with (after).
+
+NOTE: Preserve the case of the original word when you are replacing it. For example if you mean to replace the word "Book" with the word "dog", it should be replaced as "Dog"
+
+function myReplace(str, before, after) {
+  console.log("=====================");
+  var temp=before.split("");
+  if(temp[0]==temp[0].toUpperCase()){
+    temp=after.split("");
+    temp[0]=temp[0].toUpperCase();
+    after=temp.join("");
+  }
+  console.log(temp);
+  console.log(before+" "+after);
+  str=str.replace(before,after);
+  
+  console.log(str);
+  return str;
+}
+
+myReplace("A quick brown fox jumped over the lazy dog", "jumped", "leaped");
+
+myReplace("Let us go to the store", "store", "mall") should return "Let us go to the mall".
+myReplace("He is Sleeping on the couch", "Sleeping", "sitting") should return "He is Sitting on the couch".
+myReplace("This has a spellngi error", "spellngi", "spelling") should return "This has a spelling error".
+myReplace("His name is Tom", "Tom", "john") should return "His name is John".
+myReplace("Let us get back to more Coding", "Coding", "algorithms") should return "Let us get back to more Algorithms".
+##############################################################################################################
+
+Pig Latin 
+Translate the provided string to pig latin.
+
+Pig Latin takes the first consonant (or consonant cluster) of an English word, moves it to the end of the word and suffixes an "ay".
+
+If a word begins with a vowel you just add "way" to the end.
+
+Input strings are guaranteed to be English words in all lowercase.
+
+function translatePigLatin(str) {
+  console.log("############################");
+  var vowelIndex=-1;
+  for(var i=0;vowelIndex==-1&&i<str.length;i++){
+    var char=str.charAt(i);
+    if(char==="a"||char==="e"||char==="i"||char==="o"||char==="u"){
+      vowelIndex=i;
+    }
+  }
+  if(vowelIndex===0){
+    str+="way";
+  }else{
+    str+=str.substring(0,vowelIndex);
+    str=str.substring(vowelIndex);
+    str+="ay";
+    console.log("preprefin: "+str);
+  }
+  return str; 
+  
+ //WORKING through ARRAYS 
+//   var temp=str.split("");
+//   var vowelIndex=-1;
+//   for(var i=0;vowelIndex==-1&&i<temp.length;i++){
+//     switch(temp[i]){
+//         //A, E, I, O, and U
+//       case "a":
+//         vowelIndex=i;
+//         break;
+//          case "e":
+//         vowelIndex=i;
+//         break;
+//          case "i":
+//         vowelIndex=i;
+//         break;
+//          case "o":
+//         vowelIndex=i;
+//         break;
+//          case "u":
+//         vowelIndex=i;
+//         break;
+//     }
+//   }
+//   console.log("vowelIndex:"+vowelIndex);
+//   if(vowelIndex===0){
+//     temp.push("way");
+//   }else{
+//     temp.push(temp.slice(0,vowelIndex).join(""));
+//     temp=temp.slice(vowelIndex,temp.length);
+//     temp.push("ay");
+//   }
+//   var fin=temp.join('');
+//   console.log("fin:"+fin);
+//   return temp.join("");
+}
+
+translatePigLatin("consonant");
+
+translatePigLatin("california") should return "aliforniacay".
+translatePigLatin("paragraphs") should return "aragraphspay".
+translatePigLatin("glove") should return "oveglay".
+translatePigLatin("algorithm") should return "algorithmway".
+translatePigLatin("eight") should return "eightway".
+##############################################################################################################
+
+DNA Pairing 
+The DNA strand is missing the pairing element. Take each character, get its pair, and return the results as a 2d array.
+
+Base pairs are a pair of AT and CG. Match the missing element to the provided character.
+
+Return the provided character as the first element in each array.
+
+For example, for the input GCG, return [["G", "C"], ["C","G"],["G", "C"]]
+
+The character and its pair are paired up in an array, and all the arrays are grouped into one encapsulating array.
+
+function pairElement(str) {
+  console.log("######################");
+  var arr=str.slice("");
+  var result=[];
+  console.log(str);
+  for(var i=0;i<arr.length;i++){
+    var temp=[];
+    temp.push(arr[i]);
+    if(arr[i]==="A"){      
+      temp.push("T");
+    }else if(arr[i]==="T"){
+      temp.push("A");
+    }
+    else if(arr[i]==="G"){
+      temp.push("C");
+    }
+    else if(arr[i]==="C"){
+      temp.push("G");
+    }
+    result.push(temp);
+    console.log(result);
+  }
+  return result;
+}
+
+pairElement("GCG");
+
+pairElement("ATCGA") should return [["A","T"],["T","A"],["C","G"],["G","C"],["A","T"]].
+pairElement("TTGAG") should return [["T","A"],["T","A"],["G","C"],["A","T"],["G","C"]].
+pairElement("CTCTA") should return [["C","G"],["T","A"],["C","G"],["T","A"],["A","T"]].
+##############################################################################################################
+
+Missing letters 
+Find the missing letter in the passed letter range and return it.
+
+If all letters are present in the range, return undefined.
+
+function fearNotLetter(str) {
+  var arr=str.slice("");
+  var answer;
+  for(var i=0;i<str.length;i++){
+    if(str.charCodeAt(i)-str.charCodeAt(i+1)<-1){
+      answer=String.fromCharCode(str.charCodeAt(i)+1);
+    }
+  }
+  return answer;
+}
+
+fearNotLetter("abce");
+
+fearNotLetter("abce") should return "d".
+fearNotLetter("abcdefghjklmno") should return "i".
+fearNotLetter("bcd") should return undefined.
+fearNotLetter("yz") should return undefined.
+##############################################################################################################
+
+Boo who 
+Check if a value is classified as a boolean primitive. Return true or false.
+
+Boolean primitives are true and false.
+
+function booWho(bool) {
+  // What is the new fad diet for ghost developers? The Boolean.
+  var answer=(typeof(bool)==typeof(true));
+  return answer;
+}
+
+booWho(null);
+
+booWho(true) should return true.
+booWho(false) should return true.
+booWho([1, 2, 3]) should return false.
+booWho([].slice) should return false.
+booWho({ "a": 1 }) should return false.
+booWho(1) should return false.
+booWho(NaN) should return false.
+booWho("a") should return false.
+booWho("true") should return false.
+booWho("false") should return false.
+##############################################################################################################
+
+Sorted Union 
+Write a function that takes two or more arrays and returns a new array of unique values in the order of the original provided arrays.
+
+In other words, all values present from all arrays should be included in their original order, but with no duplicates in the final array.
+
+The unique numbers should be sorted by their original order, but the final array should not be sorted in numerical order.
+
+Check the assertion tests for examples.
+
+function uniteUnique(arr) {
+  console.log("#############################");
+  var tempArr=arguments[0];
+ for(var i=1;i<arguments.length;i++){
+    tempArr=tempArr.concat(arguments[i]);
+  }
+  console.log("tempArr:"+tempArr);
+ //filter duplicates
+  tempArr=tempArr.reduce(function(acc,val){
+    console.log("val: "+val);
+    if(typeof(acc)!="object"){
+      acc=[acc];
+    }
+    if(acc.indexOf(val)===-1){
+    acc.push(val);
+    }
+    console.log("acc: "+acc);
+    return acc;
+  });
+  
+//filter uniques
+//   tempArr=tempArr.filter(function(val){
+   
+//     return tempArr.indexOf(val,tempArr.indexOf(val)+1)==-1;
+//   });
+  console.log("tempArr:"+tempArr);
+  return tempArr;
+}
+
+uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]);
+
+uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]) should return [1, 3, 2, 5, 4].
+uniteUnique([1, 3, 2], [1, [5]], [2, [4]]) should return [1, 3, 2, [5], [4]].
+uniteUnique([1, 2, 3], [5, 2, 1]) should return [1, 2, 3, 5].
+uniteUnique([1, 2, 3], [5, 2, 1, 4], [2, 1], [6, 7, 8]) should return [1, 2, 3, 5, 4, 6, 7, 8].
+##############################################################################################################
+
+Convert HTML Entities 
+Convert the characters &, <, >, " (double quote), and ' (apostrophe), in a string to their corresponding HTML entities.
+
+function convertHTML(str) {
+  // &colon;&rpar;
+  console.log("#############################");
+  str=str.replace(/&|<|>|\"|\'/g,function(match){
+//     console.log("val: ");
+    console.log("val: "+match);
+    if(match==="&"){
+    return "&amp;";}
+    if(match==="<"){
+    return "&lt;";}
+    if(match===">"){
+    return "&gt;";}
+    if(match==='\"'){
+    return "&quot;";}
+    if(match==="\'"){
+    return "&apos;";}
+  });
+ 
+  console.log(str);
+  return str;
+}
+
+convertHTML("Dolce & Gabbana");
+
+convertHTML("Dolce & Gabbana") should return Dolce &?amp; Gabbana.
+convertHTML("Hamburgers < Pizza < Tacos") should return Hamburgers &?lt; Pizza &?lt; Tacos.
+convertHTML("Sixty > twelve") should return Sixty &?gt; twelve.
+convertHTML('Stuff in "quotation marks"') should return Stuff in &?quot;quotation marks&?quot;.
+convertHTML("Shindler's List") should return Shindler&?apos;s List.
+convertHTML("<>") should return &?lt;&?gt;.
+convertHTML("abc") should return abc.
+##############################################################################################################
+
+Spinal Tap Case 
+Convert a string to spinal case. Spinal case is all-lowercase-words-joined-by-dashes.
+
+function spinalCase(str) {
+  // "It's such a fine line between stupid, and clever."
+  // --David St. Hubbins
+  console.log("################");
+  str=str.replace(/[A-Z]|_|\s(?=[a-z])/g,function(match,offset){
+    console.log("match: "+match);
+    console.log("offset: "+offset);
+    if(match==="_"){
+       return "";       
+    }else if(match===" "){
+      return "-";
+    }
+    else{
+      return ((offset>0)?"-"+match.toLowerCase():match.toLowerCase());
+         }
+  });
+  console.log("str: "+str);
+//   str=str.replace(/\s/,function(match){
+//     return "-";
+//   });
+  console.log("fin: "+str.replace(/\s/,""));
+  return str.replace(/\s/g,"");
+}
+
+spinalCase('This Is Spinal Tap');
+
+spinalCase("This Is Spinal Tap") should return "this-is-spinal-tap".
+spinalCase("thisIsSpinalTap") should return "this-is-spinal-tap".
+spinalCase("The_Andy_Griffith_Show") should return "the-andy-griffith-show".
+spinalCase("Teletubbies say Eh-oh") should return "teletubbies-say-eh-oh".
+spinalCase("AllThe-small Things") should return "all-the-small-things".
+##############################################################################################################
+
+Sum All Odd Fibonacci Numbers 
+Given a positive integer num, return the sum of all odd Fibonacci numbers that are less than or equal to num.
+
+The first two numbers in the Fibonacci sequence are 1 and 1. Every additional number in the sequence is the sum of the two previous numbers. The first six numbers of the Fibonacci sequence are 1, 1, 2, 3, 5 and 8.
+
+For example, sumFibs(10) should return 10 because all odd Fibonacci numbers less than 10 are 1, 1, 3, and 5.
+
+function sumFibs(num) {
+  if(num==1){
+      return 1;
+    }else{
+  var fibs=[1,1];
+  var currentFib=0;
+  var result=2;
+  for(var i=2;(fibs[i-1]+fibs[i-2])<=num;i++){
+    currentFib=fibs[i-1]+fibs[i-2];
+    fibs.push(currentFib);
+    if(currentFib%2!=0){    
+      result+=currentFib;
+    }    
+  }
+  return result;
+  }
+}
+
+sumFibs(4);
+sumFibs(6);
+
+sumFibs(1) should return a number.
+sumFibs(1000) should return 1785.
+sumFibs(4000000) should return 4613732.
+sumFibs(4) should return 5.
+sumFibs(75024) should return 60696.
+sumFibs(75025) should return 135721.
+##############################################################################################################
+
+Sum All Primes 
+Sum all the prime numbers up to and including the provided number.
+
+A prime number is defined as a number greater than one and having only two divisors, one and itself. For example, 2 is a prime number because it's only divisible by one and two.
+
+The provided number may not be a prime.
+
+function sumPrimes(num) {
+  var number=1;
+  var sumOfPrimes=0;
+  var prime=true;
+  
+  for(var i=2;i<=num;i++){
+    prime=true;
+    
+    for(var j=2;j<i&&prime;j++){
+      
+      if(i%j==0){
+        prime=false;
+      } 
+      
+    } 
+    
+    if(prime===true){      
+      sumOfPrimes+=i;
+    }  
+    
+  }
+  return sumOfPrimes;
+}
+
+sumPrimes(10);
+
+sumPrimes(10) should return a number.
+sumPrimes(10) should return 17.
+sumPrimes(977) should return 73156.
+##############################################################################################################
+
+Smallest Common Multiple 
+Find the smallest common multiple of the provided parameters that can be evenly divided by both, as well as by all sequential numbers in the range between these parameters.
+
+The range will be an array of two numbers that will not necessarily be in numerical order.
+
+e.g. for 1 and 3 - find the smallest common multiple of both 1 and 3 that is evenly divisible by all numbers between 1 and 3.
+
+function smallestCommons(arr) {
+//   console.log(arr+" ######################");
+  arr=arr.sort(function(a,b){return a>b;});
+//   console.log(arr);
+  var counter=1;
+  var result=arr[0];
+  var check;
+  var fin=false;
+  // 
+  for(var i=arr[0];!fin;i++){
+      
+//noprotect
+    check=true;
+    result=i;
+    for(var j=arr[0];j<=arr[1]&&check;j++){
+//       console.log("arr[0]: "+arr[0]);
+      if(result%j!=0){
+//         console.log("switch, result: "+result+" j: "+j+" result%j: "+result%j);
+        check=false;
+        j=arr[0];
+      }else{
+//         console.log("******result: "+result+" j: "+j+" result%j: "+result%j);
+      }
+      if(j==arr[1]){
+        fin =true;
+      }
+    }
+//     console.log("counter: "+counter);
+//     counter++;
+//     console.log("result: "+result);
+  }
+  console.log("##########################result: "+result);
+  return result;
+}
+
+
+smallestCommons([18,23]);
+
+smallestCommons([1, 5]) should return a number.
+smallestCommons([1, 5]) should return 60.
+smallestCommons([5, 1]) should return 60.
+smallestCommons([1, 13]) should return 360360.
+smallestCommons([23, 18]) should return 6056820.
+##############################################################################################################
+
+Finders Keepers 
+Create a function that looks through an array (first argument) and returns the first element in the array that passes a truth test (second argument).
+
+function findElement(arr, func) {
+  arr=arr.filter(func);
+  var num = arr[0];
+  return num;
+}
+
+findElement([1, 2, 3, 4], function(num){ return num % 2 === 0; });
+
+findElement([1, 3, 5, 8, 9, 10], function(num) { return num % 2 === 0; }) should return 8.
+findElement([1, 3, 5, 9], function(num) { return num % 2 === 0; }) should return undefined.
+##############################################################################################################
+
+Drop it 
+Drop the elements of an array (first argument), starting from the front, until the predicate (second argument) returns true.
+
+The second argument, func, is a function you'll use to test the first elements of the array to decide if you should drop it or not.
+
+Return the rest of the array, otherwise return an empty array.
+
+function dropElements(arr, func) {
+  // Drop them elements.
+  return arr;
+}
+
+dropElements([1, 2, 3], function(n) {return n < 3; });
+
+##############################################################################################################
+
+Steamroller 
+Flatten a nested array. You must account for varying levels of nesting.
+
+function steamrollArray(arr) {
+  // I'm a steamroller, baby
+  console.log("===============");
+  var temp=[];
+  arr.forEach(function(val){
+    recursive(val);  
+  });
+  
+  function recursive(val){
+    if(Array.isArray(val)){
+      console.log("array: "+val);
+      val.forEach(function(val){
+    recursive(val);  
+  });
+//       recursive(val);
+    }else{
+      temp.push(val);
+    }
+  }
+  console.log("result: "+temp);
+  return temp;
+}
+
+steamrollArray([1, [2], [3, [[4]]]]);
+
+steamrollArray([[["a"]], [["b"]]]) should return ["a", "b"].
+steamrollArray([1, [2], [3, [[4]]]]) should return [1, 2, 3, 4].
+steamrollArray([1, [], [3, [[4]]]]) should return [1, 3, 4].
+steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4].
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
+
+##############################################################################################################
+
