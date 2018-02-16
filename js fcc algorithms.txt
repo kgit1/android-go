@@ -559,7 +559,6 @@ function sumAll(arr) {
   var min=Math.min.apply(null,arr);
   var max=Math.max.apply(null,arr);
   var result=0;
-  console.log("=============");
   //for big arrays
 //   console.log("min: "+arr.reduce(function(a,b){return Math.min(a,b);}));
 //  function arrayMax(array) {
@@ -576,20 +575,56 @@ function sumAll(arr) {
   
     for(var i=min;i<=max;i++){
       result+=i;
-      console.log("out:"+result);
     }
-  console.log("out:"+result);
-  console.log("reduce=========");
-  //test reduce for array sum
-//   arr.reduce(function(rez,val){
-//     console.log("rez-"+rez);
-//     console.log("val-"+val);    
-//     return rez+val;
-//   });
   return result;
 }
 
 sumAll([1, 4,5,6,7,8,9]);
+
+
+//SOLUTION
+Intermediate Code Solution:
+// function sumAll(arr) {
+//   // Buckle up everything to one!
+
+//   // Using ES6 arrow function (one-liner)
+//   var sortedArr = arr.sort((a,b) => a-b);
+//   var firstNum = arr[0];
+//   var lastNum = arr[1];
+//   // Using Arithmetic Progression summing formula
+
+//   var sum = (lastNum - firstNum + 1) * (firstNum + lastNum) / 2;
+//   return sum;
+// }
+// :rocket: Run Code35
+
+// Code Explanation:
+// Firstly, we create a variable called sortedArr which sorts it from the lowest to the highest value.
+// firstNum is equal to the first number and lastNum is equal to the second number.
+// Next, using the Arithmetic Progression summing formula we let sum equal (lastNum - firstNum + 1) * (firstNum + lastNum) / 2.
+// Finally, we return sum.
+// The line var sortedArr = arr.sort((a,b) => a-b); is probably what will have you more confused. This would be the same as creating a function that returns a-b for the sort() which is the standard way to sort numbers from smallest to largest. Instead using arrow or fat arrow function, we are able to do all that in one single line thus allowing us to write less.
+
+// Relevant Links
+// Array.sort()12
+// Arithmetic Progression summing formula123
+// ES6 arrow function66
+// :rotating_light: Advanced Code Solution:
+// function sumAll(arr) {
+//     var sum = 0;
+//     for (var i = Math.min(...arr); i <= Math.max(...arr); i++){
+//         sum += i;
+//     }
+//   return sum;
+// }
+
+// sumAll([1, 4]);
+// :rocket: Run Code61
+
+// Code Explanation:
+// Creating a variable sum to store the sum of the elements.
+// Starting iteration of the loop from min element of given array and stopping when it reaches the max element.
+// Using a spread operator (…arr) allows passing the actual array to the function instead of one-by-one elements.
 
 sumAll([1, 4]) should return a number.
 sumAll([1, 4]) should return 10.
@@ -614,6 +649,25 @@ function diffArray(arr1, arr2) {
 }
 
 diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]);
+
+//SOLUTION
+Intermediate Code Solution (Declarative Solution):
+function diffArray(arr1, arr2) {
+  return arr1
+    .concat(arr2)
+    .filter(
+        item => !arr1.includes(item) || !arr2.includes(item)
+    )
+}
+
+Advanced Code Solution (Declarative Solution):
+function diffArray(arr1, arr2) {
+    return arr1
+      .filter(el => !arr2.includes(el))
+      .concat(
+        arr2.filter(el => !arr1.includes(el))
+      )
+}
 
 diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]) should return an array.
 ["diorite", "andesite", "grass", "dirt", "pink wool", "dead shrub"], ["diorite", "andesite", "grass", "dirt", "dead shrub"] should return ["pink wool"].
@@ -761,6 +815,147 @@ function tenth(num){
   console.log("TENTnu: "+nu+" str - "+str);
 }
 
+//SOLUTION
+Basic Code Solution:
+var convertToRoman = function(num) {
+
+  var decimalValue = [ 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 ];
+  var romanNumeral = [ 'M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I' ];
+
+  var romanized = '';
+
+  for (var index = 0; index < decimalValue.length; index++) {
+    while (decimalValue[index] <= num) {
+      romanized += romanNumeral[index];
+      num -= decimalValue[index];
+    }
+  }
+
+  return romanized;
+}
+
+// test here
+convertToRoman(36);
+:rocket: Run Code455
+
+Code Explanation:
+We start off by creating two arrays with default conversion with matching indices. These are called decimalValue and romanNumeral. We also create an empty string variable, romanized, which will house the final roman number.
+Using a for loop, we loop through the indicies of the decimalValue array. We continue to loop until while the value at the current index will fit into num.
+Next, we add the roman numeral and decrease num by the decimal equivalent.
+Finally, we return the value of romanized.
+Relevant Links
+For Loops13
+While Loops
+:sunflower: Intermediate Code Solution:
+function convertToRoman(num) {
+ var romans = ["I", "V", "X", "L", "C", "D", "M"],
+     ints = [],
+     romanNumber = [],
+     numeral = "";
+  while (num) {
+    ints.push(num % 10);
+    num = Math.floor(num/10);
+  }
+  for (i=0; i<ints.length; i++){
+      units(ints[i]);
+  }
+  function units(){
+    numeral = romans[i*2];
+    switch(ints[i]) {
+      case 1:
+        romanNumber.push(numeral);
+        break;
+      case 2:
+        romanNumber.push(numeral.concat(numeral));
+        break;
+      case 3:
+        romanNumber.push(numeral.concat(numeral).concat(numeral));
+        break;
+      case 4:
+        romanNumber.push(numeral.concat(romans[(i*2)+1]));
+        break;
+      case 5:
+        romanNumber.push(romans[(i*2)+1]);
+        break;
+      case 6:
+        romanNumber.push(romans[(i*2)+1].concat(numeral));
+        break;
+      case 7:
+        romanNumber.push(romans[(i*2)+1].concat(numeral).concat(numeral));
+        break;
+      case 8:
+        romanNumber.push(romans[(i*2)+1].concat(numeral).concat(numeral).concat(numeral));
+        break;
+      case 9:
+        romanNumber.push(romans[i*2].concat(romans[(i*2)+2]));
+      }
+    }
+  return romanNumber.reverse().join("").toString();
+}
+
+// test here
+convertToRoman(97);
+:rocket: Run Code103
+
+Code Explanation:
+Create an array of Roman Numerals (romans).
+Use a for loop to create an array of the digits (ints) in the number.
+Loop through the array of digits (base 10) and as you do, increment the Roman Numeral (base 5) index by 2 (numeral = romans[i*2]).
+Within the loop, use Switch Case to push the proper Roman Numerals (backwards) onto that array.
+Reverse the Roman Numerals array and turn it into a string.
+Relevant Links
+For Loops13
+While Loops
+Math12
+:sunflower: Intermediate Code Solution:
+function convertToRoman(num) {
+  var romans = [
+  // 10^i 10^i*5
+    ["I", "V"], // 10^0
+    ["X", "L"], // 10^1
+    ["C", "D"], // 10^2
+    ["M"]       // 10^3
+  ],
+      digits = num.toString()
+        .split('')
+        .reverse()
+        .map(function(item, index) {
+          return parseInt(item);
+        }),
+      numeral = "";
+  
+  // Loop through each digit, starting with the ones place
+  for (var i=0; i<digits.length; i++) {
+    // Make a Roman numeral that ignores 5-multiples and shortening rules
+    numeral = romans[i][0].repeat(digits[i]) + numeral;
+    // Check for a Roman numeral 5-multiple version
+    if (romans[i][1]) {
+      numeral = numeral
+        // Change occurrences of 5 * 10^i to the corresponding 5-multiple Roman numeral
+        .replace(romans[i][0].repeat(5), romans[i][1])
+        // Shorten occurrences of 9 * 10^i
+        .replace(romans[i][1] + romans[i][0].repeat(4), romans[i][0] + romans[i+1][0])
+        // Shorten occurrences of 4 * 10^i
+        .replace(romans[i][0].repeat(4), romans[i][0] + romans[i][1]);
+    }
+  }
+  
+  return numeral;
+}
+
+// test here
+convertToRoman(36);
+
+:rocket: Run Code103
+
+Code Explanation:
+Use an array (romans) to create a matrix containing the Roman numeral for a given power of 10 and, if available, the Roman numeral for that power of 10 times 5.
+Convert the input number (num) to a reversed array of digits (digits) so that we can loop through those digits starting with the ones position and going up.
+Loop through each digit, starting with the ones place, and create a Roman numeral string by adding each higher-power Roman numeral to the start of the numeral string a number of times equal to digit. This initial string ignores the Roman numerals that are a power of 10 times 5 and also ignores shortening rules.
+If the relevant power of 10 has a 5-multiple Roman numeral, in numeral, replace 5-in-a-row occurrences with the relevant 5-multiple Roman numeral (i.e., V, L, or D) and shorten occurrences of 9 * 10^i (e.g., VIIII to VIX) and 4 * 10^i (e.g., XXXX to XL). Order is important here!
+Finally, return numeral.
+
+
 convertToRoman(2) should return "II".
 convertToRoman(3) should return "III".
 convertToRoman(4) should return "IV".
@@ -816,6 +1011,100 @@ function myReplace(str, before, after) {
 }
 
 myReplace("A quick brown fox jumped over the lazy dog", "jumped", "leaped");
+
+//SOLUTION
+Basic Code Solution:
+function myReplace(str, before, after) {
+  // Find index where before is on string
+  var index = str.indexOf(before);
+  // Check to see if the first letter is uppercase or not
+  if (str[index] === str[index].toUpperCase()) {
+    // Change the after word to be capitalized before we use it.
+    after = after.charAt(0).toUpperCase() + after.slice(1);
+  }
+  // Now replace the original str with the edited one.
+  str = str.replace(before, after);
+
+  return str;
+}
+
+// test here
+myReplace("A quick brown fox jumped over the lazy dog", "jumped", "leaped");
+:rocket: Run Code62
+
+Code Explanation:
+Use indexOf() to find location of before in string.
+If first letter of before is capitalized, change first letter of after to uppercase.
+Replace before in the string with after.
+Return the new string.
+Relevant Links
+JS String Prototype IndexOf9
+JS String Prototype ToUpperCase2
+JS String Prototype CharAt7
+JS String Prototype Slice13
+:sunflower: Intermediate Code Solution:
+function myReplace(str, before, after) {
+//Create a regular expression object
+  var re = new RegExp(before,"gi");
+//Check whether the first letter is uppercase or not
+  if(/[A-Z]/.test(before[0])){
+  //Change the word to be capitalized
+    after = after.charAt(0).toUpperCase()+after.slice(1);
+     }
+     //Replace the original word with new one
+  var  newStr =  str.replace(re,after);
+
+ return newStr;
+}
+
+// test here
+myReplace("A quick brown fox jumped over the lazy dog", "jumped", "leaped");
+:rocket: Run Code18
+
+Code Explanation:
+In this solution, regular expression [A-Z] is used to check if character is uppercase.
+Create a new regular expression object, re.
+If first letter of before is capitalized, change the first letter of after to uppercase.
+Replace before with after in the string.
+Return the new string.
+Relevant Links
+JS Regex Resources
+:rotating_light: Advanced Code Solution:
+function myReplace(str, before, after) {
+
+    // create a function that will change the casing of any number of letter in parameter "target"
+    // matching parameter "source"
+    function applyCasing(source, target) {
+        // split the source and target strings to array of letters
+        var targetArr = target.split("");
+        var sourceArr = source.split("");
+        // iterate through all the items of sourceArr and targetArr arrays till loop hits the end of shortest array
+        for (var i = 0; i < Math.min(targetArr.length, sourceArr.length); i++){
+            // find out the casing of every letter from sourceArr using regular expression
+            // if sourceArr[i] is upper case then convert targetArr[i] to upper case
+            if (/[A-Z]/.test(sourceArr[i])) {
+                targetArr[i] = targetArr[i].toUpperCase();
+            }
+            // if sourceArr[i] is not upper case then convert targetArr[i] to lower case
+            else targetArr[i] = targetArr[i].toLowerCase();
+        }
+        // join modified targetArr to string and return
+        return (targetArr.join(""));
+    }
+
+
+    // replace "before" with "after" with "before"-casing
+    return str.replace(before, applyCasing(before, after));
+}
+
+// test here
+myReplace("A quick brown fox jumped over the lazy dog", "jumped", "leaped");
+:rocket: Run Code12
+
+Code Explanation:
+Both the before and after are passed as arguments to applyCasing().
+The function applyCasing() is used to change the case of respective characters in targetArr i.e., after in accordance with that of characters in sourceArr i.e., before.
+replace() is used to replace before with after, whose casing is same as before.
 
 myReplace("Let us go to the store", "store", "mall") should return "Let us go to the mall".
 myReplace("He is Sleeping on the couch", "Sleeping", "sitting") should return "He is Sitting on the couch".
@@ -1257,10 +1546,26 @@ Return the rest of the array, otherwise return an empty array.
 
 function dropElements(arr, func) {
   // Drop them elements.
+  for(var i=0;i<arr.length;i++){
+    if(!func(arr[i])){
+      console.log("val: "+arr[i]+" func: "+func(arr[i]));
+      arr.shift();
+      i--;
+    }else{
+      return arr;
+      
+    }
+  }
   return arr;
 }
 
 dropElements([1, 2, 3], function(n) {return n < 3; });
+dropElements([1, 2, 3, 4], function(n) {return n >= 3;}) should return [3, 4].
+dropElements([0, 1, 0, 1], function(n) {return n === 1;}) should return [1, 0, 1].
+dropElements([1, 2, 3], function(n) {return n > 0;}) should return [1, 2, 3].
+dropElements([1, 2, 3, 4], function(n) {return n > 5;}) should return [].
+dropElements([1, 2, 3, 7, 4], function(n) {return n > 3;}) should return [7, 4].
+dropElements([1, 2, 3, 9, 2], function(n) {return n > 2;}) should return [3, 9, 2].
 
 ##############################################################################################################
 
@@ -1298,10 +1603,308 @@ steamrollArray([1, [], [3, [[4]]]]) should return [1, 3, 4].
 steamrollArray([1, {}, [3, [[4]]]]) should return [1, {}, 3, 4].
 ##############################################################################################################
 
+Binary Agents
+Return an English translated sentence of the passed binary string.
 
+The binary string will be space separated.
+
+function binaryAgent(str) {
+  var temp=str.split(" ");
+  str="";
+  console.log(temp);
+  temp.forEach(function(val){
+    str+=String.fromCharCode(parseInt(val,2));
+  });
+  console.log(temp);
+  return str;
+}
+
+binaryAgent("01000001 01110010 01100101 01101110 00100111 01110100 00100000 01100010 01101111 01101110 01100110 01101001 01110010 01100101 01110011 00100000 01100110 01110101 01101110 00100001 00111111");
+
+binaryAgent("01000001 01110010 01100101 01101110 00100111 01110100 00100000 01100010 01101111 01101110 01100110 01101001 01110010 01100101 01110011 00100000 01100110 01110101 01101110 00100001 00111111") should return "Aren't bonfires fun!?"
+binaryAgent("01001001 00100000 01101100 01101111 01110110 01100101 00100000 01000110 01110010 01100101 01100101 01000011 01101111 01100100 01100101 01000011 01100001 01101101 01110000 00100001") should return "I love FreeCodeCamp!"
+
+
+///overkill////////////////////////////////////////////
+https://ourcodeworld.com/articles/read/380/how-to-convert-a-binary-string-into-a-readable-string-and-vice-versa-with-javascript
+
+
+Readable string to binary
+To convert a human readable string to its binary value, use the following function:
+
+/**
+ * Function that converts a string into its binary representation
+ * 
+ * @see https://gist.github.com/eyecatchup/6742657
+ * @author https://github.com/eyecatchup
+ */
+function stringToBinary(str, spaceSeparatedOctets) {
+    function zeroPad(num) {
+        return "00000000".slice(String(num).length) + num;
+    }
+
+    return str.replace(/[\s\S]/g, function(str) {
+        str = zeroPad(str.charCodeAt().toString(2));
+        return !1 == spaceSeparatedOctets ? str : str + " "
+    });
+};
+And you can use it easily:
+
+// "01001000 01100101 01101100 01101100 01101111 00100000 01000010 01101001 01101110 01100001 01110010 01111001 00100000 01010111 01101111 01110010 01101100 01100100"
+stringToBinary("Hello Binary World");
+But how does this code works ? The providen string The charCodeAt method returns the Unicode of the first character in a string. The toString() method parses its first argument, and attempts to return a string representation in the specified radix (base). For radixes above 10, the letters of the alphabet indicate numerals greater than 9. For example, for hexadecimal numbers (base 16), a through f are used.
+
+If you provide the second parameters (spaceSeparatedOctets) to 0, then the string won't be "pretty printed" (the octets won't be separated). The test for the stringToBinary method is the following (note that the stringToBinary method adds an empty character at the end of the returned string therefore is recommendable to use the trim method to remove it):
+
+var testsSuccesfullyExecuted = 0;
+var testErrors = [];
+
+TestBlock.forEach(function(item , index){
+    var processedBinaryString = item.binary;
+    // Removes the spaces from the binary string
+    processedBinaryString = processedBinaryString.replace(/\s+/g, '');
+     // Pretty (correct) print binary (add a space every 8 characters)
+    processedBinaryString = processedBinaryString.match(/.{1,8}/g).join(" ");
+
+    // Remove spaces at the end of the stringToBinary generated string
+    if(stringToBinary(item.text).trim() == processedBinaryString){
+        console.log("Test ${"+ index +"} passes");
+        testsSuccesfullyExecuted++;
+    }else{
+        testErrors.push(index);
+    }
+});
+
+if(testsSuccesfullyExecuted == TestBlock.length){
+    console.log("Test suite succesfully executed with no errors");
+}else{
+    console.error("Test failed with : " + JSON.stringify(testErrors));
+}
+Providing the following output in the console:
+
+Test ${0} passes
+Test ${1} passes
+Test ${2} passes
+Test ${3} passes
+Test ${4} passes
+Test suite succesfully executed with no errors
+With a standard benchmark executed in a personal computer with the following specifications:
+
+Windows 10 Pro 64-bit (10.0, Build 14393) - Chrome Version 56.0.2924.87 (64-bit)
+Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz (8 CPUs), ~3.6GHz
+8192MB RAM
+The function stringToBinary needed 1322.53 milliseconds to execute the test 10K times with and average execution per task of 0.13194000000025843 milliseconds.
+
+Binary to readable string
+To convert a binary string into a readable string, you can use any of the 2 following methods binaryToString or binaryAgent:
+
+Option 1
+This function removes all the empty spaces of the string and will split it into blocks of 8 characters that will be joined into a single string. Then the String.fromCharCode will do the trick for you:
+
+function binaryToString(str) {
+    // Removes the spaces from the binary string
+    str = str.replace(/\s+/g, '');
+    // Pretty (correct) print binary (add a space every 8 characters)
+    str = str.match(/.{1,8}/g).join(" ");
+
+    var newBinary = str.split(" ");
+    var binaryCode = [];
+
+    for (i = 0; i < newBinary.length; i++) {
+        binaryCode.push(String.fromCharCode(parseInt(newBinary[i], 2)));
+    }
+    
+    return binaryCode.join("");
+}
+And the usage:
+
+// Both of them return: "Hello Binary World"
+binaryToString("0100100001100101011011000110110001101111001000000100001001101001011011100110000101110010011110010010000001010111011011110111001001101100011001000010000000100001");
+binaryToString("01001000 01100101 01101100 01101100 01101111 00100000 01000010 01101001 01101110 01100001 01110010 01111001 00100000 01010111 01101111 01110010 01101100 01100100 00100000 00100001");
+The test code for binaryToString is the following:
+
+var testsSuccesfullyExecuted = 0;
+var testErrors = [];
+
+TestBlock.forEach(function(item , index){
+    if(binaryToString(item.binary) == item.text){
+        console.log("Test ${"+ index +"} passes");
+        testsSuccesfullyExecuted++;
+    }else{
+        testErrors.push(index);
+    }
+});
+
+if(testsSuccesfullyExecuted == TestBlock.length){
+    console.log("Test suite succesfully executed with no errors");
+}else{
+    console.error("Test failed with : " + JSON.stringify(testErrors));
+}
+The following test will output the following content in the console:
+
+Test ${0} passes
+Test ${1} passes
+Test ${2} passes
+Test ${3} passes
+Test ${4} passes
+Test suite succesfully executed with no errors
+Option 2
+In the same way the first function does, all the empty spaces will be removed and the string will be divided into blocks of 8 characters to be finally joined.
+
+function binaryAgent(str) {
+     // Removes the spaces from the binary string
+     str = str.replace(/\s+/g, '');
+     // Pretty (correct) print binary (add a space every 8 characters)
+     str = str.match(/.{1,8}/g).join(" ");
+
+     return str.split(" ").map(function (elem) {
+         return String.fromCharCode(parseInt(elem, 2));
+     }).join("");
+}
+And the usage:
+
+// Both of them return: "Hello Binary World"
+binaryAgent("0100100001100101011011000110110001101111001000000100001001101001011011100110000101110010011110010010000001010111011011110111001001101100011001000010000000100001");
+binaryAgent("01001000 01100101 01101100 01101100 01101111 00100000 01000010 01101001 01101110 01100001 01110010 01111001 00100000 01010111 01101111 01110010 01101100 01100100 00100000 00100001");
+The test code for binaryAgent is the following:
+
+var testsSuccesfullyExecuted = 0;
+var testErrors = [];
+
+TestBlock.forEach(function(item , index){
+    if(binaryAgent(item.binary) == item.text){
+        console.log("Test ${"+ index +"} passes");
+        testsSuccesfullyExecuted++;
+    }else{
+        testErrors.push(index);
+    }
+});
+
+if(testsSuccesfullyExecuted == TestBlock.length){
+    console.log("Test suite succesfully executed with no errors");
+}else{
+    console.error("Test failed with : " + JSON.stringify(testErrors));
+}
+
+var TestBlock = [
+    {
+        binary: "01010010 01100101 01100001 01101100 00100000 01110000 01110010 01101111 01100111 01110010 01100001 01101101 01110011 00100000 01100100 01101111 01101110 00100111 01110100 00100000 01100101 01100001 01110100 00100000 01100011 01100001 01100011 01101000 01100101 00101110",
+        text: "Real programs don't eat cache."
+    },
+    {
+        binary: "010011010110111101110011011101  0000100000011100000111010101100010011011000110100101100011001000   000110010001101111011011010110000101101001011011100010000001110011011011110110011001110100011101110110000101110010011001010010000001101001011100110010000001100110011100100110010101100101001011000010000001100001011101000010000001101100011001010                         1100001011100110111010000100000011000010111010000100     000011001100110100101110010011100110   11101000010000001100111011011000110000101101110011000110110010100101110",
+        text: "Most public domain software is free, at least at first glance."
+    },
+    {
+        binary: "010101000110100     00110111101110011011001010010000001110111011010000110111100100000011001000110111 1001000000110111 00110111101110100001000000111010101101110011001000110010101110010011100110111010001100001011011100110010000100 00001010101011011100110100101111000001000000110000101110010011001010010000001100011011011110110111001100100011001010110110101101110011001010110  0100001000000111010001101111001000000111001001100101011010010110111001110110011001010110111001 110100 00100000011010010111010000101100001000000111000001101111011011110111001001101100011110010010111000100000001011010010110100100000010010000110010101101110011100100111100    10010000001010011011100000110010101101110011000110110010101110010",
+        text: "Those who do not understand Unix are condemned to reinvent it, poorly. -- Henry Spencer"
+    },
+    {
+        binary: "01000110010011110101001001010100 0101001001000001010011100010000001101001011100110010000001100110011011110111001000100000011100000110100101110000011001010010000001110011011101000111001001100101011100110111001100100000011001100111001001100101011000010110101101110011001000000110000101101110011001000010000001100011011100 1001111001011100110111010001100001011011000110110001101111011001110111001001100001011100000110100001111001001000000111011101100101011001010110111001101001011001010111001100101110",
+        text: "FORTRAN is for pipe stress freaks and crystallography weenies."
+    },
+    {
+        binary: "00101111 01100101 01100001 01110010 01110100 01101000 00100000 01101001 011100    11 00100000 00111001 00111000 00100101 00100000 01100110 01110101 01101100 01101  100 00100000 00101110 00101110 00101110 00100000 01110000 01101100 01100101 01100001 01110011 01100101 00100000 01100100 01100101 01101100 01100101 01110100 01100101 00100000 01100001 0110 1110 011110  01 01101111 01101110 01100101 00100000 01111001 01101111 01110101 00100000 01100011 01100001 01101110 00101110   ",
+        text: "/earth is 98% full ... please delete anyone you can."
+    }
+];
 ##############################################################################################################
 
+Wherefore art thou
+Make a function that looks through an array of objects (first argument) and returns an array of all objects that have matching property and value pairs (second argument). Each property and value pair of the source object has to be present in the object from the collection if it is to be included in the returned array.
 
+For example, if the first argument is [{ first: "Romeo", last: "Montague" }, { first: "Mercutio", last: null }, { first: "Tybalt", last: "Capulet" }], and the second argument is { last: "Capulet" }, then you must return the third object from the array (the first argument), because it contains the property and its value, that was passed on as the second argument.
+
+function whatIsInAName(collection, source) {
+  // What's in a name?
+  var arr = [];
+  var bool;
+  // Only change code below this line
+console.log("####################");
+  console.log(source);
+collection.forEach(function(element){
+  if(Object.keys(source).length<=Object.keys(element).length){
+    
+  bool=true;
+  
+  Object.keys(source).forEach(function(sourceKey){
+    
+    if(element.hasOwnProperty(sourceKey)&&bool){
+      bool=false;
+//     console.log("elementSourceKey: "+element[sourceKey]);
+      if(element[sourceKey]==source[sourceKey]){
+        console.log(element[sourceKey]+" : "+source[sourceKey]);
+        bool = true;        
+      }
+    }else{
+      bool=false;
+    }
+    
+  });
+    
+  if(bool){
+      arr.push(element);
+  }}
+});
+ 
+  console.log(arr);
+  // Only change code above this line
+  return arr;
+}
+
+whatIsInAName([{ first: "Romeo", last: "Montague" }, { first: "Mercutio", last: null }, { first: "Tybalt", last: "Capulet" }], { last: "Capulet" });
+
+
+//SOLUTION
+//BASIC
+// function whatIsInAName(collection, source) {
+//   // "What's in a name? that which we call a rose
+//   // By any other name would smell as sweet.”
+//   // -- by William Shakespeare, Romeo and Juliet
+//   var srcKeys = Object.keys(source);
+
+//   // filter the collection
+//   return collection.filter(function (obj) {
+//     for(var i = 0; i < srcKeys.length; i++) {
+//       if(!obj.hasOwnProperty(srcKeys[i]) || obj[srcKeys[i]] !== source[srcKeys[i]]) {
+//         return false;
+//       }
+//     }
+//     return true;
+//   });
+// }
+
+//INTERMEDIATE
+// function whatIsInAName(collection, source) {
+//   var srcKeys = Object.keys(source);
+
+//   return collection.filter(function (obj) {
+//     return srcKeys.every(function (key) {
+//       return obj.hasOwnProperty(key) && obj[key] === source[key];
+//     });
+//   });
+// }
+
+//ADVANCED
+// function whatIsInAName(collection, source) {
+//   var srcKeys = Object.keys(source);
+
+//   // filter the collection
+//   return collection.filter(function (obj) {
+//     return srcKeys
+//       .map(function(key) {
+//         return obj.hasOwnProperty(key) && obj[key] === source[key];
+//       })
+//       .reduce(function(a, b) {
+//         return a && b;
+//       });
+//   });
+// }
+
+whatIsInAName([{ first: "Romeo", last: "Montague" }, { first: "Mercutio", last: null }, { first: "Tybalt", last: "Capulet" }], { last: "Capulet" }) should return [{ first: "Tybalt", last: "Capulet" }].
+whatIsInAName([{ "a": 1 }, { "a": 1 }, { "a": 1, "b": 2 }], { "a": 1 }) should return [{ "a": 1 }, { "a": 1 }, { "a": 1, "b": 2 }].
+whatIsInAName([{ "a": 1, "b": 2 }, { "a": 1 }, { "a": 1, "b": 2, "c": 2 }], { "a": 1, "b": 2 }) should return [{ "a": 1, "b": 2 }, { "a": 1, "b": 2, "c": 2 }].
+whatIsInAName([{ "a": 1, "b": 2 }, { "a": 1 }, { "a": 1, "b": 2, "c": 2 }], { "a": 1, "c": 2 }) should return [{ "a": 1, "b": 2, "c": 2 }].
 ##############################################################################################################
 
 
