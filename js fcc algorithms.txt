@@ -2358,11 +2358,693 @@ After updateRecords(2468, "tracks", "Free"), tracks should have "1999" as the fi
 After updateRecords(2548, "tracks", ""), tracks should not be set
 ##############################################################################################################
 
+Symmetric Difference
+Create a function that takes two or more arrays and returns an array of the symmetric difference (? or ?) of the provided arrays.
+
+Given two sets (for example set A = {1, 2, 3} and set B = {2, 3, 4}), the mathematical term "symmetric difference" of two sets is the set of elements which are in either of the two sets, but not in both (A ? B = C = {1, 4}). For every additional symmetric difference you take (say on a set D = {2, 3}), you should get the set with elements which are in either of the two the sets but not both (C ? D = {1, 4} ? {2, 3} = {1, 2, 3, 4}).
+
+function sym(args) {
+  var data = [];
+  for(var i=0;i<arguments.length;i++){
+    data.push(arguments[i]);
+  }
+  console.log(""+data);
+  
+  data=data.reduce(function(holder,val){
+    console.log("HOLDER: "+holder);
+    console.log("VAL: "+val);
+    holder=arrRemoveDuplicates(holder);
+    val=arrRemoveDuplicates(val);
+    function arrRemoveDuplicates(arr){
+      console.log("ARR: "+arr);
+       for(var i=0;i<arr.length;i++){
+      for(var k=i+1;k<arr.length;k++){
+        if(arr[k]==arr[i]){
+          console.log("arr[k]: "+arr[k]+" el: "+arr[i]);
+        arr.splice(k,1);
+          }
+        }
+      }
+      console.log("ARRF: "+arr);
+      return arr;
+    }
+    
+    console.log("HOLDER: "+holder);
+      for(var j=0;j<holder.length;j++){
+        console.log("holder["+j+"] = "+holder[j]);
+        if(val.includes(holder[j])){
+          console.log("splice");
+          var duplicateValue=holder[j];
+          console.log("INDEX: "+j);
+          holder.splice(j,1);
+          val.splice(val.indexOf(duplicateValue),1);
+          console.log(""+holder);
+          console.log(""+val);
+          console.log("======================================");
+          j--;
+        }
+      }
+    return holder.concat(val);
+  });
+  console.log("data: "+data);
+  console.log("#######################################");
+  return data;
+}
+
+sym([1, 2, 3], [5, 2, 1, 4]);
+
+//SOLUTION
+Basic Code Solution:
+function sym() {
+    var args = [];
+    for (var i = 0; i < arguments.length; i++) {
+        args.push(arguments[i]);
+    }
+
+    function symDiff(arrayOne, arrayTwo) {
+        var result = [];
+
+        arrayOne.forEach(function(item) {
+            if (arrayTwo.indexOf(item) < 0 && result.indexOf(item) < 0) {
+                result.push(item);
+            }
+        });
+
+        arrayTwo.forEach(function(item) {
+            if (arrayOne.indexOf(item) < 0 && result.indexOf(item) < 0) {
+                result.push(item);
+            }
+        });
+
+        return result;
+    }
+
+    // Apply reduce method to args array, using the symDiff function
+    return args.reduce(symDiff);
+}
+:rocket: Run Code97
+
+Code Explanation:
+push() is used to break down the arguments object to an array, args.
+The symDiff function finds the symmetric difference between two sets. It is used as a callback function for the reduce() method called on args.
+arrayOne.forEach() pushes the elements to result which are present only in arrayOne as well as not already a part of result.
+arrayTwo.forEach() pushes the elements to result which are present only in arrayTwo as well as not already a part of result.
+The result, which is the symmetric difference is returned. This solution works for any number of sets.
+Relevant Links
+JS For Loops Explained1
+array.length2
+JS Array Prototype Push
+JS Array Prototype ForEach7
+JS Array Prototype IndexOf6
+:sunflower: Intermediate Code Solution:
+function sym() {
+
+  // Convert the argument object into a proper array
+  var args = Array.prototype.slice.call(arguments);
+
+  // Return the symmetric difference of 2 arrays
+  var getDiff = function(arr1, arr2) {
+
+    // Returns items in arr1 that don't exist in arr2
+    function filterFunction(arr1, arr2) {
+      return arr1.filter(function(item) {
+        return arr2.indexOf(item) === -1;
+      });
+    }
+
+    // Run filter function on each array against the other
+    return filterFunction(arr1, arr2)
+      .concat(filterFunction(arr2, arr1));
+  };
+
+  // Reduce all arguments getting the difference of them
+  var symarray = args.reduce(getDiff, []);
+
+  // Run filter function to get the unique values
+  var unique = symarray.filter(function(elem, index, self) {
+    return index === self.indexOf(elem);
+    });
+  return unique;
+}
+
+// test here
+sym([1, 2, 3], [5, 2, 1, 4]);
+:rocket: Run Code28
+
+Code Explanation:
+The slice() method is used to break down the arguments object to an array, args.
+The getDiff function finds the symmetric difference between two sets, arr1 and arr2. It is used as a callback function for the reduce() method called on args.
+The first filterFunction() returns elements in arr1 that don’t exist in arr2.
+The next filterFunction() is run on each array against the other to check the inverse of the first check for uniqueness and concatenate it.
+symarray consists of the reduced arguments.
+filter() is used on symarray to keep only the unique values and unique is returned.
+Relevant Links
+JS Array Prototype Slice5
+JS Array Prototype Filter8
+JS Array Prototype Concat3
+:rotating_light: Advanced Code Solution:
+function sym() {
+  // difference between set A and set B
+  const diff = (A, B) => new Set([...A].filter(n => !B.has(n)));
+  // spread operator to convert array like object to array
+  const result = [...arguments]
+    // map elements in arguments (array) to Set
+    .map(arr => new Set(arr))
+    // using the formula in https://en.wikipedia.org/wiki/Symmetric_difference
+    // i reduce it by uniting the diff(A, B) and diff(B, A)
+    .reduce((acc, set) => new Set([...diff(acc, set), ...diff(set, acc)]));
+
+  // convert the set to array by using spread operator again
+  return [...result];
+}
+
+// test here
+sym([1, 2, 3], [5, 2, 1, 4]);
+:rocket: Run Code26
+
+Code Explanation:
+diff consists of the difference between set A and set B.
+result holds the object which has been converted to an array using the spread operator.
+map() is used to populate the new set object with elements from arr using the symmetric difference formula.
+Before returning, the set is converted to an array using the spread operator.
+
+sym([1, 2, 3], [5, 2, 1, 4]) should return [3, 4, 5].
+sym([1, 2, 3], [5, 2, 1, 4]) should contain only three elements.
+sym([1, 2, 5], [2, 3, 5], [3, 4, 5]) should return [1, 4, 5]
+sym([1, 2, 5], [2, 3, 5], [3, 4, 5]) should contain only three elements.
+sym([1, 1, 2, 5], [2, 2, 3, 5], [3, 4, 5, 5]) should return [1, 4, 5].
+sym([1, 1, 2, 5], [2, 2, 3, 5], [3, 4, 5, 5]) should contain only three elements.
+sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3]) should return [2, 3, 4, 6, 7].
+sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3]) should contain only five elements.
+sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3], [5, 3, 9, 8], [1]) should return [1, 2, 4, 5, 6, 7, 8, 9].
+sym([3, 3, 3, 2, 5], [2, 1, 5, 7], [3, 4, 6, 6], [1, 2, 3], [5, 3, 9, 8], [1]) should contain only eight elements.
+##############################################################################################################
+
+	
+The factorial function (symbol: !) just means to multiply a series of descending natural numbers. Examples:
+
+4! = 4 ? 3 ? 2 ? 1 = 24
+7! = 7 ? 6 ? 5 ? 4 ? 3 ? 2 ? 1 = 5.040
+1! = 1
+##############################################################################################################
+
+No repeats please
+Return the number of total permutations of the provided string that don't have repeated consecutive letters. Assume that all characters in the provided string are each unique.
+
+For example, aab should return 2 because it has 6 total permutations (aab, aab, aba, aba, baa, baa), but only 2 of them (aba and aba) don't have the same letter (in this case a) repeating.
+
+function permAlone(str) {
+  if(str.length==1){
+    return 1;
+  }
+  
+  var difCheck=false;
+  var tempChar=str.charAt(0);
+  
+  for(var j=0;j<str.length&&!difCheck;j++){
+    if(str.charAt(0)!=str.charAt(j)){
+    difCheck=true;
+      }
+    }     
+   
+  if(difCheck){
+    var result=[];
+    console.log("String: "+str);
+    result = perm(str.split(""));
+    console.log("result: "+result.length+" - "+result);  
+    result = doublesSweeper(result); 
+    console.log("result: "+result.length+" - "+result); 
+    return result.length;
+  }
+    
+  return 0;
+}
+
+function perm(array){
+      
+    if(array.length<2){
+      return array;
+      
+    }else{
+      var temp=[];
+      
+      for(var i=0;i<array.length;i++){
+        var char=array[i];
+        
+        var remainingArray =    
+            array.slice(0,i).concat(array.slice(i+1,array.length));
+        
+        perm(remainingArray).forEach(function(val){
+        temp.push(char+val);
+        });
+        
+      }   
+      return temp;      
+      }
+    }
+
+function doublesSweeper(arr){
+  
+  return arr.filter(function(val){
+    var checker=true;
+    for(var k=0;k<val.length-1&& checker;k++){
+      if(val[k]==val[k+1]){
+        checker = false;
+      }
+    }
+    if(checker){
+      return val;
+    }
+  });
+}
+
+permAlone('aab');
+
+//useful
+// javascript is call by value by default,
+//// but when passing object it is passing the actual reference
+//function swap(index1, index2, arr) {
+//  var tmp;
+  
+//  tmp = arr[index1];
+//  arr[index1] = arr[index2];
+//  arr[index2] = tmp;
+//}
+
+//// check if characters repeat in string 
+//function checkRepeats (str) {
+//  var exp = /(\w)\1+/g;
+//  return exp.test(str);
+//}
+
+// function permut(string) {
+//     if (string.length < 2) return string; // This is our break condition
+
+//     var permutations = []; // This array will hold our permutations
+
+//     for (var i=0; i<string.length; i++) {
+//         var char = string[i];
+
+//         // Cause we don't want any duplicates:
+//         if (string.indexOf(char) != i) // if char was used already
+//             continue;           // skip it this time
+
+//         var remainingString = string.slice(0,i) + string.slice(i+1,string.length); //Note: you can concat Strings via '+' in JS
+
+//         for (var subPermutation of permut(remainingString))
+//             permutations.push(char + subPermutation)
+
+//     }
+//     return permutations;
+// }
+
+// function *permute(a, n = a.length) {
+//   if (n <= 1) yield a.slice();
+//   else for (let i = 0; i < n; i++) {
+//     yield *permute(a, n - 1);
+//     const j = n % 2 ? 0 : i;
+//     [a[n-1], a[j]] = [a[j], a[n-1]];
+//   }
+// }
+
+// console.log(Array.from(permute("xyz".split(''))).map(perm => perm.join('')));
+
+
+//SOLUTION
+Another way to think about this problem is to start from an empty space. Introduce the first letter to the space. This space will now contain the first sub-permutation. Here’s a diagram illustrating the idea:
+
+diagramzFm5gRx.png898x544 7.1 KB
+Non-Recursive Method
+// An approach to introduce a new character to a permutation
+var ch = '?';
+var source = ['?', '?', '?'];     // Current sub-permutation
+var temp, dest = [];
+
+for (var i = 0; i <= source.length; ++i) {
+  temp = source.slice(0);         // Copy the array
+  temp.splice(i, 0, ch);          // Insert the new character
+  dest.push(temp);                // Store the new sub-permutation
+}
+Finding each permutation could then be done non-recursively by including the above in a function taking a source array and returning a destination array. For each letter of the input string, pass that character, as well as the array returned from the previous call of the function.
+
+Basic Code Solution:
+function permAlone(str) {
+
+  // Create a regex to match repeated consecutive characters.
+  var regex = /(.)\1+/g;
+
+  // Split the string into an array of characters.
+  var arr = str.split('');
+  var permutations = [];
+  var tmp;
+
+  // Return 0 if str contains same character.
+  if (str.match(regex) !== null && str.match(regex)[0] === str) return 0;
+
+  // Function to swap variables' content.
+  function swap(index1, index2) {
+    tmp = arr[index1];
+    arr[index1] = arr[index2];
+    arr[index2] = tmp;
+  }
+
+  // Generate arrays of permutations using the algorithm.
+  function generate(int) {
+    if (int === 1) {
+      // Make sure to join the characters as we create  the permutation arrays
+      permutations.push(arr.join(''));
+    } else {
+      for (var i = 0; i != int; ++i) {
+        generate(int - 1);
+        swap(int % 2 ? 0 : i, int - 1);
+      }
+    }
+  }
+
+  generate(arr.length);
+
+  // Filter the array of repeated permutations.
+  var filtered = permutations.filter(function(string) {
+    return !string.match(regex);
+  });
+
+  // Return how many have no repetitions.
+  return filtered.length;
+}
+
+// Test here.
+permAlone('aab');
+:rocket: Run Code170
+
+Code Explanation:
+regex contains the regular expression to match repeated consecutive characters.
+The string str is split into an array of characters, arr.
+0 is returned if str contains same characters.
+The function swap() is used for the purpose of swapping the contents of two variable’s contents.
+The next block of code uses Heap’s algorithm to generate arrays of permutations in permutations.
+The filtered variable filters permutations to include only non-repeated permutations.
+filtered.length returns the number of total permutations of the provided string that don’t have repeated consecutive letters.
+Relevant Links
+JS String Prototype Split4
+JS String Prototype Match7
+JS Array Prototype Push1
+JS Array Prototype Join2
+JS For Loops Explained1
+array.length3
+JS Array Prototype Filter2
+:rotating_light: 
+
+Advanced Code Solution:
+function permAlone(str) {
+  if(str=='') return 1
+  const bag=new Map()
+  for(const c of str){
+    bag.set(c,(bag.get(c)||0)+1)
+  }
+  const essence=[]
+  for(let v of bag.values()){
+    essence[--v]=(essence[v]||0)+1
+  }
+  let fact
+  {const f=[1]
+    fact= n=>f[n]||(f[n]=n*fact(n-1))
+  }
+  const essL=essence.length
+  let bits=essL//essence.reduce((s,v)=>s+v,essL)
+  let bExp=-1// essence as a bits expression
+  let pFact=1, bMask=1
+  for(let i=0;i<essL && bits<=32;i++){
+    if(essence[i]==null) essence[i]=0
+    const v=essence[i]; bits+=v
+    pFact*= fact(i+1)**v * fact(v)
+    bExp-=bMask; bMask<<=v+1
+  }
+  if(bits>32) 
+    throw `Too many bits requiered: ${bits} >32`
+  bExp+=bMask--
+  // console.log(essence)
+  // console.log(bExp.toString(2))
+
+  class MapA extends Map{
+    set(key, idx, value){
+      if(value==null)
+        return super.set(key, idx),this
+      let ar=super.get(key)
+      if(typeof ar!='object')
+        {ar=[]; super.set(key, ar)}
+      ar[idx]=value
+      return this
+    }
+  }
+  let crMap=new MapA()
+  crMap.set((3<<bits-essL-1)-1, 0, 1)
+  for(let lcrM=1;lcrM<str.length; lcrM++){
+    const nxMap=new MapA()
+    for(const [key, value] of crMap){
+      const bDiff=key^bExp, 
+        bnSprout=~((~key&bMask)>>>1 & key),
+        bnImp=~bDiff&bnSprout,
+        sum=value.reduce((s,v)=>s+v,0)
+      let i=0, v=0, allowed=0
+      for(let crBit=1;crBit&bMask;crBit<<=1){
+        if(crBit&key) v++; else {i++; v=0}
+        if(crBit&bnImp) continue
+        cLabel:{
+          if(crBit&bDiff)
+            if(crBit&key)allowed++
+            else allowed--
+          else break cLabel
+          if(crBit&bnSprout) continue
+        }if(allowed)
+          nxMap.set(key+crBit, i, i?v*sum-value[i-1]:sum)
+      }
+    }
+    //could be done: recycle crMap
+    crMap=nxMap;
+  }
+  return pFact*crMap.get(bExp).reduce((s,v)=>s+v,0)
+}
+:rocket: Run Code22
+
+Code Explanation:
+The problem asks to Return the number of total permutations not to generate them…Please follow my Gist for talk and explanations.
+
+More solutions
+
+Another non-recursive solution using Heap's algorithm...
+Code Explanation:: Read comments...
+
+function permAlone(str){
+  var strLen = str.length;
+  var arr = str.split("");
+  var c = [];
+  var counter = 0;
+  
+  // Function to swap array's variables' content.
+  function swap(idx1, idx2) {
+    var tmp = arr[idx1];
+    arr[idx1] = arr[idx2];
+    arr[idx2] = tmp;
+  };
+
+  for (var i = 0; i < strLen; i ++){
+      c[i] = 0;
+  };
+
+  //Check the 1st string for repeated consecutive characters.
+  if (!/(.)\1+/g.test(str)) counter += 1;
+  
+  // Generate arrays of permutations using the Heap's non-recursive algorithm.
+  //https://en.wikipedia.org/wiki/Heap%27s_algorithm
+  var i = 0;
+  while (i < strLen){
+      if (c[i] < i){
+        if (i % 2 === 0) swap(0, i);
+          else swap(c[i], i);
+        //Check repeated consecutive characters and increment the counter for unique strings.
+        if (!/(.)\1+/g.test(arr.join(""))) counter += 1;
+        c[i] += 1;
+        i = 0;
+      } else {
+            c[i] = 0;
+            i += 1;
+        }
+  }
+  return counter;
+}
+
+
+And MORE
+
+Here's mine, probably of no use regarding speed but it's nice and short. It's recursive but in a different way than suggested above.
+
+function permAlone(str) {
+  var re=/(.)\1/;
+  function pT(p,o){
+    if(o.length){
+      var sum=0;
+      for(var i=0;i<p.length+1;i++){
+        sum+=pT(p.slice(0,i).concat(o[0]).concat(p.slice(i)),o.slice(1));
+      }
+      return sum;
+    }
+    else return !re.test(p.join(''));
+  }
+  return pT([],str.split(''));
+}
+
+And MORE
+
+function permAlone(str) {
+  //split the string into an array of letters
+  return permNoRepeat(str.split("")).length;
+}
+
+function permNoRepeat(chars) {  
+  //if 's' contains a single letter, return it
+  if (chars.length === 1) {
+    return chars;
+  }  
+  //here we will store all the permutations
+  var p = [];
+  
+  //for every letter in the array
+  for (var i = 0; i < chars.length; i++) {
+    //create a copy of the array
+    var temp = chars.slice();    
+    //remove current letter from it
+    temp.splice(i,1);
+    
+    //compute all the permutations of the remaining letters
+    var perms = permNoRepeat(temp);
+    
+    //for each permutation, append the current letter and save it
+    for (var j = 0; j < perms.length; j++) {
+      //only keep it if the permutation does not start with the current letter
+      //to get rid of duplicated consecutive letters 
+      //so we append 'a' with 'ba' but not with 'ab'
+      if (!perms[j].startsWith(chars[i])) {
+        p.push(chars[i] + perms[j]);  
+      }        
+    }  
+  }
+  
+  return p;  
+}
+
+
+Advanced Code Solution
+The problem asks to Return the number of total permutations not to generate them. Thus having as input 'abcde' it's well known that the solution is 5! = 1*2*3*4*5 = 120, it's not necessary to generate all 120 possibilities to find out the number 120. Warning: An advanced solution is more friendly with the computer and less with the developer / reviewer / maintainer / tester because of the high level of abstractness.
+
+Let us have another example: 'abfdefa'. For this input I should have the same output as for 'abfdeaf' (swapping the last 2 letters) because the order of the input is meaningless. Knowing this we can extract a more meaning information: {a:2, b:1, f:2, d:1 e:1}
+
+But what if I replace letter a with c, matters? Or if I swap e and f: 'cbedfce' getting {c:2, b:1, f:1, d:1 e:2}, should I get a different response? No. Thus the meaningful information about input is that I have 2 letters that occur twice each and 3 symbols that occur only once each, {1:3, 2:2} or [3,2]. As another example, [3,1,2] means a sequence of 3*1+1*2+2*3 = 11 symbols, 3 unique letters, 1 group of 2 identical letters and 2 groups, each of 3 letters like 'abcddeeefff'. Symbol d1 is different of symbol d2, but as letters are equal. And 'aaab' translates in [1,0,1] or in [1,0,1,0,0] but we will chose not to have 0 as the last element in list (array) for input but striving to get permAlone(input) we'll pass through temporary forms like [1,0,0] or [1,1,0] keeping their length as length of the goal ([1,0,1]).
+
+I define distance of [a,b,c,..] as |[a,b,c,..]| = a+b*2+c*3+.. i.e. the length of the string which represents it.
+
+Let's calculate recursively permAlone([a,b,c,..]). From this string we can choose as the first symbol any kind of letter. permAlone([a,b,c,..]) = a*permAlone([a-1,b,c,..]) + b*2*permAlone([a+,b-1,c,..]) + c*3*permAlone([a,b+,c-1,..]) +.. where [a,b+,c-1,..] is [a,b+1,c-1,..] but restricted to not use as a first symbol any symbol from a specific letter, that one that was of size 3 but now is of size 2. Therefore
+
+permAlone([a,b+,c-1,..])
+     = a*permAlone([a-1,b+1,c-1,..]) + b*2*permAlone([a+,b,c-1,..]) + (c-1)*3*permAlone([a,b+1+,c-2,..]) +..
+     = permAlone([a,b+1,c-1,..]) - 2*permAlone([a+,b,c-1,..])
+As you notice, for any string [a,b,c,..], permAlone([a,b,c,..]) is a combination of strings of length |[a,b,c,..]|-1. Also, but less obvious, permAlone([a,b,c,..]) is divided by a!*b!*pow(2!,b)*c!*pow(3!,c)*.. and permAlone([a,b+,c,..]) is divided by a!*b!*pow(2!,b+1)*c!*pow(3!,c)*..
+
+Recursive proof:
+
+permAlone([1,0,0]) = 1 which is divided by 1!*0!*pow(2!,0)*.. = 1
+permAlone([a,b,c,..]) = a*X1*(a-1)!*b!*pow(2!,b)*c!*pow(3!,c)*.. + b*2*X2*a!*(b-1)!*pow(2!,b-1)*c!*pow(3!,c)*.. + c*3*X3*a!*b!*pow(2!,b+1)*(c-1)!*pow(3!,c-1)*.. =
+. . = a!*b!*pow(2!,b)*c!*pow(3!,c)*.. * (X1+X2+X3+..)
+permAlone([a,b+,c,..]) = permAlone([a,b+1,c,..]) - 2*permAlone([a+,b,c,..]) = X1*a!*(b+1)!*pow(2!,b+1)*c!*pow(3!,c)*.. - 2*X2*a!*b!*pow(2!,b)*c!*pow(3!,c)*.. =
+. . = a!*b!*pow(2!,b+1)*c!*pow(3!,c)*.. * (X1*(b+1)-X2)
+Knowing this let's make our live easier operating with a striped version of permAlone, named perm
+
+permAlone([a,b,c,..])  = perm([a,b,c,..])  * a!*b!*pow(2!,b  )*c!*pow(3!,c)*..
+permAlone([a,b+,c,..]) = perm([a,b+,c,..]) * a!*b!*pow(2!,b+1)*c!*pow(3!,c)*..
+and
+
+perm([a,b,c,..]) = perm([a-1,b,c,..]) + perm([a+,b-1,c,..]) + perm([a,b+,c-1,..]) +..
+perm([a,b+,..])  = (b+1)*perm([a,b+1,..]) - perm([a+,b,..])
+perm([a+,b,..])  = (a+1)*perm([a+1,b,..]) - perm([a ,b,..])
+From here we can jump strait to code unless you think in imperative way and want to do more optimizations. My way of optimizing this is to start with the shortest string and step by step to generate and calculate viable forms toward my objective. From a string I can generate more in just one step, on every step increasing the number of strings but being careful not to generate dead end forms.
+
+Let me explain myself by examples: let the target be [3,1,2]; I start with [1,0,0]. In step 2 I generate [2,0,0] and [0,1,0], both with distance 2. From this set of strings of length 2 I generate another one of length 3 (in step 3): [3,0,0] from [2,0,0], [1,1,0] from ([2,0,0] and [0,1,0]), [0,0,1] from [0,1,0]. I will call it sprouting, [2,0,0] sprouts [3,0,0] and a part of [1,1,0], [0,1,0] sprouts the other part of [1,1,0] and [0,0,1]
+
+[3,0,0]->([4,0,0], [2,1,0]); [1,1,0]->([2,1,0], [0,2,0], [1,0,1]); [0,0,1]->([1,0,1], but not [0,0,0,1] because is dead end for me which I'm targeting [3,1,2])
+[4,0,0]->([5,0,0], [3,1,0]); [2,1,0]->([3,1,0], [2,0,1]); [0,2,0]->([1,2,0], [0,1,1]); [1,0,1]->([2,0,1], [0,1,1])
+...
+... [1,3,0]->([2,3,0], [0,4,0], [1,2,1]); ...
+... [1,2,1]->([2,2,1], [0,3,1], [1,1,2]); ...
+...
+...
+[2,1,2]->([3,1,2] only); [4,0,2]->([3,1,2] only); [3,2,1]->([3,1,2] only)
+[a,b,c] is viable iff c <= 2 and b+c <= 1+2 and a+b+c <= 3+1+2
+
+It's like playing a game with an uni-dimensional board of 3 spaces and 6 pawns. On a space can be any number of pawns, stacked. On every turn I can place a pawn on the board, on the leftmost space or I can move one that's already on the board with one step to the right, promoting it on a higher position. The goal is to bring them in the [3,1,2] formation. Thus I can not pass through [0,4,0] position. I'm not able to demote any pawns, i.e. move it to the left.
+
+But where are the restricted forms, those with + sign?, because I need them in the building of normal forms. I will use two maps, one already built (crMap) and one under construction (nxMap), with a normal form as keys and as corresponding value, an array of numbers, the perms of forms that compose the perm of key, first one normal and the other ones restricted. crMap.get([a,b,c,..])=[perm([a-1,b,c,..]), perm([a+,b-1,c,..]), perm([a,b+,c-1,..]), ..]. I keep only the values because I can figure out the form from key and position in array. If, let's say b is 0, [a+,b-1,c,..] don't exist and crMap.get([a,b,c,..])[1] stay undefined
+
+Building nxMap: Let's suppose that we already know the set of keys of nxMap from crMap. I iterate on this set and for the key [a,b,c,..] I start building nxMap.get([a,b,c,..]):
+
+perm([a-1,b,c,..])=sumOf(crMap.get([a-1,b,c,..]))
+perm([a+,b-1,c,..])=(a+1)*perm([a+1,b-1,..]) - perm([a ,b-1,..])
+    =(a+1)*sumOf(crMap.get([a+1,b-1,..])) - crMap.get([a+1,b-1,..])[0]
+perm([a,b+,c-1,..])=(b+1)*perm([a,b+1,c-1,..]) - perm([a+,b,c-1,..])
+    =(b+1)*sumOf(crMap.get([a,b+1,c-1,..])) - crMap.get([a,b+1,c-1,..])[1]
+..
+A way to build nxMap is to iterate on crMap and for every key in crMap to generate the keys for nxMap and for every new key of nxMap to build the appropriate value. But my way is to iterate on crMap keys and on its value. For every key and index i, I build nxMap.get(key+i)[i], where key+i is the key with key[i]-1 on position i and key[i+1]+1 on next position. The key is the extended form where key[0] is the number of pawns out the board.
+
+Either way you choose you must have a map that see two keys equal by value, not by reference. In JavaScript only primitives? are compared by value. Hence I must find a translation of a key as an array of natural numbers to a number or if I need more memory, a string primitive. In my code I use a 32 bits int as key. For every space on board I have a 0 bit and for every pawn an 1 bit starting with the pawns out of the board. The lower bits have pawns of lower ranks. [1,3,0] is in reverse order 110101110 and right is 011101011. I used 3+6 bits.
+
+In the sequence of bits I seek from right to left the 1 bit that is followed by a 0. These bits are candidates for promotion or places of key sprouting. In 011101011 the bits are 010001010. If my target is [3,1,2] -> 110101110, one candidate is not accepted, the bit in position 3. For bit 7 on the left of the key are 0 pawns (1 bit) but in target is 1. The bit 3 has 3 pawns as the target, to be accepted must have less than the target on the same position. The bit 1 has 4 and the target has 5.
+
+Because any key and the target have the same number of 1 bits (6) I can count the bits from the right inclusive being 6 - no. 1 bits from the left exclusive. If the difference is 0 the candidate is not accepted.
+
+
+permAlone("aab") should return a number.
+permAlone("aab") should return 2.
+permAlone("aaa") should return 0.
+permAlone("aabb") should return 8.
+permAlone("abcdefa") should return 3600.
+permAlone("abfdefa") should return 2640.
+permAlone("zzzzzzzz") should return 0.
+permAlone("a") should return 1.
+permAlone("aaab") should return 0.
+permAlone("aaabb") should return 12.
+
 
 ##############################################################################################################
 
 
 ##############################################################################################################
+
+
+
+##############################################################################################################
+
+
+
+##############################################################################################################
+
+
+
+##############################################################################################################
+
+
+
+##############################################################################################################
+
+
+
+##############################################################################################################
+
+
+
+##############################################################################################################
+
+
+
+##############################################################################################################
+
 
 
 ##############################################################################################################
