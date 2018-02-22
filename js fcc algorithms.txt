@@ -2754,80 +2754,46 @@ array.length3
 JS Array Prototype Filter2
 :rotating_light: 
 
-Advanced Code Solution:
-function permAlone(str) {
-  if(str=='') return 1
-  const bag=new Map()
-  for(const c of str){
-    bag.set(c,(bag.get(c)||0)+1)
-  }
-  const essence=[]
-  for(let v of bag.values()){
-    essence[--v]=(essence[v]||0)+1
-  }
-  let fact
-  {const f=[1]
-    fact= n=>f[n]||(f[n]=n*fact(n-1))
-  }
-  const essL=essence.length
-  let bits=essL//essence.reduce((s,v)=>s+v,essL)
-  let bExp=-1// essence as a bits expression
-  let pFact=1, bMask=1
-  for(let i=0;i<essL && bits<=32;i++){
-    if(essence[i]==null) essence[i]=0
-    const v=essence[i]; bits+=v
-    pFact*= fact(i+1)**v * fact(v)
-    bExp-=bMask; bMask<<=v+1
-  }
-  if(bits>32) 
-    throw `Too many bits requiered: ${bits} >32`
-  bExp+=bMask--
-  // console.log(essence)
-  // console.log(bExp.toString(2))
+And MORE 
+This was INTENSE! By far the hardest algorithm so far I think… this one made me feel like an absolute novice.
+After much deliberation ended up implementing a non-recursive version of Heap’s algorithm…
 
-  class MapA extends Map{
-    set(key, idx, value){
-      if(value==null)
-        return super.set(key, idx),this
-      let ar=super.get(key)
-      if(typeof ar!='object')
-        {ar=[]; super.set(key, ar)}
-      ar[idx]=value
-      return this
-    }
+  let n = str.length
+  let array = str.split('')
+  let count = 0;
+
+  let checkRepeats = (x) => {
+  return  /(.)+\1/g.test(x.join('')) 
   }
-  let crMap=new MapA()
-  crMap.set((3<<bits-essL-1)-1, 0, 1)
-  for(let lcrM=1;lcrM<str.length; lcrM++){
-    const nxMap=new MapA()
-    for(const [key, value] of crMap){
-      const bDiff=key^bExp, 
-        bnSprout=~((~key&bMask)>>>1 & key),
-        bnImp=~bDiff&bnSprout,
-        sum=value.reduce((s,v)=>s+v,0)
-      let i=0, v=0, allowed=0
-      for(let crBit=1;crBit&bMask;crBit<<=1){
-        if(crBit&key) v++; else {i++; v=0}
-        if(crBit&bnImp) continue
-        cLabel:{
-          if(crBit&bDiff)
-            if(crBit&key)allowed++
-            else allowed--
-          else break cLabel
-          if(crBit&bnSprout) continue
-        }if(allowed)
-          nxMap.set(key+crBit, i, i?v*sum-value[i-1]:sum)
+  
+  let c = [];
+  for(let i = 0; i < n; i++){
+    c[i] = 0
+  }
+  
+  checkRepeats(array) ? null : count++
+  
+  let i = 0;
+  while(i < n){
+    if(c[i] < i){
+      if(i % 2 == 0){
+        [array[0], array[i]] = [array[i], array[0]]
+      } else {
+        [array[c[i]], array[i]] = [array[i], array[c[i]]]
       }
+      checkRepeats(array) ? null : count++
+      c[i] += 1
+      i = 0
+    } else {
+      c[i] = 0
+      i++
     }
-    //could be done: recycle crMap
-    crMap=nxMap;
   }
-  return pFact*crMap.get(bExp).reduce((s,v)=>s+v,0)
+return count
 }
-:rocket: Run Code22
 
-Code Explanation:
-The problem asks to Return the number of total permutations not to generate them…Please follow my Gist for talk and explanations.
+
+
 
 More solutions
 
@@ -2934,6 +2900,81 @@ function permNoRepeat(chars) {
 
 
 Advanced Code Solution
+
+Advanced Code Solution:
+function permAlone(str) {
+  if(str=='') return 1
+  const bag=new Map()
+  for(const c of str){
+    bag.set(c,(bag.get(c)||0)+1)
+  }
+  const essence=[]
+  for(let v of bag.values()){
+    essence[--v]=(essence[v]||0)+1
+  }
+  let fact
+  {const f=[1]
+    fact= n=>f[n]||(f[n]=n*fact(n-1))
+  }
+  const essL=essence.length
+  let bits=essL//essence.reduce((s,v)=>s+v,essL)
+  let bExp=-1// essence as a bits expression
+  let pFact=1, bMask=1
+  for(let i=0;i<essL && bits<=32;i++){
+    if(essence[i]==null) essence[i]=0
+    const v=essence[i]; bits+=v
+    pFact*= fact(i+1)**v * fact(v)
+    bExp-=bMask; bMask<<=v+1
+  }
+  if(bits>32) 
+    throw `Too many bits requiered: ${bits} >32`
+  bExp+=bMask--
+  // console.log(essence)
+  // console.log(bExp.toString(2))
+
+  class MapA extends Map{
+    set(key, idx, value){
+      if(value==null)
+        return super.set(key, idx),this
+      let ar=super.get(key)
+      if(typeof ar!='object')
+        {ar=[]; super.set(key, ar)}
+      ar[idx]=value
+      return this
+    }
+  }
+  let crMap=new MapA()
+  crMap.set((3<<bits-essL-1)-1, 0, 1)
+  for(let lcrM=1;lcrM<str.length; lcrM++){
+    const nxMap=new MapA()
+    for(const [key, value] of crMap){
+      const bDiff=key^bExp, 
+        bnSprout=~((~key&bMask)>>>1 & key),
+        bnImp=~bDiff&bnSprout,
+        sum=value.reduce((s,v)=>s+v,0)
+      let i=0, v=0, allowed=0
+      for(let crBit=1;crBit&bMask;crBit<<=1){
+        if(crBit&key) v++; else {i++; v=0}
+        if(crBit&bnImp) continue
+        cLabel:{
+          if(crBit&bDiff)
+            if(crBit&key)allowed++
+            else allowed--
+          else break cLabel
+          if(crBit&bnSprout) continue
+        }if(allowed)
+          nxMap.set(key+crBit, i, i?v*sum-value[i-1]:sum)
+      }
+    }
+    //could be done: recycle crMap
+    crMap=nxMap;
+  }
+  return pFact*crMap.get(bExp).reduce((s,v)=>s+v,0)
+}
+:rocket: Run Code22
+
+Code Explanation:
+The problem asks to Return the number of total permutations not to generate them…Please follow my Gist for talk and explanations.
 The problem asks to Return the number of total permutations not to generate them. Thus having as input 'abcde' it's well known that the solution is 5! = 1*2*3*4*5 = 120, it's not necessary to generate all 120 possibilities to find out the number 120. Warning: An advanced solution is more friendly with the computer and less with the developer / reviewer / maintainer / tester because of the high level of abstractness.
 
 Let us have another example: 'abfdefa'. For this input I should have the same output as for 'abfdeaf' (swapping the last 2 letters) because the order of the input is meaningless. Knowing this we can extract a more meaning information: {a:2, b:1, f:2, d:1 e:1}
@@ -3014,19 +3055,510 @@ permAlone("aaabb") should return 12.
 
 ##############################################################################################################
 
+Make a Person
+Fill in the object constructor with the following methods below:
 
+getFirstName()
+getLastName()
+getFullName()
+setFirstName(first)
+setLastName(last)
+setFullName(firstAndLast)
+Run the tests to see the expected output for each method.
+
+The methods that take an argument must accept only one argument and it has to be a string.
+
+These methods must be the only available means of interacting with the object.
+
+var Person = function(firstAndLast) {
+ 
+// var firstAndLast=firstAndLast.split(" ")[0];
+// var lastName=firstAndLast.split(" ")[1]; 
+  var name=firstAndLast;
+    // Complete the method below and implement the others similarly  
+  
+  this.getFirstName=function getFirstName(){
+    console.log("get first: "+name.split(" ")[0]);
+    return name.split(" ")[0];
+  };
+  
+  this.getLastName=function(){
+    console.log("get last: "+name.split(" ")[1]);
+    return name.split(" ")[1];
+  };
+  this.getFullName=function(){
+    console.log("get full: "+name);
+    return name;
+  };
+  
+  this.setFirstName=function(firstName){
+    console.log("set first: "+firstName);
+    name=firstName+" "+name.split(" ")[1];
+    console.log(name);
+  };
+  
+  this.setLastName=function(lastName){
+    console.log("set last: "+lastName);
+    console.log(name.split(" ")[0]);
+    name=name.split(" ")[0]+" "+lastName;
+    console.log(name);
+  };
+  
+  this.setFullName=function(fullName){
+    name=fullName;
+  };
+  console.log(name);
+};
+
+var bob = new Person('Bob Ross');
+bob.getFullName();
+
+//SOLUTION
+// var Person = function(firstAndLast) {
+//   let fullName;
+  
+//   this.setFullName = (full) => {fullName = full.split(' ');};
+//   this.setFirstName = (first) => {fullName[0] = first;};
+//   this.setLastName = (last) => {fullName[1] = last;};
+  
+//   this.setFullName(firstAndLast);
+  
+//   this.getFullName = () => fullName.join(' ');
+//   this.getFirstName = () => fullName[0];
+//   this.getLastName = () => fullName[1];
+// };
+
+Object.keys(bob).length should return 6.
+bob instanceof Person should return true.
+bob.firstName should return undefined.
+bob.lastName should return undefined.
+bob.getFirstName() should return "Bob".
+bob.getLastName() should return "Ross".
+bob.getFullName() should return "Bob Ross".
+bob.getFullName() should return "Haskell Ross" after bob.setFirstName("Haskell").
+bob.getFullName() should return "Haskell Curry" after bob.setLastName("Curry").
+bob.getFullName() should return "Haskell Curry" after bob.setFullName("Haskell Curry").
+bob.getFirstName() should return "Haskell" after bob.setFullName("Haskell Curry").
+bob.getLastName() should return "Curry" after bob.setFullName("Haskell Curry").
 ##############################################################################################################
 
 
+Map the Debris
+Return a new array that transforms the element's average altitude into their orbital periods.
 
+The array will contain objects in the format {name: 'name', avgAlt: avgAlt}.
+
+You can read about orbital periods on wikipedia.
+
+The values should be rounded to the nearest whole number. The body being orbited is Earth.
+
+The radius of the earth is 6367.4447 kilometers, and the GM value of earth is 398600.4418 km3s
+
+function orbitalPeriod(arr) {
+  var GM = 398600.4418;
+  var earthRadius = 6367.4447;
+  var temp=[];
+  arr.forEach(function(element){
+   var result=0;     result=2*Math.PI*Math.sqrt(Math.pow(earthRadius+element.avgAlt,3)/GM);
+    temp.push({name:element.name, orbitalPeriod:Math.round(result)});
+    console.log("result: "+Math.round(result));
+  });
+  temp.forEach(function(val){
+               console.log(val.name);
+    console.log(val.orbitalPeriod);
+               });
+  console.log("temp: "+temp);
+  return temp;
+}
+
+orbitalPeriod([{name : "sputnik", avgAlt : 35873.5553}]);
+
+//SOLUTION
+
+Basic Code Solution:
+function orbitalPeriod(arr) {
+  var GM = 398600.4418;
+  var earthRadius = 6367.4447;
+  var a = 2 * Math.PI;
+  var newArr = [];
+  var getOrbPeriod = function(obj) {
+    var c = Math.pow(earthRadius + obj.avgAlt, 3);
+    var b = Math.sqrt(c / GM);
+    var orbPeriod = Math.round(a * b);
+    delete obj.avgAlt;
+    obj.orbitalPeriod = orbPeriod;
+    return obj;
+  };
+
+  for (var elem in arr) {
+    newArr.push(getOrbPeriod(arr[elem]));
+  }
+
+  return newArr;
+}
+
+// test here
+orbitalPeriod([{name : "sputnik", avgAlt : 35873.5553}]);
+:rocket: Run Code21
+
+Code Explanation:
+GM and earthRadius are both given to us.
+To make the code easier to edit and read, each part of the equation is written separately.
+Create newArr to store the orbPeriod's.
+a is 2 times pi. The part that is a constant is on the global scope while the rest is part of a function.
+Create a function, gerOrbPeriod() that will do the required work for any amount of objects.
+c is (earthRadius + avgAlt) to the cube.
+b is the square root of c divided by GM.
+Create orbPeriod to store the product of a and b, with the Math.round() function applied to round up to the next whole number.
+Then we delete the key avgAlt, and add the new key and its value.
+
+Intermediate Code Solution:
+function orbitalPeriod(arr) {
+  var GM = 398600.4418;
+  var earthRadius = 6367.4447;
+
+  //Looping through each key in arr object
+  for(var prop in arr) {
+    //Rounding off the orbital period value
+    var orbitalPer = Math.round(2 * Math.PI * Math.sqrt(Math.pow(arr[prop].avgAlt + earthRadius, 3) / GM));
+    //deleting the avgAlt property
+    delete arr[prop].avgAlt;
+    //adding orbitalPeriod property
+    arr[prop].orbitalPeriod = orbitalPer;
+  }
+
+  return arr;
+}
+
+// test here
+orbitalPeriod([{name : "sputnik", avgAlt : 35873.5553}]);
+:rocket: Run Code3
+
+Code Explanation:
+GM and earthRadius are both given to us.
+A for..in loop is used to iterate through each value in given array arr.
+orbitalPer holds the value of orbital period for each iteration calculated using the formula.
+The key avgAlt is deleted, and orbitalPer found is assigned in arr.
+
+Advanced Code Solution:
+function orbitalPeriod(arr) {
+  var GM = 398600.4418;
+  var earthRadius = 6367.4447;
+
+  // Loop through each item in the array arr
+  arr.forEach(function(item) {
+    // Calculate the Orbital period value
+    var tmp = Math.round(2 * Math.PI * Math.sqrt(Math.pow(earthRadius + item.avgAlt, 3) / GM));
+    //Delete the avgAlt property
+    delete item.avgAlt;
+    //Add orbitalPeriod property
+    item.orbitalPeriod = tmp;
+  });
+  return arr;
+}
+
+// test here
+orbitalPeriod([{name : "sputnik", avgAlt : 35873.5553}]);
+:rocket: Run Code5
+
+Code Explanation:
+GM and earthRadius are both given to us.
+The forEach() method is used to execute the function once per element (item) in arr.
+tmp holds the value of orbital period for each element calculated using the formula.
+The key avgAlt is deleted, and orbital period (tmp) found is assigned to the key orbitalPeriod.
 ##############################################################################################################
 
 
+Pairwise
+Given an array arr, find element pairs whose sum equal the second argument arg and return the sum of their indices.
 
+If multiple pairs are possible that have the same numeric elements but different indices, return the smallest sum of indices. Once an element has been used, it cannot be reused to pair with another.
+
+For example pairwise([7, 9, 11, 13, 15], 20) returns 6. The pairs that sum to 20 are [7, 13] and [9, 11]. We can then write out the array with their indices and values.
+
+Index	0	1	2	3	4
+Value	7	9	11	13	15
+Below we'll take their corresponding indices and add them.
+
+7 + 13 = 20 > Indices 0 + 3 = 3
+9 + 11 = 20 > Indices 1 + 2 = 3
+3 + 3 = 6 > Return 6
+
+function pairwise(arr, arg) {
+  console.log("##############");
+//   var temp=[];
+  var result=0;
+  for(var i=0;i<arr.length;i++){
+    for(var j=0;j<arr.length;j++){
+      if(i!=j&&arr[i]+arr[j]===arg){
+//         temp.push(i+j);
+        result+=i+j;
+//         console.log("i: "+i+" j: "+j+" temp: "+temp);
+        arr[i]=NaN;
+        arr[j]=NaN;
+        i=0;
+        j=0;
+        console.log("arr: "+arr);
+      }
+    }
+  }
+//   var result=temp.reduce(function(holder,actual){return holder+actual;});
+  console.log(result);
+  return result;
+}
+
+pairwise([1,4,2,3,0,5], 7);
 ##############################################################################################################
 
 
+Inventory Update
+Compare and update the inventory stored in a 2D array against a second 2D array of a fresh delivery. Update the current existing inventory item quantities (in arr1). If an item cannot be found, add the new item and quantity into the inventory array. The returned inventory array should be in alphabetical order by item.
 
+function updateInventory(arr1, arr2) {
+    // All inventory must be accounted for or you're fired!
+  console.log("#########################");
+  for(var i=0;i<arr1.length;i++){
+    for(var j=0;j<arr2.length;j++){
+      if(arr1[i][1]===arr2[j][1]){
+        arr1[i][0]=arr1[i][0]+arr2[j][0];
+        arr2.splice(j,1);
+//         console.log(" "+arr2);
+      }
+    }
+  }
+  var comparator=function(a,b){
+    if(a[1]<b[1]){
+      return -1;
+    }
+    if(a[1]>b[1]){
+      return 1;
+    }
+    return 0;
+  };
+    return arr1.concat(arr2).sort(comparator);
+}
+
+// Example inventory lists
+var curInv = [
+    [21, "Bowling Ball"],
+    [2, "Dirty Sock"],
+    [1, "Hair Pin"],
+    [5, "Microphone"]
+];
+
+var newInv = [
+    [2, "Hair Pin"],
+    [3, "Half-Eaten Apple"],
+    [67, "Bowling Ball"],
+    [7, "Toothpaste"]
+];
+
+updateInventory(curInv, newInv);
+
+//SOLUTION
+
+Basic Code Solution:
+function updateInventory(arr1, arr2) {
+
+    // Variable for location of product
+    var index;
+
+    // A helper method to return the index of a specified product (undefined if not found)
+    var getProductIndex = function (name) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i][1] === name) {
+                return i;
+            }
+        }
+        return undefined;
+    }
+
+    // For each item of the new Inventory
+    for (var i = 0; i < arr2.length; i++) {
+
+        // Invoke our helper function using arr1 as this
+        index = getProductIndex.call(arr1, arr2[i][1]);
+
+        // If the item doesn't exist
+        if (index === undefined) {
+            // Push the entire item
+            arr1.push(arr2[i]);
+        } else {
+            // Add the new quantity of the current item
+            arr1[index][0] += arr2[i][0];
+        }
+
+    }
+
+    // Sort alphabetically, by the product name of each item
+    arr1.sort(function (a, b) {
+        if (a[1] > b[1]) {
+            return 1;
+        }
+        if (a[1] < b[1]) {
+            return -1;
+        }
+        return 0;
+    });
+
+    return arr1;
+}
+
+// test here
+// Example inventory lists
+var curInv = [
+    [21, "Bowling Ball"],
+    [2, "Dirty Sock"],
+    [1, "Hair Pin"],
+    [5, "Microphone"]
+];
+
+var newInv = [
+    [2, "Hair Pin"],
+    [3, "Half-Eaten Apple"],
+    [67, "Bowling Ball"],
+    [7, "Toothpaste"]
+];
+
+updateInventory(curInv, newInv);
+:rocket: Run Code31
+
+Code Explanation:
+The variable index stores the location (index) of a product.
+The helper function getProductIndex() returns the index of a specified product. It iterates through each element of the array that it is called on until it can find the name parameter. If the product is not found in the inventory, undefined is returned.
+Then, each item in the new inventory (delivery) is worked through:
+index is set to the result of invoking the helper function i.e., search the new inventory for that product name and return it’s index.
+If the item is found, quantity of the product is added to the quantity of the same product in current inventory.
+If the item is not found, the entire product (name and quantity) is added to the current inventory.
+The updated inventory, arr1, is then sorted by product name (held in arr1[x][1]).
+The final - updated as well as sorted array is then returned.
+
+function updateInventory(arr1, arr2) {
+  // All inventory must be accounted for or you're fired!
+
+  var index;
+  var arrCurInvName = []; // Names of arr1's items
+  var arrNeInvName = []; // Names of arr2's items
+
+  // Same as using two for loops, this takes care of increasing the number of stock quantity.
+  arr1.map(function(item1) {
+    return arr2.map(function(item2) {
+      if (item1[1] === item2[1]) {
+        item1[0] = item1[0] + item2[0]; //Increase number of stock
+      }
+    });
+  });
+
+  // Get item's name for new Inventory
+  arr2.map(function(item) {
+    arrNeInvName.push(item[1]);
+  });
+
+  // Get item's name for Current Inventory
+  arr1.map(function(item) {
+    arrCurInvName.push(item[1]);
+  });
+
+  // Add new inventory items to current inventory.
+  arrNeInvName.map(function(item) {
+    if (arrCurInvName.indexOf(item) === -1) {
+      index = arrNeInvName.indexOf(item);
+      arr1.push(arr2[index]);
+    }
+  });
+
+  // Sort the array alphabetically using the second element of the array as base.
+  arr1.sort(function(currItem, nextItem) {
+
+    //Ternary function to avoid using if else
+    return currItem[1] > nextItem[1] ? 1 : -1;
+  });
+
+  return arr1;
+}
+
+// test here
+// Example inventory lists
+var curInv = [
+    [21, "Bowling Ball"],
+    [2, "Dirty Sock"],
+    [1, "Hair Pin"],
+    [5, "Microphone"]
+];
+
+var newInv = [
+    [2, "Hair Pin"],
+    [3, "Half-Eaten Apple"],
+    [67, "Bowling Ball"],
+    [7, "Toothpaste"]
+];
+
+updateInventory(curInv, newInv);
+:rocket: Run Code10
+
+Code Explanation:
+The variable index stores the location (index) of a product.
+arrCurInvName has the names of arr1’s items.
+arrNeInvName has the names of arr2’s items.
+arr1.map(function(item1)) takes care of items already existing in inventory i.e., it increases the quantity in the inventory.
+Next, arr2.map(function(item)) and arr1.map(function(item)) get the names of items for the new and current inventory respectively.
+arrNeInvName.map(function(item)) handles items which don’t already exist in inventory i.e., it adds new items to the inventory.
+The updated array arr1 is then sorted alphabetically by product name (held in arr1[x][1]) and returned.
+
+function updateInventory(arr1, arr2) {
+  var flag = 0;
+  arr2.forEach(function(item) {
+    flag = 0;
+    arr1.forEach(function(list) {
+      // If the product is already present, increase the quantity
+      if(item[1] === list[1]) {
+        list[0] += item[0];
+        flag = 1;
+      }
+    });
+    //If not already present, add the product
+    if(flag === 0)
+      arr1.push(item);
+  });
+
+  //Return the sorted inventory in alphabetical order by product name
+  return arr1.sort(function(a, b) {
+    return a[1] > b[1] ? 1 : -1;
+  });
+}
+
+// test here
+// Example inventory lists
+var curInv = [
+    [21, "Bowling Ball"],
+    [2, "Dirty Sock"],
+    [1, "Hair Pin"],
+    [5, "Microphone"]
+];
+
+var newInv = [
+    [2, "Hair Pin"],
+    [3, "Half-Eaten Apple"],
+    [67, "Bowling Ball"],
+    [7, "Toothpaste"]
+];
+
+updateInventory(curInv, newInv);
+:rocket: Run Code10
+
+Code Explanation:
+The variable flag is a flag variable which checks whether a product exists in the inventory. A flag variable, in its simplest form, is a variable you define to have one value until some condition is true, in which case you change the variable’s value.
+arr2.forEach(function(item)) iterates through each item in the new delivery:
+If the product is already present, it’s quantity is simply updated and flag is made 1.
+If the product is new i.e., flag is 0, it is added to the inventory using the push() method.
+The updated array arr1 is then sorted alphabetically by product name.
+
+The function updateInventory should return an array.
+updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]], [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]).length should return an array with a length of 6.
+updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]], [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]) should return [[88, "Bowling Ball"], [2, "Dirty Sock"], [3, "Hair Pin"], [3, "Half-Eaten Apple"], [5, "Microphone"], [7, "Toothpaste"]].
+updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]], []) should return [[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]].
+updateInventory([], [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]) should return [[67, "Bowling Ball"], [2, "Hair Pin"], [3, "Half-Eaten Apple"], [7, "Toothpaste"]].
+updateInventory([[0, "Bowling Ball"], [0, "Dirty Sock"], [0, "Hair Pin"], [0, "Microphone"]], [[1, "Hair Pin"], [1, "Half-Eaten Apple"], [1, "Bowling Ball"], [1, "Toothpaste"]]) should return [[1, "Bowling Ball"], [0, "Dirty Sock"], [1, "Hair Pin"], [1, "Half-Eaten Apple"], [0, "Microphone"], [1, "Toothpaste"]].
 ##############################################################################################################
 
 
