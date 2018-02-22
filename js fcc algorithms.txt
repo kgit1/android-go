@@ -3562,11 +3562,570 @@ updateInventory([[0, "Bowling Ball"], [0, "Dirty Sock"], [0, "Hair Pin"], [0, "M
 ##############################################################################################################
 
 
+Exact Change 
+Design a cash register drawer function checkCashRegister() that accepts purchase price as the first argument (price), payment as the second argument (cash), and cash-in-drawer (cid) as the third argument.
+
+cid is a 2D array listing available currency.
+
+Return the string "Insufficient Funds" if cash-in-drawer is less than the change due. Return the string "Closed" if cash-in-drawer is equal to the change due.
+
+Otherwise, return change in coin and bills, sorted in highest to lowest order.
+
+function checkCashRegister(price, cash, cid) {
+  var change;
+  console.log("####################################");
+  // Here is your change, ma'am.
+  var changeAmount=cash-price;
+  var cashAmount = cashIn(cid);
+  console.log("changeAmount: "+changeAmount);
+  console.log("cashAmount: "+cashAmount);
+  if(cashAmount<changeAmount){
+    return "Insufficient Funds";
+  }
+  
+  var arrReal=cidToReal(cid);
+  
+  change=[];
+  for(var i=arrReal.length-1;i>=0&& changeAmount>=0;i--){
+    
+    if(changeAmount>0){
+    if(changeAmount/arrReal[i][0]>=1&&arrReal[i][1]>0){
+      var maxContain=changeAmount/arrReal[i][0];
+      var valueContain=0;
+      for(var j=0;j<maxContain && arrReal[i][1]>0;j++){
+         console.log("changeAmount: "+changeAmount);
+        if(changeAmount-arrReal[i][0]>=0){
+        valueContain+=arrReal[i][0];
+        arrReal[i][1]-=arrReal[i][0];
+        changeAmount-=arrReal[i][0];
+        cashAmount-=arrReal[i][0];
+          
+         valueContain= precisionRound(valueContain, 100);
+          arrReal[i][1]= precisionRound(arrReal[i][1], 100);
+          changeAmount= precisionRound(changeAmount, 100);
+          cashAmount= precisionRound(cashAmount, 100);
+          
+          
+        console.log("arrReal[i][1]: "+arrReal[i][1]);
+        console.log("valueContain: "+valueContain);
+        }
+      }
+      change.push([cid[i][0],valueContain]);
+    }
+    }    
+  }
+    
+   console.log("change: "+change); 
+  console.log("cashAmount: "+cashAmount);
+    if(changeAmount>0){
+       console.log("Insufficient Funds");
+       console.log("changeAmount: "+changeAmount);
+      return "Insufficient Funds";
+    }
+  if(cashAmount<=0){
+  console.log("Closed");
+       console.log("cashAmount: "+cashAmount);
+    return "Closed";
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  function cashIn(arr){
+    return precisionRound(arr.reduce(function(holder,val){
+    if(Array.isArray(holder)){
+
+//     console.log("holder: "+holder+" : val: "+val+"result: "+        (holder[1]+val[1]));
+    return holder[1]+val[1];}
+    else{
+
+//       console.log("holder: "+holder+" : val: "+val+"result: "+ (holder+val[1]));
+      return holder+val[1];
+    }
+  }),100);
+  }
+  
+  function precisionRound(number, precision){
+    return Math.round(number*precision)/precision;
+  }
+  
+  function cidToReal(arr){
+    var result =[];
+    arr.forEach(function(val){
+      var moneyValue=0;
+      switch(val[0]){
+        case "PENNY":
+          moneyValue=0.01;
+          break;
+          case "NICKEL":
+          moneyValue=0.05;
+          break;
+          case "DIME":
+          moneyValue=0.1;
+          break;
+          case "QUARTER":
+          moneyValue=0.25;
+          break;
+          case "ONE":
+          moneyValue=1;
+          break;
+          case "FIVE":
+          moneyValue=5;
+          break;
+          case "TEN":
+          moneyValue=10;
+          break;
+          case "TWENTY":
+          moneyValue=20;
+          break;
+          case "ONE HUNDRED":
+          moneyValue=100;
+          break;          
+      }
+      result.push([moneyValue, val[1]]);
+//       console.log("moneyValue: "+moneyValue+" value: "+val[1]);
+    });
+    console.log("cidToReal: "+result.join("|"));
+    return result;
+  }
+  
+  
+  
+  
+  return change;
+}
+
+// Example cash-in-drawer array:
+// [["PENNY", 1.01],
+// ["NICKEL", 2.05],
+// ["DIME", 3.10],
+// ["QUARTER", 4.25],
+// ["ONE", 90.00],
+// ["FIVE", 55.00],
+// ["TEN", 20.00],
+// ["TWENTY", 60.00],
+// ["ONE HUNDRED", 100.00]]
+
+checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]);
+
+checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]) should return an array.
+checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]) should return a string.
+checkCashRegister(19.50, 20.00, [["PENNY", 0.50], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]) should return a string.
+checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]) should return [["QUARTER", 0.50]].
+checkCashRegister(3.26, 100.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]) should return [["TWENTY", 60.00], ["TEN", 20.00], ["FIVE", 15.00], ["ONE", 1.00], ["QUARTER", 0.50], ["DIME", 0.20], ["PENNY", 0.04]].
+checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]) should return "Insufficient Funds".
+checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1.00], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]) should return "Insufficient Funds".
+checkCashRegister(19.50, 20.00, [["PENNY", 0.50], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]) should return "Closed".
+
+
+//SOLUTION
+Beginner Code Solution:
+// Create an object which hold the denominations and their values
+var denom = [
+  { name: 'ONE HUNDRED', val: 100.00},
+  { name: 'TWENTY', val: 20.00},
+  { name: 'TEN', val: 10.00},
+  { name: 'FIVE', val: 5.00},
+  { name: 'ONE', val: 1.00},
+  { name: 'QUARTER', val: 0.25},
+  { name: 'DIME', val: 0.10},
+  { name: 'NICKEL', val: 0.05},
+  { name: 'PENNY', val: 0.01}
+];
+
+function checkCashRegister(price, cash, cid) {
+  var change = cash - price;
+
+  // Transform CID array into drawer object
+  var register = cid.reduce(function(acc, curr) {
+    acc.total += curr[1];
+    acc[curr[0]] = curr[1];
+    return acc;
+  }, {total: 0});
+
+  // Handle exact change
+  if (register.total === change) {
+    return 'Closed';
+  }
+
+  // Handle obvious insufficent funds
+  if (register.total < change) {
+    return 'Insufficient Funds';
+  }
+
+  // Loop through the denomination array
+  var change_arr = denom.reduce(function(acc, curr) {
+    var value = 0;
+    // While there is still money of this type in the drawer
+    // And while the denomination is larger than the change reminaing
+    while (register[curr.name] > 0 && change >= curr.val) {
+      change -= curr.val;
+      register[curr.name] -= curr.val;
+      value += curr.val;
+
+      // Round change to the nearest hundreth deals with precision errors
+      change = Math.round(change * 100) / 100;
+    }
+    // Add this denomination to the output only if any was used.
+    if (value > 0) {
+        acc.push([ curr.name, value ]);
+    }
+    return acc; // Return the current Change Array
+  }, []); // Initial value of empty array for reduce
+
+  // If there are no elements in change_arr or we have leftover change, return
+  // the string "Insufficient Funds"
+  if (change_arr.length < 1 || change > 0) {
+    return "Insufficient Funds";
+  }
+
+  // Here is your change, ma'am.
+  return change_arr;
+}
+
+// test here
+checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]);
+:rocket: Run Code186
+
+Code Explanation:
+First, the CID array is transformed into a drawer object. Then we handle the conditions of exact change and insufficient funds. Then we loop through the denomination array and update the change and values while there is still money of this type in the drawer and while the denomination is larger than the change reminaing. Then we add this denomination to the output only if any was used. Finally, if there are no elements in change_arr or we have leftover change, return the string “Insufficient Funds”.
+
+And MORE
+
+Here's another way to solve it. It uses direct calculation instead of a while loop to calculate the change for each denomination.
+
+function checkCashRegister(price, cash, cid) {
+  // All amounts are multiplied by 100 until the final result to avoid errors with floating point math
+  const denominations = { "PENNY": 1, "NICKEL": 5, "DIME": 10, "QUARTER": 25, "ONE": 100, "FIVE": 500, "TEN": 1000, "TWENTY": 2000, "ONE HUNDRED": 10000 }
+  let changeDue = (cash * 100 - price * 100);
+  const register = cid.reverse().map(el => [el[0], Math.round(el[1]*100)]);
+  const registerTotal = register.reduce((sum, elem) => (sum + elem[1]), 0);
+  
+  if (changeDue > registerTotal ) return "Insufficient Funds";
+  if (changeDue === registerTotal ) return "Closed";
+
+  let partial;
+  let change = register.reduce((acc, elem) => {
+        // for each denomination calculate the lesser of (a) the amount that could be paid with that
+        // denomination without going over the amount owed, and (b) the actual amount of that denomination in 
+        // the register. Denominations not used to make change are excluded from the resulting array.
+        partial = Math.min(elem[1], Math.floor(changeDue / denominations[elem[0]]) * denominations[elem[0]]);
+        if ( partial > 0 ) {
+          changeDue -= partial;
+          acc.push([elem[0], partial / 100]);
+        } return acc;
+    }, [])
+      
+  // If the correct change could not be made from what was in the register.
+  if (changeDue > 0 ) return "Insufficient Funds"
+
+  return change;
+}
+
+And MORE
+
+Actually, I don’t see much value from converting the ‘cid’ array into an object for this task. Below’s my approach just with arrays. It also tests at the very beginning if enough cash is in the drawer before doing any computations. I think the structure is cleaner as the current “Beginner Code Solution”. Take a look:
+
+/*jshint esversion: 6 */
+
+function checkCashRegister(price, cash, cid) {
+  //declare and initialize variables
+  var change = Math.round((cash - price) * 100);
+  var value = 0;
+  var changeRecord = [];
+  var currency = [1, 5, 10, 25, 100, 500, 1000, 2000, 10000];
+  //convert all floats to integers due to floating point number issue
+  cid.forEach(el => el[1] = Math.round(el[1] * 100));
+  //helper function to check if sufficient cash for change is in the drawer
+  function enoughFund(cid) {
+    var sum = cid.filter((el, i) => change >= currency[i]);
+    return sum.reduce((a, b) => {
+      return a + b[1];
+    }, 0);
+  }
+
+  //Actual program/control flow starts here
+  if (enoughFund(cid) < change)
+    return "Insufficient Funds";
+  else if (enoughFund(cid) === change)
+    return "Closed";
+  else {
+    for (var i = cid.length - 1; i > -1; i--) {
+      value = 0;
+      while (cid[i][1] > 0 && change >= currency[i]) {
+        //update everything as long as condition is true
+        change -= currency[i];
+        cid[i][1] -= currency[i];
+        //value keeps track of the amount of each currency unit as change
+        value += currency[i];
+      }
+      if (value)
+        changeRecord.push([cid[i][0], value]);
+    }
+  }
+  //divide each array by 100 to display a proper money format
+  changeRecord.forEach(el => el[1] = (el[1] / 100));
+  return changeRecord;
+}
+
+And MORE
+
+My solution with Array.prototype.reduceRight, without using object middlestep.
+
+/**
+ * 
+ * @param {number} price 
+ * @param {number} cash 
+ * @param {[string, number][]} cid
+ * @returns {[string, number][]}
+ */
+function checkCashRegister(price, cash, cid) {
+  /** @type {array} Denomination helper array, multiplied by 100 */
+  const denom = [
+    ["PENNY", 1],
+    ["NICKEL", 5],
+    ["DIME", 10],
+    ["QUARTER", 25],
+    ["ONE", 100],
+    ["FIVE", 500],
+    ["TEN", 1000],
+    ["TWENTY", 2000],
+    ["ONE HUNDRED", 10000]
+  ];
+  /** @type {number} Remaining cash to withdraw, multiplied to deal with precision error */
+  let remainder = (cash - price) * 100;
+  /** @type {number} Value of all cash in cash register */
+  let sum = 0;
+
+  /**
+   * Returns cash withdrawal array.
+   * @param {array} acc Array.reduce accumulator or previous value
+   * @param {array} val Array.reduce current value
+   * @param {number} i Array.reduce index of current element
+   * @returns {array}
+   */
+  function withdraw(acc, val, i) {
+    /** @type {number} Value withdrawn from drawer compartment */
+    let withdrawValue = 0;
+    /** @type {number} Cash in drawer compartment, multiplied to deal with precision error */
+    let compartmentCash = val[1] * 100;
+    /** @type {number} Denomination value from helper array */
+    const denomValue = denom[i][1];
+    sum += compartmentCash;
+    /* Loop until no cash remains in drawer compartment or the remainder is less than denomination.
+     * Substract denomination value from remainder and cash in compartment
+     * Add denomination value to withdrawValue
+     */
+    while (compartmentCash && remainder >= denomValue) {
+      remainder -= denomValue;
+      compartmentCash -= denomValue;
+      withdrawValue += denomValue;
+    }
+    /* Push denomination and withdraw value to array, wich will be returned from function */
+    if (withdrawValue > 0) {
+      acc.push([denom[i][0], withdrawValue / 100]);
+    }
+    return acc;
+  }
+  /** @type {number} Array of values withdrawn from drawer */
+  const charge = cid.reduceRight(withdraw, []);
+  /* Check for special conditions, otherwise return charge array */
+  if (remainder > 0) {
+    return "Insufficient Funds";
+  }
+  if (sum === (cash - price) * 100) {
+    return "Closed";
+  }
+  return charge;
+};
+or cleaner, without the comments:
+
+function checkCashRegister(price, cash, cid) {
+  const denom = [
+    ["PENNY", 1],
+    ["NICKEL", 5],
+    ["DIME", 10],
+    ["QUARTER", 25],
+    ["ONE", 100],
+    ["FIVE", 500],
+    ["TEN", 1000],
+    ["TWENTY", 2000],
+    ["ONE HUNDRED", 10000]
+  ];
+  let remainder = (cash - price) * 100;
+  let sum = 0;
+  function withdraw(acc, val, i) {
+    let withdrawValue = 0;
+    let compartmentCash = val[1] * 100;
+    const denomValue = denom[i][1];
+    sum += compartmentCash;
+    while (compartmentCash && remainder >= denomValue) {
+      remainder -= denomValue;
+      compartmentCash -= denomValue;
+      withdrawValue += denomValue;
+    }
+    if (withdrawValue > 0) {
+      acc.push([denom[i][0], withdrawValue / 100]);
+    }
+    return acc;
+  }
+  const charge = cid.reduceRight(withdraw, []);
+  if (remainder > 0) {
+    return "Insufficient Funds";
+  }
+  if (sum === (cash - price) * 100) {
+    return "Closed";
+  }
+  return charge;
+};
+
 
 ##############################################################################################################
 
 
+Validate US Telephone Numbers
+Return true if the passed string is a valid US phone number.
 
+The user may fill out the form field any way they choose as long as it is a valid US number. The following are examples of valid formats for US numbers (refer to the tests below for other variants):
+
+555-555-5555
+(555)555-5555
+(555) 555-5555
+555 555 5555
+5555555555
+1 555 555 5555
+For this challenge you will be presented with a string such as 800-692-7753 or 8oo-six427676;laskdjf. Your job is to validate or reject the US phone number based on any combination of the formats provided above. The area code is required. If the country code is provided, you must confirm that the country code is 1. Return true if the string is a valid US phone number; otherwise return false.
+
+function telephoneCheck(str) {
+  // Good luck!
+//   var reg=/\s|-|\(|\)/;
+  console.log("##########################");
+  console.log(str);
+  var regs=[/\d{3}-\d{3}-\d{4}/,
+            /\(\d{3}\)\d{3}-\d{3}/,
+           /\(\d{3}\)\s\d{3}-\d{4}/,
+           /\d{3}\s\d{3}\s\d{4}/,
+           /\b\d{10}\b/,
+           /\1\s\d{3}\s\d{3}\s\d{4}/];
+  for(var i=0;i<regs.length;i++){
+    if(str.match(regs[i])){
+      console.log("reg: "+str.match(regs[i])+" | "+regs[i]);
+      console.log(str.match(regs[i]).index);
+      if(str.match(regs[i]).index==0){
+        console.log("pro-reg: "+str.match(regs[i])+" | "+regs[i]);
+        return true;
+      }else{
+        if(str.charAt(0)==1){
+          if(str.match(regs[i])){
+      
+      if(str.match(regs[i]).index==1||str.match(regs[i]).index==2){
+        console.log("pro-reg: "+str.match(regs[i])+" | "+regs[i]);
+        return true;
+      }
+        }
+      }
+    }
+  }    
+  }  
+  return false;
+}
+
+telephoneCheck("555-555-5555");
+
+//SOLUTIONS
+
+Basic Code Solution:
+function telephoneCheck(str) {
+   var regex = /^(1\s?)?(\(\d{3}\)|\d{3})[\s\-]?\d{3}[\s\-]?\d{4}$/;
+   return regex.test(str);
+}
+telephoneCheck("555-555-5555");
+
+Code Explanation:
+^ denotes the beginning of the string (1\s?)? checks allows for a “1” or a "1 " at the beginning.
+\d{n} checks for exactly n number of digits so (\(\d{3}\)|\d{3}) checks for three digits that are allowed to be between parenthesis.
+[\s\-]? checks for spaces or dashes between the groups of digits.
+$ denotes the end of the string. In this case the beginning and end of the string are used in the regex to prevent it from matching any longer string that might contain a valid phone number (eg. “s 555 555 5555 a”).
+Lastly we use regex.test(str) to test if the string adheres to the regular expression and return true or false.
+Relevant Links
+Regex Resources
+
+
+:sunflower: Intermediate Code Solution:
+function telephoneCheck(str) {
+  var re = /^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})$/;
+  return re.test(str);
+}
+telephoneCheck("555-555-5555");
+:rocket: Run Code37
+
+Code Explanation:
+This is an example of a very comprehensive and robust solution to validating US phone numbers client side. In such cases it might be much better and easier to implement this library libphonenumber308.
+
+And MORE
+
+Here’s the mental algorithm I used to solve this independently. Hopefully it’ll be helpful.
+
+If you’re new to regular expressions you need to use a live RegEx editor to visualize the impact of your edits in real time. It’s an invaluable learning tool. I used RegExr96.
+Test all the sample answers and requirements/conditions from the FCC challenge page with the RegEx editor.
+Use brackets around each element of your regular expression. For me, it really helped visually tidy up the code and I could read and understand it much better.
+Group the sample answers and requirements/conditions by patterns to help you identify what they have in common and how to detect them.
+While testing out variations of your regular expression, categorize your results in the following 4 lists: (1) Correct True (2) Incorrect True (3) Correct False (4) Incorrect False. This way, you can see if you’re making progress. If your next attempt gives you less false positives, you’re on the right track! If it gives you more false negatives, your previous attempt was better.
+~SPOILER ALERT!!~~~~~~
+
+Lastly, here’s my solution. It’s not the most elegant, but I’m pretty satisfied with it and the process I took to arrive at it. RegExr95 was an awesome tool!
+
+function telephoneCheck(str) {
+   return /^1?( )?((\(\d{3}\))|( \d{3} )|(\d{3}))( |\-)?(\d{3})( |-)?(\d{4}$)/.test(str);  
+}
+4 Likes
+
+iamatikantJul '17
+It was difficult though:
+
+function telephoneCheck(str) {  
+  var regEx = /^(1?\s?)?(\(\d{3}\)|\d{3})[\s\-]?(\d{3})[\s\-]?(\d{4})$/gm;
+  var flag = regEx.test(str); 
+  return flag;
+}
+
+
+telephoneCheck("555-555-5555") should return a boolean.
+telephoneCheck("1 555-555-5555") should return true.
+telephoneCheck("1 (555) 555-5555") should return true.
+telephoneCheck("5555555555") should return true.
+telephoneCheck("555-555-5555") should return true.
+telephoneCheck("(555)555-5555") should return true.
+telephoneCheck("1(555)555-5555") should return true.
+telephoneCheck("555-5555") should return false.
+telephoneCheck("5555555") should return false.
+telephoneCheck("1 555)555-5555") should return false.
+telephoneCheck("1 555 555 5555") should return true.
+telephoneCheck("1 456 789 4444") should return true.
+telephoneCheck("123**&!!asdf#") should return false.
+telephoneCheck("55555555") should return false.
+telephoneCheck("(6505552368)") should return false
+telephoneCheck("2 (757) 622-7382") should return false.
+telephoneCheck("0 (757) 622-7382") should return false.
+telephoneCheck("-1 (757) 622-7382") should return false
+telephoneCheck("2 757 622-7382") should return false.
+telephoneCheck("10 (757) 622-7382") should return false.
+telephoneCheck("27576227382") should return false.
+telephoneCheck("(275)76227382") should return false.
+telephoneCheck("2(757)6227382") should return false.
+telephoneCheck("2(757)622-7382") should return false.
+telephoneCheck("555)-555-5555") should return false.
+telephoneCheck("(555-555-5555") should return false.
+telephoneCheck("(555)5(55?)-5555") should return false.
 ##############################################################################################################
 
 
