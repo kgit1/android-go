@@ -4125,7 +4125,7 @@ telephoneCheck("2(757)6227382") should return false.
 telephoneCheck("2(757)622-7382") should return false.
 telephoneCheck("555)-555-5555") should return false.
 telephoneCheck("(555-555-5555") should return false.
-telephoneCheck("(555)5(55?)-5555") should return false.
+telephoneCheck("(555)5(55?)-5555") should return false. 
 ##############################################################################################################
 
 
